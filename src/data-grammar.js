@@ -1,0 +1,1346 @@
+/* ==========================================================
+   河北中考领航 · 语法体系数据源
+   口径：《义务教育英语课程标准（2022 年版）》三级语法项目
+        + 河北省中考英语考试说明（2025 年起全省统一命题）
+   结构：13 大语法族 → 46 个考点
+   每个考点：rule 规则 / form 公式 / table 变化表 / examples 例句 / traps 易错对比
+   level: 'A1' 小学已有、'A2' 七–八年级、'B1' 中考主考、'B1+' 拔高（短文填空常考）
+   ========================================================== */
+
+export const GRAMMAR = [
+  /* ======================= 1. 名词 ======================= */
+  {
+    id: 'noun',
+    name: '名词',
+    icon: '📦',
+    hook: '名词是卷面出现频率最高的词类：可数不可数、复数变化、所有格，短文填空几乎年年考。',
+    desc: '中考对名词的考查集中在三条线：可数名词的复数形式（含不规则变化）、不可数名词的量表达与「不可数化」陷阱、名词所有格。短文填空里还常考名词与形容词、动词的词性转换。',
+    topics: [
+      {
+        id: 'noun-countable',
+        name: '可数名词复数',
+        level: 'A2',
+        rule: '可数名词有单复数之分，复数形式分规则变化与不规则变化两类。中考最常考的是**不规则复数**和**以 -o / -f 结尾**的特殊变化。',
+        form: '规则：+s / +es ｜ 辅音字母+y → ies ｜ -f/-fe → ves ｜ 不规则：man→men, child→children',
+        table: {
+          head: ['类型', '变化规则', '例词'],
+          rows: [
+            ['一般情况', '+ s', 'book→books, pen→pens'],
+            ['s/x/ch/sh 结尾', '+ es', 'bus→buses, box→boxes, watch→watches, dish→dishes'],
+            ['辅音字母 + y', 'y → ies', 'city→cities, baby→babies, story→stories'],
+            ['元音字母 + y', '直接 + s', 'boy→boys, day→days, key→keys'],
+            ['-f / -fe 结尾', '多数 f → ves', 'leaf→leaves, knife→knives, wife→wives, wolf→wolves'],
+            ['-o 结尾（有生命）', '+ es', 'potato→potatoes, tomato→tomatoes, hero→heroes'],
+            ['-o 结尾（无生命）', '+ s', 'photo→photos, piano→pianos, radio→radios, zoo→zoos'],
+            ['单复数同形', '不变', 'sheep, deer, fish, Chinese, Japanese'],
+            ['不规则变化', '记牢', 'man→men, woman→women, child→children, foot→feet, tooth→teeth, mouse→mice'],
+          ],
+        },
+        examples: [
+          { en: 'There are three **knives** and two **forks** on the table.', zh: '桌上有三把刀和两把叉。' },
+          { en: 'Two **policemen** helped the old **woman** across the street.', zh: '两名警察扶着那位老妇人过马路。' },
+          { en: 'We saw a lot of **sheep** on the hill.', zh: '我们在山坡上看到许多羊。（sheep 单复数同形）' },
+        ],
+        traps: [
+          { t: '辅音字母 + y 忘变 ies', bad: 'There are many citys in China.', good: 'There are many cities in China.', why: '辅音字母 + y 结尾，先把 y 变 i 再加 -es；只有元音字母 + y 才直接加 -s。' },
+          { t: '不规则复数写错', bad: 'Three childs are playing with two mouses.', good: 'Three children are playing with two mice.', why: 'child→children，mouse→mice，属于必须硬记的不规则变化。' },
+          { t: 'sheep / deer 误加 s', bad: 'There are many sheeps on the farm.', good: 'There are many sheep on the farm.', why: 'sheep、deer、fish、Chinese 单复数同形，不加 -s。' },
+          { t: '-o 结尾误判有无生命', bad: 'He took many photos and two potatos.', good: 'He took many photos and two potatoes.', why: 'potato/tomato/hero 有生命加 -es；photo/piano/radio 无生命加 -s。' },
+        ],
+      },
+      {
+        id: 'noun-uncountable',
+        name: '不可数名词与量表达',
+        level: 'A2',
+        rule: '不可数名词没有复数形式，不能直接用 a/an 或数词修饰。表示数量要用「**a piece of / a bottle of / two cups of** + 不可数名词」这样的单位词结构。',
+        form: 'a/an + 单位词 + of + 不可数名词 ｜ 复数：数词 + 单位词(复数) + of + 不可数名词',
+        table: {
+          head: ['中考高频不可数名词', '中文', '常见量表达'],
+          rows: [
+            ['information', '信息', 'a piece of information'],
+            ['news', '新闻；消息', 'a piece of news'],
+            ['advice', '建议', 'a piece of advice'],
+            ['work', '工作', 'a lot of work'],
+            ['homework', '家庭作业', 'much homework'],
+            ['housework', '家务', 'much housework'],
+            ['money', '钱', 'a lot of money'],
+            ['time', '时间', 'plenty of time'],
+            ['water / milk / tea / juice', '水 / 牛奶 / 茶 / 果汁', 'a glass of water, two cups of tea'],
+            ['bread / meat / rice', '面包 / 肉 / 米饭', 'a piece of bread, a bowl of rice'],
+            ['furniture', '家具', 'a piece of furniture'],
+            ['equipment', '设备', 'a piece of equipment'],
+            ['luggage / baggage', '行李', 'a piece of luggage'],
+            ['paper', '纸', 'a piece of paper'],
+            ['music', '音乐', 'a piece of music'],
+            ['weather', '天气', 'fine weather'],
+          ],
+        },
+        examples: [
+          { en: 'Can you give me some **advice** on learning English?', zh: '你能给我一些学英语的建议吗？' },
+          { en: 'I have **a lot of homework** to do tonight.', zh: '我今晚有很多作业要做。' },
+          { en: 'She bought **two bottles of milk** and **a piece of bread**.', zh: '她买了两瓶牛奶和一块面包。' },
+        ],
+        traps: [
+          { t: '不可数名词加 -s', bad: 'He gave me many advices and informations.', good: 'He gave me much advice and a lot of information.', why: 'advice、information 都是不可数名词，没有复数形式，也不能用 many 修饰。' },
+          { t: '不可数名词前用 a/an', bad: 'I need an advice from you.', good: 'I need a piece of advice from you.', why: '不可数名词前不能直接加 a/an，要用「a + 单位词 + of」。' },
+          { t: '单位词单复数与名词不一致', bad: 'Two cup of tea, please.', good: 'Two cups of tea, please.', why: '数词修饰的是单位词，单位词要变复数，后面的不可数名词保持原形。' },
+          { t: 'news 当成复数', bad: 'The news are very exciting.', good: 'The news is very exciting.', why: 'news 虽以 -s 结尾，但是不可数名词，谓语用单数。' },
+        ],
+      },
+      {
+        id: 'noun-possessive',
+        name: '名词所有格',
+        level: 'A2',
+        rule: '表示「谁的」用名词所有格。有生命的名词加 **\'s**；以 -s 结尾的复数只加 **\'**；无生命名词多用 **of** 结构。',
+        form: '单数 + \'s ｜ 复数以 s 结尾 + \' ｜ 不规则复数 + \'s ｜ 无生命：the ... of ...',
+        table: {
+          head: ['情况', '构成', '例子'],
+          rows: [
+            ['单数名词', "+ 's", "Tom's bag, the boy's mother"],
+            ['以 -s 结尾的复数', "+ '", "the students' books, the teachers' office"],
+            ['不以 -s 结尾的复数', "+ 's", "the children's room, men's shoes"],
+            ['并列名词共同拥有', "最后一个 + 's", "Tom and Jim's room（两人共用一间）"],
+            ['并列名词各自拥有', "每个都 + 's", "Tom's and Jim's rooms（各自的房间）"],
+            ['无生命名词', 'of 结构', 'the door of the room, the name of the film'],
+            ['时间 / 距离 / 国家', "可用 's", "today's newspaper, ten minutes' walk, China's capital"],
+          ],
+        },
+        examples: [
+          { en: "This is **my sister's** bike and that is **the twins'** room.", zh: '这是我姐姐的自行车，那是双胞胎的房间。' },
+          { en: "**Children's** Day is on June 1st.", zh: '儿童节在六月一日。' },
+          { en: "It's about **ten minutes' walk** from here.", zh: '从这里走大约十分钟。' },
+        ],
+        traps: [
+          { t: '复数所有格多写 s', bad: "This is the students's reading room.", good: "This is the students' reading room.", why: '以 -s 结尾的复数名词，所有格只加撇号，不再加 s。' },
+          { t: 'children 误按 -s 复数处理', bad: "the children' toys", good: "the children's toys", why: 'children 是不规则复数，不以 -s 结尾，所有格仍加 \'s。' },
+          { t: '无生命名词用 \'s', bad: "the room's door", good: 'the door of the room', why: '无生命名词一般用 of 结构；但表示时间、距离、国家、城市时可以例外。' },
+        ],
+      },
+      {
+        id: 'noun-wordform',
+        name: '名词的词性转换（短文填空高频）',
+        level: 'B1+',
+        rule: '河北中考「短文填空」常给出形容词或动词，要求填其名词形式。核心是掌握高频后缀：**-tion / -sion / -ment / -ness / -ity / -ence / -ance / -er / -or / -ist**。',
+        form: 'v. + tion/sion/ment/ance/ence → n. ｜ adj. + ness/ity → n. ｜ v. + er/or/ist → 人',
+        table: {
+          head: ['后缀', '来源', '例词'],
+          rows: [
+            ['-tion / -ation', '动词 → 名词', 'educate→education, invent→invention, invite→invitation, pollute→pollution, protect→protection'],
+            ['-sion', '动词 → 名词', 'decide→decision, discuss→discussion, express→expression'],
+            ['-ment', '动词 → 名词', 'develop→development, improve→improvement, achieve→achievement, agree→agreement'],
+            ['-ness', '形容词 → 名词', 'happy→happiness, kind→kindness, sad→sadness, ill→illness'],
+            ['-ity', '形容词 → 名词', 'able→ability, active→activity, real→reality'],
+            ['-ence / -ance', '形容词 → 名词', 'different→difference, important→importance, silent→silence'],
+            ['-er / -or', '动词 → 人', 'teach→teacher, visit→visitor, invent→inventor, act→actor'],
+            ['-ist', '名词 → 人', 'science→scientist, art→artist, piano→pianist'],
+            ['-ing', '动词 → 名词', 'meet→meeting, build→building, feel→feeling'],
+          ],
+        },
+        examples: [
+          { en: 'We should take action to reduce air **pollution**. (pollute)', zh: '我们应该采取行动减少空气污染。' },
+          { en: 'His **invention** has changed our life. (invent)', zh: '他的发明改变了我们的生活。' },
+          { en: 'Reading brings me great **happiness**. (happy)', zh: '阅读给我带来极大的快乐。' },
+        ],
+        traps: [
+          { t: '该用名词却填了动词', bad: 'Air pollute is a serious problem.', good: 'Air pollution is a serious problem.', why: '句中作主语需要名词，pollute 是动词，要变 pollution。' },
+          { t: '拼写漏字母', bad: 'The developement of our city is fast.', good: 'The development of our city is fast.', why: 'develop + ment 时去掉词尾的 e：development，不是 developement。' },
+          { t: 'happiness 拼错', bad: 'Money cannot buy happyness.', good: 'Money cannot buy happiness.', why: 'happy 变名词：y 变 i 再加 -ness，即 happiness。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 2. 冠词 ======================= */
+  {
+    id: 'article',
+    name: '冠词',
+    icon: '🔤',
+    hook: 'a / an / the 与零冠词，短文填空与单项选择年年考，判断依据是「发音」和「特指与否」。',
+    desc: '冠词的考查就两个判断：一是 a 还是 an（看**读音**第一个音素，不看字母）；二是有没有 the（特指、独一无二、序数词最高级、乐器等固定用法）。',
+    topics: [
+      {
+        id: 'article-aan',
+        name: '不定冠词 a / an',
+        level: 'A1',
+        rule: 'a / an 表示「一个」，只用于可数名词单数前。选择 a 还是 an **取决于后面单词的第一个音素**，而不是首字母。',
+        form: '辅音音素开头 → a ｜ 元音音素开头 → an',
+        table: {
+          head: ['首字母', '实际读音', '用哪个', '例子'],
+          rows: [
+            ['辅音字母', '辅音音素', 'a', 'a book, a pen, a car'],
+            ['元音字母（常见）', '元音音素', 'an', 'an apple, an egg, an orange'],
+            ['h 不发音', '元音音素', 'an', 'an hour, an honest boy'],
+            ['u 读 /ju:/', '辅音音素 /j/', 'a', 'a useful book, a university, a European country'],
+            ['u 读 /ʌ/', '元音音素', 'an', 'an umbrella, an unusual story'],
+            ['o 读 /wʌ/', '辅音音素 /w/', 'a', 'a one-way street, a one-year-old boy'],
+            ['缩写字母', '看字母读音', 'an / a', 'an MP3, a UFO（/ju:/）'],
+          ],
+        },
+        examples: [
+          { en: 'He is **an honest** boy and he reads **an hour** every day.', zh: '他是个诚实的男孩，每天阅读一小时。' },
+          { en: 'This is **a useful** dictionary for **a university** student.', zh: '对大学生来说这是一本有用的词典。' },
+          { en: 'I bought **an umbrella** and **a one-way** ticket.', zh: '我买了一把伞和一张单程票。' },
+        ],
+        traps: [
+          { t: '按字母而不是发音选', bad: 'He waited for an hour and bought a umbrella.', good: 'He waited for an hour and bought an umbrella.', why: 'hour 的 h 不发音，首音素是元音，用 an；umbrella 首音素是 /ʌ/，也用 an。' },
+          { t: 'useful / university 误用 an', bad: 'This is an useful book.', good: 'This is a useful book.', why: 'useful 读 /ˈjuːsfl/，首音素是辅音 /j/，所以用 a。' },
+          { t: '可数名词单数前漏冠词', bad: 'I want to be doctor.', good: 'I want to be a doctor.', why: '单数可数名词表示「一个」时必须有冠词；职业名词前尤其不能漏。' },
+        ],
+      },
+      {
+        id: 'article-the',
+        name: '定冠词 the 与零冠词',
+        level: 'A2',
+        rule: 'the 表示特指或独一无二；**零冠词**（不加冠词）用于泛指复数、不可数名词、专有名词，以及三餐、球类、学科等固定搭配。',
+        form: '特指/独一无二/序数词最高级/乐器/方位 → the ｜ 泛指复数/三餐/球类/学科/语言 → 零冠词',
+        table: {
+          head: ['必须用 the', '必须零冠词'],
+          rows: [
+            ['第二次提到：I saw a dog. The dog was big.', '泛指复数：I like apples.'],
+            ['独一无二：the sun, the moon, the earth', '不可数泛指：Water is important.'],
+            ['序数词、最高级：the first, the best', '三餐：have breakfast / lunch / dinner'],
+            ['方位：in the east, on the left', '球类运动：play basketball / football'],
+            ['乐器：play the piano / the violin', '学科语言：study English, learn math'],
+            ['江河湖海山脉：the Yellow River', 'by + 交通工具：by bus / bike / plane'],
+            ['姓氏复数表一家：the Smiths', '专有名词：China, Beijing, Tom'],
+            ['the + adj. 表一类人：the old, the poor', "节日前：on Teachers' Day, at Christmas"],
+          ],
+        },
+        examples: [
+          { en: '**The sun** rises in **the east**.', zh: '太阳从东方升起。' },
+          { en: 'I have **breakfast** at seven and then play **basketball**.', zh: '我七点吃早饭，然后打篮球。' },
+          { en: 'She can play **the piano**, but she can\'t play **football**.', zh: '她会弹钢琴，但不会踢足球。' },
+        ],
+        traps: [
+          { t: '三餐前误加 the', bad: 'I have the breakfast at seven.', good: 'I have breakfast at seven.', why: '三餐名词前一般不加冠词；但特指某一顿时可以加，如 the breakfast I had yesterday。' },
+          { t: '球类前误加 the', bad: 'He likes playing the basketball.', good: 'He likes playing basketball.', why: '球类运动前零冠词；但乐器前必须加 the：play the piano。' },
+          { t: 'by + 交通工具误加冠词', bad: 'I go to school by the bus.', good: 'I go to school by bus.', why: 'by + 交通工具表示方式时，中间不加冠词。' },
+          { t: '序数词前漏 the', bad: 'He was first to arrive.', good: 'He was the first to arrive.', why: '序数词前通常加 the（表示「第几个」）。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 3. 代词 ======================= */
+  {
+    id: 'pronoun',
+    name: '代词',
+    icon: '👤',
+    hook: '人称代词主宾格、物主代词、反身代词是短文填空的必考项，判断关键是「在句中作什么成分」。',
+    desc: '代词考查的核心是「格」：作主语用主格，作宾语用宾格，表示「谁的」用形容词性物主代词（后接名词）或名词性物主代词（单独用）。另有不定代词 some/any、both/either/neither、复合不定代词等高频点。',
+    topics: [
+      {
+        id: 'pronoun-personal',
+        name: '人称代词与物主代词',
+        level: 'A1',
+        rule: '人称代词分主格（作主语）和宾格（作宾语、介词后）。物主代词分形容词性（后必须接名词）和名词性（单独使用，相当于「形容词性 + 名词」）。',
+        form: '主格 + 谓语 ｜ 动词/介词 + 宾格 ｜ 形容词性物主 + 名词 ｜ 名词性物主单独用',
+        table: {
+          head: ['主格', '宾格', '形容词性物主', '名词性物主', '反身代词'],
+          rows: [
+            ['I', 'me', 'my', 'mine', 'myself'],
+            ['you', 'you', 'your', 'yours', 'yourself / yourselves'],
+            ['he', 'him', 'his', 'his', 'himself'],
+            ['she', 'her', 'her', 'hers', 'herself'],
+            ['it', 'it', 'its', 'its', 'itself'],
+            ['we', 'us', 'our', 'ours', 'ourselves'],
+            ['they', 'them', 'their', 'theirs', 'themselves'],
+          ],
+        },
+        examples: [
+          { en: '**She** gave **me** **her** book, and I gave **her** **mine**.', zh: '她把她的书给了我，我把我的给了她。' },
+          { en: 'This is **our** classroom. **Theirs** is on the second floor.', zh: '这是我们的教室，他们的在二楼。' },
+          { en: 'Please take care of **yourself**.', zh: '请照顾好你自己。' },
+        ],
+        traps: [
+          { t: '介词后用主格', bad: 'This present is for you and I.', good: 'This present is for you and me.', why: '介词 for 后面要用宾格；you and me 是并列宾语。' },
+          { t: '形容词性物主代词后漏名词', bad: 'This book is my.', good: 'This book is mine.', why: 'my 是形容词性，后面必须接名词；单独使用要用名词性 mine。' },
+          { t: 'its 与 it\'s 混淆', bad: "The cat licked it's paw.", good: 'The cat licked its paw.', why: "its 是「它的」（物主代词）；it's = it is / it has，是缩写，不能表示所属。" },
+          { t: '反身代词用错人称', bad: 'He hurt herself while cooking.', good: 'He hurt himself while cooking.', why: '反身代词必须与主语的人称、数一致：he → himself。' },
+        ],
+      },
+      {
+        id: 'pronoun-indefinite',
+        name: '不定代词与复合不定代词',
+        level: 'B1',
+        rule: 'some 多用于肯定句，any 多用于否定句和疑问句；但表示请求、建议或期待肯定回答时，疑问句也用 some。复合不定代词（something / anybody / nobody 等）作主语时谓语用**单数**，形容词要**后置**。',
+        form: 'some/any + 名词 ｜ some/any/every/no + thing/body/one ｜ 复合不定代词 + adj.（后置）',
+        table: {
+          head: ['词', '含义', '用法要点'],
+          rows: [
+            ['some / something / somebody', '一些 / 某事 / 某人', '肯定句；请求建议的疑问句'],
+            ['any / anything / anybody', '任何 / 任何事 / 任何人', '否定句、疑问句；肯定句表「任何」'],
+            ['no / nothing / nobody', '没有 / 没什么 / 没人', '本身表否定，谓语用肯定形式'],
+            ['both', '两者都', '谓语用复数；both...and...'],
+            ['either', '两者之一', '谓语用单数；either...or...'],
+            ['neither', '两者都不', '谓语用单数；neither...nor...'],
+            ['all', '三者及以上都', '指不可数时谓语用单数'],
+            ['none', '三者及以上都不', '可接 of 短语；谓语单复数皆可'],
+            ['each / every', '每个', 'each 可作代词；every 只作形容词'],
+          ],
+        },
+        examples: [
+          { en: 'Would you like **something** to drink?', zh: '你想喝点什么吗？（请求，用 some 类）' },
+          { en: '**Everyone** in our class **is** here.', zh: '我们班每个人都到了。' },
+          { en: 'I have **nothing** important to tell you.', zh: '我没什么重要的事要告诉你。' },
+        ],
+        traps: [
+          { t: '请求句误用 any', bad: 'Would you like anything to eat?', good: 'Would you like something to eat?', why: '表示请求、邀请并期待对方同意时，疑问句用 something / somebody。' },
+          { t: '复合不定代词谓语用复数', bad: 'Everybody are happy today.', good: 'Everybody is happy today.', why: 'everybody / everyone / something / nothing 等作主语时，谓语动词用单数。' },
+          { t: '形容词放在复合不定代词前', bad: 'I have important something to do.', good: 'I have something important to do.', why: '修饰复合不定代词的形容词必须后置。' },
+          { t: 'neither of 谓语用复数', bad: 'Neither of the answers are correct.', good: 'Neither of the answers is correct.', why: 'neither / either of + 复数名词作主语时，谓语一般用单数。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 4. 数词 ======================= */
+  {
+    id: 'numeral',
+    name: '数词',
+    icon: '🔢',
+    hook: '基数词与序数词、hundred/thousand 的单复数、分数表达，单项选择与短文填空都常考。',
+    desc: '数词考查集中在三处：序数词拼写（ninth / twelfth / twentieth 易错）、hundred / thousand / million 前有具体数字时不加 -s、分数与「几分之几」的表达。',
+    topics: [
+      {
+        id: 'numeral-ordinal',
+        name: '基数词与序数词',
+        level: 'A2',
+        rule: '基数词表数量，序数词表顺序（前面通常加 the）。序数词多在基数词后加 **-th**，但 first / second / third 及以 -y 结尾的整十数特殊。',
+        form: '基数 + th ｜ 1→first, 2→second, 3→third ｜ 整十：y→ieth ｜ 两位数：十位基数 + 个位序数',
+        table: {
+          head: ['基数词', '序数词', '易错提示'],
+          rows: [
+            ['one', 'first (1st)', '特殊'],
+            ['two', 'second (2nd)', '特殊'],
+            ['three', 'third (3rd)', '特殊'],
+            ['five', 'fifth (5th)', 've → f + th'],
+            ['eight', 'eighth (8th)', '只加 h，不是 eightth'],
+            ['nine', 'ninth (9th)', '去掉 e 再加 th'],
+            ['twelve', 'twelfth (12th)', 've → f + th'],
+            ['twenty', 'twentieth (20th)', 'y → ieth'],
+            ['twenty-one', 'twenty-first (21st)', '只把个位变序数'],
+            ['forty', 'fortieth (40th)', 'forty 本身无 u'],
+          ],
+        },
+        examples: [
+          { en: 'Today is my **twelfth** birthday.', zh: '今天是我十二岁生日。' },
+          { en: 'He lives on the **ninth** floor.', zh: '他住在九楼。' },
+          { en: 'March is the **third** month of the year.', zh: '三月是一年中的第三个月。' },
+        ],
+        traps: [
+          { t: 'ninth 误拼成 nineth', bad: 'He lives on the nineth floor.', good: 'He lives on the ninth floor.', why: 'nine 变序数词：去掉 e 再加 th，即 ninth。' },
+          { t: 'twelfth 误拼', bad: 'December is the twelveth month.', good: 'December is the twelfth month.', why: 'twelve → twelfth：ve 变 f 再加 th。' },
+          { t: '两位数整体变序数', bad: 'the twenty-oneth day', good: 'the twenty-first day', why: '两位数只把个位变序数词，十位保持基数词。' },
+        ],
+      },
+      {
+        id: 'numeral-hundred',
+        name: 'hundred / thousand 与分数',
+        level: 'B1',
+        rule: 'hundred / thousand / million 前有**具体数字**时，用单数且不加 of；表示「数百/数千」这类不确定数量时，加 -s 并接 of。',
+        form: '数词 + hundred/thousand（单数）｜ hundreds/thousands of（表约数）',
+        table: {
+          head: ['结构', '含义', '例子'],
+          rows: [
+            ['two hundred students', '两百名学生（确切）', '数词 + 单数，不加 of'],
+            ['hundreds of students', '数百名学生（约数）', '复数 + of'],
+            ['three thousand people', '三千人', '确切数字'],
+            ['thousands of people', '数千人', '约数'],
+            ['1/2', 'a half / one half', '分子基数词，分母序数词'],
+            ['1/3', 'one third', '分母序数词'],
+            ['2/3', 'two thirds', '分子大于 1，分母加 s'],
+            ['3/4', 'three quarters / three fourths', 'quarter 表示四分之一'],
+            ['25%', 'twenty-five percent', 'percent 不加 s'],
+          ],
+        },
+        examples: [
+          { en: 'There are **two hundred** students in our grade.', zh: '我们年级有两百名学生。' },
+          { en: '**Thousands of** tourists visit the Great Wall every year.', zh: '每年有成千上万的游客参观长城。' },
+          { en: '**Two thirds** of the students have finished the work.', zh: '三分之二的学生已经完成了工作。' },
+        ],
+        traps: [
+          { t: '确切数字后加 s 或 of', bad: 'There are two hundreds of students.', good: 'There are two hundred students.', why: '前面有具体数字时，hundred 用单数且不接 of。' },
+          { t: '约数漏 s 或漏 of', bad: 'Thousand of people came to the show.', good: 'Thousands of people came to the show.', why: '表示「数以千计的」要用 thousands of。' },
+          { t: '分数分母不变复数', bad: 'Two third of the cake was eaten.', good: 'Two thirds of the cake was eaten.', why: '分子大于 1 时，分母的序数词要加 -s。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 5. 形容词与副词 ======================= */
+  {
+    id: 'adjadv',
+    name: '形容词与副词',
+    icon: '⚖️',
+    hook: '比较级最高级、as...as 结构、-ed/-ing 形容词辨析，是单项选择与短文填空的高频失分点。',
+    desc: '形容词修饰名词、作表语；副词修饰动词、形容词、副词。比较级用于两者比较，最高级用于三者及以上。中考还常考「修饰比较级的词」（much / a lot / even / a little）和 -ed / -ing 形容词的区别。',
+    topics: [
+      {
+        id: 'adjadv-comparison',
+        name: '比较级与最高级',
+        level: 'A2',
+        rule: '两者比较用**比较级 + than**；三者及以上比较用**the + 最高级 + in/of 范围**。变化分规则与不规则两类。',
+        form: '比较级 + than ｜ the + 最高级 + in/of ｜ as + 原级 + as（同级比较）',
+        table: {
+          head: ['类型', '变化规则', '例词'],
+          rows: [
+            ['单音节', '+ er / est', 'tall→taller→tallest, fast→faster→fastest'],
+            ['以 e 结尾', '+ r / st', 'nice→nicer→nicest, large→larger→largest'],
+            ['重读闭音节（辅元辅）', '双写末尾 + er/est', 'big→bigger→biggest, hot→hotter→hottest, thin→thinner→thinnest'],
+            ['辅音 + y', 'y→i + er/est', 'easy→easier→easiest, happy→happier→happiest'],
+            ['多音节', 'more / most + 原级', 'beautiful→more beautiful→most beautiful'],
+            ['不规则', '硬记', 'good/well→better→best, bad/badly→worse→worst, many/much→more→most, little→less→least, far→farther/further→farthest/furthest'],
+          ],
+        },
+        examples: [
+          { en: 'This box is **heavier than** that one.', zh: '这个箱子比那个重。' },
+          { en: 'He is **the tallest** student **in** our class.', zh: '他是我们班最高的学生。' },
+          { en: 'English is **as interesting as** Chinese.', zh: '英语和语文一样有趣。' },
+        ],
+        traps: [
+          { t: '比较级前加 more', bad: 'He is more taller than me.', good: 'He is taller than me.', why: '单音节词的比较级已用 -er，不能再加 more；两者只能用一个。' },
+          { t: 'than 写成 then', bad: 'He is taller then his brother.', good: 'He is taller than his brother.', why: 'than 是比较级专用连词，then 表示「然后」，不能混用。' },
+          { t: '最高级漏 the', bad: 'She is tallest girl in her class.', good: 'She is the tallest girl in her class.', why: '形容词最高级前必须加 the（副词最高级可省略）。' },
+          { t: '同级比较否定用 than', bad: 'This book is not so interesting than that one.', good: 'This book is not so interesting as that one.', why: '同级比较的否定式是 not so/as + 原级 + as，不能用 than。' },
+          { t: '修饰比较级用 very', bad: 'This film is very more exciting.', good: 'This film is much more exciting.', why: '修饰比较级要用 much / a lot / even / a little / far，不能用 very。' },
+        ],
+      },
+      {
+        id: 'adjadv-ed-ing',
+        name: '-ed 与 -ing 形容词',
+        level: 'B1',
+        rule: '**-ing** 形容词描述事物「令人…的」（主动、引起感受）；**-ed** 形容词描述人「感到…的」（被动、接受感受）。',
+        form: '事物作主语 → -ing ｜ 人作主语 → -ed',
+        table: {
+          head: ['-ing（令人…）', '-ed（感到…）'],
+          rows: [
+            ['interesting 有趣的', 'interested 感兴趣的'],
+            ['exciting 令人激动的', 'excited 感到激动的'],
+            ['boring 令人厌烦的', 'bored 感到厌烦的'],
+            ['surprising 令人惊讶的', 'surprised 感到惊讶的'],
+            ['tiring 令人疲倦的', 'tired 感到疲倦的'],
+            ['relaxing 令人放松的', 'relaxed 感到放松的'],
+            ['worrying 令人担心的', 'worried 感到担心的'],
+            ['frightening 令人害怕的', 'frightened 感到害怕的'],
+          ],
+        },
+        examples: [
+          { en: 'The film is **interesting** and we are all **interested** in it.', zh: '这部电影很有趣，我们都对它感兴趣。' },
+          { en: 'I was **surprised** at the **surprising** news.', zh: '我对这个令人惊讶的消息感到惊讶。' },
+          { en: 'The long walk was **tiring**, so we felt **tired**.', zh: '长途步行很累人，所以我们感到累。' },
+        ],
+        traps: [
+          { t: '人作主语用 -ing', bad: 'I am interesting in music.', good: 'I am interested in music.', why: '人「感到感兴趣」用 -ed：be interested in 是固定搭配。' },
+          { t: '物作主语用 -ed', bad: 'The story is very bored.', good: 'The story is very boring.', why: '故事「令人厌烦」，用 -ing。' },
+        ],
+      },
+      {
+        id: 'adjadv-wordform',
+        name: '形容词与副词的转换（短文填空高频）',
+        level: 'B1+',
+        rule: '短文填空常要求把形容词变副词修饰动词。基本规则是**形容词 + ly**，但要注意 y→ily、去 e、以及 hard / hardly 这类意义不同的词。',
+        form: 'adj. + ly → adv. ｜ 辅音+y → ily ｜ true→truly ｜ hard（努力地）≠ hardly（几乎不）',
+        table: {
+          head: ['形容词', '副词', '要点'],
+          rows: [
+            ['quick', 'quickly', '一般 + ly'],
+            ['happy', 'happily', 'y → ily'],
+            ['easy', 'easily', 'y → ily'],
+            ['careful', 'carefully', '一般 + ly'],
+            ['true', 'truly', '去 e 加 ly'],
+            ['terrible', 'terribly', '去 le 加 ly'],
+            ['good', 'well', '不规则'],
+            ['hard', 'hard', 'hardly 意思是「几乎不」'],
+            ['late', 'late / lately', 'lately 意思是「最近」'],
+            ['high', 'high / highly', 'highly 意思是「高度地」'],
+          ],
+        },
+        examples: [
+          { en: 'She sings **beautifully**. (beautiful)', zh: '她唱得很美。' },
+          { en: 'He works **hard** but he **hardly** has time to rest.', zh: '他工作努力，但几乎没有时间休息。' },
+          { en: 'The boy answered the question **correctly**. (correct)', zh: '这个男孩正确地回答了问题。' },
+        ],
+        traps: [
+          { t: '修饰动词用形容词', bad: 'He runs quick.', good: 'He runs quickly.', why: '修饰动词 run 要用副词 quickly。' },
+          { t: 'hard 与 hardly 混淆', bad: 'He studies hardly every day.', good: 'He studies hard every day.', why: 'hard 表示「努力地」；hardly 表示「几乎不」，意义完全不同。' },
+          { t: 'happily 拼写错误', bad: 'The children played happyly.', good: 'The children played happily.', why: '辅音字母 + y 结尾：y 变 i 再加 -ly。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 6. 介词 ======================= */
+  {
+    id: 'prep',
+    name: '介词',
+    icon: '📍',
+    hook: '时间介词 in/on/at、方位介词、固定搭配，是单项选择的常客，也是写作最容易出错的细节。',
+    desc: '介词考查两条主线：一是时间与方位介词的准确选择（in / on / at 的区别）；二是动词、形容词与介词的**固定搭配**（be good at / be interested in / look forward to 等），后者只能靠积累。',
+    topics: [
+      {
+        id: 'prep-time',
+        name: '时间介词 in / on / at',
+        level: 'A1',
+        rule: '时间介词按「范围由大到小」排列：**in** 用于较长时段（年、月、季节、世纪），**on** 用于具体某天或某天的上下午，**at** 用于具体时刻与短暂时间点。',
+        form: 'in + 年/月/季节/世纪 ｜ on + 具体某天 ｜ at + 时刻/短暂时间点',
+        table: {
+          head: ['介词', '用于', '例子'],
+          rows: [
+            ['in', '年、月、季节、世纪、上下午（泛指）', 'in 2025, in May, in summer, in the morning'],
+            ['on', '具体某一天、星期、日期、某天的上下午', "on Monday, on May 1st, on Sunday morning"],
+            ['at', '具体时刻、短暂时间点', "at 7 o'clock, at noon, at night, at breakfast"],
+            ['at', '节日（指时间点）', 'at Christmas, at the Spring Festival'],
+            ['for', '持续一段时间', 'for three years'],
+            ['since', '自从（接时间点）', 'since 2020, since last year'],
+            ['during', '在…期间', 'during the holiday'],
+            ['after / before', '在…之后 / 之前', 'after school, before dinner'],
+            ['until', '直到', 'until midnight'],
+            ['by', '到…为止', 'by the end of last term'],
+          ],
+        },
+        examples: [
+          { en: 'We will have a sports meeting **on** Friday morning.', zh: '我们将在周五上午开运动会。' },
+          { en: 'He gets up **at** six **in** the morning.', zh: '他早上六点起床。' },
+          { en: 'I have lived here **since** 2018.', zh: '我自 2018 年起就住在这里。' },
+        ],
+        traps: [
+          { t: '具体某天的上下午用 in', bad: 'We will meet in Sunday morning.', good: 'We will meet on Sunday morning.', why: '某一天的上下午被具体化，要用 on：on Sunday morning。' },
+          { t: '时刻用 in', bad: "The class begins in eight o'clock.", good: "The class begins at eight o'clock.", why: '具体时刻用 at。' },
+          { t: 'since 与 for 混用', bad: 'I have studied English since three years.', good: 'I have studied English for three years.', why: 'since 接时间点（2020），for 接时间段（three years）。' },
+          { t: 'in the morning 误用 on', bad: 'I read English on the morning.', good: 'I read English in the morning.', why: '泛指「在上午」用 in the morning；只有具体某天的上午才用 on。' },
+        ],
+      },
+      {
+        id: 'prep-phrase',
+        name: '介词固定搭配',
+        level: 'B1',
+        rule: '中考高频的动词 / 形容词 + 介词搭配必须整块记忆。特别注意 **to 在 look forward to / be used to 中是介词**，后面接动词要加 -ing。',
+        form: 'be + adj. + prep. ｜ v. + prep. ｜ 介词后接 doing',
+        table: {
+          head: ['搭配', '含义', '例句'],
+          rows: [
+            ['be good at', '擅长', 'He is good at swimming.'],
+            ['be interested in', '对…感兴趣', 'I am interested in history.'],
+            ['be afraid of', '害怕', 'She is afraid of dogs.'],
+            ['be proud of', '为…自豪', 'We are proud of our country.'],
+            ['be full of', '充满', 'The box is full of books.'],
+            ['be famous for', '因…而著名', 'China is famous for the Great Wall.'],
+            ['be different from', '与…不同', 'My answer is different from yours.'],
+            ['look forward to doing', '期待做', 'I look forward to seeing you.'],
+            ['be used to doing', '习惯于做', 'He is used to getting up early.'],
+            ['spend ... on / (in) doing', '花时间做', 'I spent two hours on my homework.'],
+            ['thank you for doing', '感谢做某事', 'Thank you for helping me.'],
+            ['prefer ... to ...', '比起…更喜欢', 'I prefer tea to coffee.'],
+          ],
+        },
+        examples: [
+          { en: 'I am **looking forward to** **hearing** from you.', zh: '我期待收到你的来信。' },
+          { en: 'She is **good at** **playing** the piano.', zh: '她擅长弹钢琴。' },
+          { en: 'He **spent** two hours **on** his homework.', zh: '他花了两个小时做作业。' },
+        ],
+        traps: [
+          { t: 'look forward to 后接动词原形', bad: 'I look forward to see you.', good: 'I look forward to seeing you.', why: 'look forward to 中的 to 是介词，后面要接动名词 -ing。' },
+          { t: 'be used to 后接动词原形', bad: 'He is used to get up early.', good: 'He is used to getting up early.', why: 'be used to 表示「习惯于」，to 是介词，接 -ing；used to do 才表示「过去常常」。' },
+          { t: '介词搭配用错', bad: 'He is good in English.', good: 'He is good at English.', why: '固定搭配是 be good at，不是 in。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 7. 动词时态 ======================= */
+  {
+    id: 'tense',
+    name: '动词时态',
+    icon: '⏱',
+    hook: '中考语法第一大考点：六个时态的构成与用法，短文填空与单项选择年年必考。',
+    desc: '初中必须掌握六种时态：一般现在、一般过去、一般将来、现在进行、过去进行、现在完成。判断时态靠**时间状语**和**语境**两条线索，其中「现在完成 vs 一般过去」是最容易失分的一对。',
+    topics: [
+      {
+        id: 'present-simple',
+        name: '一般现在时',
+        level: 'A1',
+        rule: '表示习惯、客观事实、客观规律和时刻表。主语是第三人称单数时，动词要加 **-s/-es**。',
+        form: '主语 + V(-s) ｜ 否定 don\'t/doesn\'t + V ｜ 疑问 Do/Does + 主语 + V',
+        table: {
+          head: ['人称', '肯定', '否定', '疑问'],
+          rows: [
+            ['I / you / we / they', 'work', "don't work", 'Do ... work?'],
+            ['he / she / it', 'works', "doesn't work", 'Does ... work?'],
+            ['be 动词 I', 'am', 'am not', 'Am I ...?'],
+            ['be 动词 he/she/it', 'is', "isn't", 'Is he ...?'],
+            ['be 动词 you/we/they', 'are', "aren't", 'Are they ...?'],
+          ],
+        },
+        examples: [
+          { en: 'He **goes** to school by bike every day.', zh: '他每天骑自行车上学。' },
+          { en: 'The earth **moves** around the sun.', zh: '地球绕着太阳转。' },
+          { en: 'The train **leaves** at 7:30 tomorrow morning.', zh: '火车明天早上七点半开。（时刻表用一般现在时表将来）' },
+        ],
+        traps: [
+          { t: '第三人称单数漏 -s', bad: 'My brother go to work by bus.', good: 'My brother goes to work by bus.', why: '主语 my brother 是第三人称单数，动词要加 -es。' },
+          { t: '时间状语从句用将来时', bad: 'I will call you when I will arrive.', good: 'I will call you when I arrive.', why: 'when / if / as soon as / before / after / until 引导的时间或条件状语从句，主句用将来时，从句用**一般现在时**（主将从现）。' },
+          { t: '客观规律用进行时', bad: 'Water is boiling at 100°C.', good: 'Water boils at 100°C.', why: '客观真理、自然规律用一般现在时。' },
+        ],
+      },
+      {
+        id: 'present-continuous',
+        name: '现在进行时',
+        level: 'A1',
+        rule: '表示此刻正在发生、现阶段暂时的情况，或已确定的近期计划。构成是 **be + doing**。',
+        form: 'am/is/are + doing ｜ 标志：now / look / listen / at the moment / these days',
+        table: {
+          head: ['动词结尾', '变化', '例子'],
+          rows: [
+            ['一般情况', '+ ing', 'read→reading, play→playing'],
+            ['以不发音 e 结尾', '去 e + ing', 'make→making, write→writing, dance→dancing'],
+            ['重读闭音节（辅元辅）', '双写末尾 + ing', 'run→running, sit→sitting, swim→swimming, begin→beginning'],
+            ['以 ie 结尾', 'ie → y + ing', 'lie→lying, die→dying, tie→tying'],
+          ],
+        },
+        examples: [
+          { en: 'Look! The children **are playing** football.', zh: '看！孩子们正在踢足球。' },
+          { en: 'He **is writing** a letter now.', zh: '他现在正在写信。' },
+          { en: 'We **are meeting** Tom at six tomorrow.', zh: '我们明天六点见汤姆。（已确定的近期计划）' },
+        ],
+        traps: [
+          { t: '状态动词用进行时', bad: 'I am knowing the answer.', good: 'I know the answer.', why: 'know / like / want / need / belong / understand / believe 等状态动词一般不用进行时。' },
+          { t: '忘记 be 动词', bad: 'He writing a letter now.', good: 'He is writing a letter now.', why: '现在进行时必须有 be 动词，不能只有 doing。' },
+          { t: 'swim 漏双写', bad: 'He is swiming in the river.', good: 'He is swimming in the river.', why: 'swim 是重读闭音节，要双写 m 再加 -ing。' },
+        ],
+      },
+      {
+        id: 'past-simple',
+        name: '一般过去时',
+        level: 'A2',
+        rule: '表示过去某个时间发生的动作或存在的状态。规则动词加 **-ed**，不规则动词需硬记。',
+        form: '主语 + V-ed / 不规则过去式 ｜ 否定 didn\'t + V ｜ 疑问 Did + 主语 + V',
+        table: {
+          head: ['原形', '过去式', '过去分词'],
+          rows: [
+            ['go', 'went', 'gone'],
+            ['do', 'did', 'done'],
+            ['have', 'had', 'had'],
+            ['see', 'saw', 'seen'],
+            ['take', 'took', 'taken'],
+            ['get', 'got', 'got'],
+            ['make', 'made', 'made'],
+            ['come', 'came', 'come'],
+            ['eat', 'ate', 'eaten'],
+            ['buy', 'bought', 'bought'],
+            ['teach', 'taught', 'taught'],
+            ['think', 'thought', 'thought'],
+            ['write', 'wrote', 'written'],
+            ['speak', 'spoke', 'spoken'],
+            ['run', 'ran', 'run'],
+            ['swim', 'swam', 'swum'],
+          ],
+        },
+        examples: [
+          { en: 'I **went** to Beijing last summer.', zh: '去年夏天我去了北京。' },
+          { en: 'She **didn\'t come** to school yesterday.', zh: '她昨天没来上学。' },
+          { en: '**Did** you **finish** your homework?', zh: '你完成作业了吗？' },
+        ],
+        traps: [
+          { t: 'did 后仍用过去式', bad: "He didn't went to school yesterday.", good: "He didn't go to school yesterday.", why: '助动词 did / didn\'t 后面要用动词原形。' },
+          { t: '一般过去与现在完成混用', bad: 'I have seen him yesterday.', good: 'I saw him yesterday.', why: 'yesterday / last week / in 2020 这类**明确的过去时间**只能与一般过去时连用，不能用现在完成时。' },
+          { t: '不规则动词写错', bad: 'He buyed a new bike.', good: 'He bought a new bike.', why: 'buy 是不规则动词，过去式是 bought。' },
+        ],
+      },
+      {
+        id: 'future',
+        name: '一般将来时',
+        level: 'A2',
+        rule: '表示将来要发生的动作或存在的状态。常用 **will + 动词原形** 和 **be going to + 动词原形** 两种结构。',
+        form: 'will + V ｜ be going to + V ｜ 现在进行时表将来（已安排）',
+        table: {
+          head: ['结构', '用法', '例句'],
+          rows: [
+            ['will + V', '临时决定、预测、承诺', 'I will help you.'],
+            ['be going to + V', '计划、打算；有迹象的预测', 'We are going to visit the museum.'],
+            ['现在进行时', '已确定的近期安排', 'I am leaving tomorrow.'],
+            ['一般现在时', '时刻表、日程', 'The film starts at 8.'],
+            ['shall + V', '第一人称征求意见（较少考）', 'Shall we go?'],
+          ],
+        },
+        examples: [
+          { en: 'I **will** **call** you as soon as I arrive.', zh: '我一到就给你打电话。' },
+          { en: 'We **are going to** **have** a picnic this Sunday.', zh: '这个星期天我们打算去野餐。' },
+          { en: 'Look at the clouds! It **is going to** **rain**.', zh: '看那些云！要下雨了。（有迹象的预测）' },
+        ],
+        traps: [
+          { t: 'will 后加 to', bad: 'I will to go to Beijing.', good: 'I will go to Beijing.', why: 'will 是情态助动词，后面直接接动词原形，不加 to。' },
+          { t: 'be going to 漏 be', bad: 'We going to have a party.', good: 'We are going to have a party.', why: 'be going to 中的 be 不能省略，要根据主语变化。' },
+          { t: '时间状语从句用 will', bad: 'I will tell him when he will come.', good: 'I will tell him when he comes.', why: '时间状语从句中用一般现在时表将来（主将从现）。' },
+        ],
+      },
+      {
+        id: 'present-perfect',
+        name: '现在完成时',
+        level: 'B1',
+        rule: '连接过去与现在：①过去发生、影响现在 ②从过去持续到现在 ③表示经历。**不能与明确的过去时间连用**。',
+        form: 'have/has + 过去分词 ｜ 标志：already / yet / just / ever / never / since / for / so far / recently / twice',
+        table: {
+          head: ['用法', '含义', '例句'],
+          rows: [
+            ['已完成、影响现在', '已经做了（结果还在）', "I have lost my key, so I can't get in."],
+            ['持续到现在', '从过去一直到现在', 'She has lived here since 2019.'],
+            ['经历', '曾经做过', 'Have you ever been to Beijing?'],
+            ['just / already / yet', '刚刚 / 已经 / 还（未）', "He has just left. / I haven't finished yet."],
+            ['since + 时间点', '自从…', 'since last year, since 2020'],
+            ['for + 时间段', '持续…', 'for three years, for a long time'],
+          ],
+        },
+        examples: [
+          { en: 'I **have** **lost** my keys, so I can\'t get in.', zh: '我把钥匙丢了，所以进不去。' },
+          { en: 'She **has** **lived** here **since** 2019.', zh: '她自 2019 年起住在这里。' },
+          { en: '**Have** you **ever** **been** to London?', zh: '你去过伦敦吗？' },
+        ],
+        traps: [
+          { t: '与明确过去时间连用', bad: 'I have seen the film last week.', good: 'I saw the film last week.', why: 'last week 是明确过去时间，只能用一般过去时。' },
+          { t: 'since 与 for 混用', bad: 'He has lived here since five years.', good: 'He has lived here for five years.', why: 'since 接时间点，for 接时间段。' },
+          { t: '非延续性动词与 for/since 连用', bad: 'He has died for three years.', good: 'He has been dead for three years.', why: 'die 是瞬间动词，不能与 for/since 表示持续；要改用 be dead / be away / be in 等延续性表达。' },
+          { t: 'have been to 与 have gone to 混用', bad: 'He has gone to Beijing twice.', good: 'He has been to Beijing twice.', why: 'have been to 表示「去过（已回来）」；have gone to 表示「去了（还没回来）」，不能与 twice 这类次数连用。' },
+          { t: '过去分词写成过去式', bad: 'I have went to the museum.', good: 'I have gone to the museum.', why: '现在完成时用过去分词，go 的过去分词是 gone，不是 went。' },
+        ],
+      },
+      {
+        id: 'past-continuous',
+        name: '过去进行时',
+        level: 'B1',
+        rule: '表示过去某一时刻或某段时间正在进行的动作。构成是 **was/were + doing**，常与 when / while 引导的时间状语连用。',
+        form: 'was/were + doing ｜ 标志：at 8 last night / at that time / while / when',
+        table: {
+          head: ['主语', '构成', '例句'],
+          rows: [
+            ['I / he / she / it', 'was + doing', 'I was reading at 8 last night.'],
+            ['you / we / they', 'were + doing', 'They were playing football then.'],
+            ['while + 进行时', '强调「与此同时」', 'While I was cooking, he was watching TV.'],
+            ['when + 一般过去', '一个动作打断另一个', 'I was walking when it began to rain.'],
+          ],
+        },
+        examples: [
+          { en: 'I **was reading** a book **at** eight last night.', zh: '昨晚八点我正在看书。' },
+          { en: '**While** my mother **was cooking**, I **was doing** my homework.', zh: '妈妈做饭的时候，我在做作业。' },
+          { en: 'I **was walking** in the street **when** it **began** to rain.', zh: '我正在街上走，这时开始下雨了。' },
+        ],
+        traps: [
+          { t: '主谓 be 动词不一致', bad: 'They was playing football then.', good: 'They were playing football then.', why: 'they 是复数，be 动词用 were。' },
+          { t: 'while 从句用一般过去', bad: 'While I cooked, he was watching TV.', good: 'While I was cooking, he was watching TV.', why: 'while 强调「在…的过程中」，常接进行时。' },
+          { t: 'when 与 while 混用', bad: 'While it began to rain, I was walking home.', good: 'When it began to rain, I was walking home.', why: 'when 可接短暂动作（开始下雨），while 只能接持续性动作。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 8. 被动语态 ======================= */
+  {
+    id: 'passive',
+    name: '被动语态',
+    icon: '🔄',
+    hook: '被动语态 = be + 过去分词，各时态都要会变，是单项选择与短文填空的高频考点。',
+    desc: '当主语是动作的承受者时用被动语态。核心公式是 **be + 过去分词**，时态变化体现在 be 上。中考重点：一般现在/过去/将来的被动、含情态动词的被动，以及「主动形式表被动」的固定结构。',
+    topics: [
+      {
+        id: 'passive-basic',
+        name: '被动语态的构成',
+        level: 'B1',
+        rule: '被动语态的基本结构是 **be + 过去分词**。时态由 be 体现，主语的人称和数也由 be 体现。',
+        form: 'am/is/are + done ｜ was/were + done ｜ will be + done ｜ have/has been + done ｜ 情态动词 + be + done',
+        table: {
+          head: ['时态', '结构', '例句'],
+          rows: [
+            ['一般现在时', 'am/is/are + done', 'English is spoken in many countries.'],
+            ['一般过去时', 'was/were + done', 'The bridge was built in 1990.'],
+            ['一般将来时', 'will be + done', 'The work will be finished tomorrow.'],
+            ['现在完成时', 'have/has been + done', 'The homework has been done.'],
+            ['现在进行时', 'am/is/are being + done', 'The road is being repaired.'],
+            ['含情态动词', 'can/must/should + be + done', 'The book can be borrowed from the library.'],
+          ],
+        },
+        examples: [
+          { en: 'English **is spoken** in many countries.', zh: '许多国家说英语。' },
+          { en: 'The bridge **was built** in 1990.', zh: '这座桥建于 1990 年。' },
+          { en: 'The work **must be finished** today.', zh: '这项工作必须今天完成。' },
+        ],
+        traps: [
+          { t: '漏掉 be 动词', bad: 'The bridge built in 1990.', good: 'The bridge was built in 1990.', why: '被动语态必须有 be 动词，时态通过 be 体现。' },
+          { t: '用过去式代替过去分词', bad: 'The window was broke by the boy.', good: 'The window was broken by the boy.', why: '被动语态用过去分词 broken，不是过去式 broke。' },
+          { t: '情态动词后加 to', bad: 'The work must to be done.', good: 'The work must be done.', why: '情态动词后直接接 be + 过去分词，不加 to。' },
+          { t: '不及物动词用被动', bad: 'The accident was happened yesterday.', good: 'The accident happened yesterday.', why: 'happen / appear / arrive / rise / die 等不及物动词没有被动语态。' },
+        ],
+      },
+      {
+        id: 'passive-active',
+        name: '主动与被动的转换',
+        level: 'B1+',
+        rule: '主动变被动：把原宾语提到句首作主语，动词变 be + 过去分词，原主语用 **by** 引出（不重要时可省略）。',
+        form: '主动：A does B → 被动：B is done by A',
+        table: {
+          head: ['主动句', '被动句'],
+          rows: [
+            ['Tom cleans the room.', 'The room is cleaned by Tom.'],
+            ['They built the school in 2000.', 'The school was built in 2000.'],
+            ['We will hold a meeting.', 'A meeting will be held.'],
+            ['People speak English here.', 'English is spoken here.'],
+            ['Someone stole my bike.', 'My bike was stolen.'],
+          ],
+        },
+        examples: [
+          { en: 'Tom **cleans** the room. → The room **is cleaned by** Tom.', zh: '汤姆打扫房间。→ 房间被汤姆打扫。' },
+          { en: 'They **built** the school in 2000. → The school **was built** in 2000.', zh: '他们 2000 年建了这所学校。→ 这所学校建于 2000 年。' },
+        ],
+        traps: [
+          { t: '双宾语被动语态用错', bad: 'I was given a book to him.', good: 'He was given a book. / A book was given to him.', why: 'give sb sth 变被动时，把 sb 或 sth 提前作主语，介词搭配要正确。' },
+          { t: '主动形式表被动的固定结构误改', bad: 'The book is sold well.', good: 'The book sells well.', why: 'sell / read / write / wash 等表示主语特性时，用主动形式表被动。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 9. 情态动词 ======================= */
+  {
+    id: 'modal',
+    name: '情态动词',
+    icon: '🔑',
+    hook: 'must / can / may / need 的辨析与否定回答，是单项选择的经典送分题，也是最易混淆的一组。',
+    desc: '情态动词本身有词义但不能单独作谓语，后面接动词原形。中考重点：must 与 have to 的区别、must 引导问句的否定回答用 needn\'t、can\'t 表「不可能」的推测、need 的双重身份。',
+    topics: [
+      {
+        id: 'modal-basic',
+        name: '情态动词的用法',
+        level: 'A2',
+        rule: '情态动词 + 动词原形，无人称和数的变化。不同情态动词语气与含义不同：can 表能力许可，must 表必须，may 表可以或许可，should 表应该。',
+        form: '主语 + 情态动词 + 动词原形 ｜ 否定：情态动词 + not + V',
+        table: {
+          head: ['情态动词', '含义', '例句'],
+          rows: [
+            ['can', '能、会（能力）；可以（许可）', 'I can swim. / Can I use your pen?'],
+            ['could', '过去的能力；委婉请求', 'He could swim at five. / Could you help me?'],
+            ['may', '可以（许可）；可能（推测）', 'May I come in? / He may be at home.'],
+            ['must', '必须（主观）；一定（推测）', 'You must finish it today. / He must be ill.'],
+            ['have to', '不得不（客观）', 'I have to get up early.'],
+            ['should', '应该（建议）', 'You should see a doctor.'],
+            ['need', '需要（情态或实义）', 'Need I go? / I need your help.'],
+            ['had better', '最好（建议）', "You'd better not go out."],
+          ],
+        },
+        examples: [
+          { en: '**Can** you **swim**? — Yes, I can.', zh: '你会游泳吗？——会。' },
+          { en: 'You **must** **wear** a helmet when riding.', zh: '骑车时你必须戴头盔。' },
+          { en: 'You **should** **drink** more water.', zh: '你应该多喝水。' },
+        ],
+        traps: [
+          { t: '情态动词后加 to', bad: 'I can to swim.', good: 'I can swim.', why: '情态动词后直接接动词原形，不加 to（ought to / have to 除外）。' },
+          { t: '情态动词加 -s', bad: 'He cans swim.', good: 'He can swim.', why: '情态动词没有人称和数的变化。' },
+          { t: "must 否定回答用 mustn't", bad: "Must I finish it now? — No, you mustn't.", good: "Must I finish it now? — No, you needn't.", why: "must 引导的疑问句，否定回答用 needn't / don't have to（不必）；mustn't 表示「禁止」。" },
+          { t: "mustn't 与 don't have to 混淆", bad: "You don't have to smoke here.", good: "You mustn't smoke here.", why: "mustn't 表「禁止」；don't have to 表「不必」。" },
+        ],
+      },
+      {
+        id: 'modal-speculation',
+        name: '情态动词表推测',
+        level: 'B1+',
+        rule: '表示推测时按可能性由强到弱：**must（一定）> may / might / could（可能）> can\'t（不可能）**。',
+        form: 'must be（一定）｜ may/might/could be（可能）｜ can\'t be（不可能）',
+        table: {
+          head: ['情态动词', '可能性', '例句'],
+          rows: [
+            ['must', '非常肯定（一定）', 'He must be at home. The light is on.'],
+            ['may / might / could', '不太肯定（可能）', 'He may be at home.'],
+            ['can\'t', '否定推测（不可能）', "He can't be at home. I saw him at school."],
+            ['must have done', '对过去的肯定推测', 'He must have finished the work.'],
+            ['can\'t have done', '对过去的否定推测', "He can't have finished it so soon."],
+          ],
+        },
+        examples: [
+          { en: 'The light is on, so he **must be** at home.', zh: '灯亮着，他一定在家。' },
+          { en: 'He **can\'t be** at home. I just saw him at school.', zh: '他不可能在家，我刚在学校看见他。' },
+          { en: 'She **may come** tomorrow.', zh: '她明天可能来。' },
+        ],
+        traps: [
+          { t: "否定推测用 mustn't", bad: "He mustn't be at home. I saw him.", good: "He can't be at home. I saw him.", why: "表示「不可能」的否定推测用 can't，不用 mustn't。" },
+          { t: '有明确证据时用 may', bad: 'The light is on. He may be at home.', good: 'The light is on. He must be at home.', why: '有明确证据时用 must 表示「一定」。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 10. 非谓语动词 ======================= */
+  {
+    id: 'nonfinite',
+    name: '非谓语动词',
+    icon: '🧩',
+    hook: '动词不定式与动名词的固定搭配，短文填空与单项选择的必考点。',
+    desc: '一个句子里已经有谓语，其他动词就要变成非谓语形式：**to do**（不定式）、**doing**（动名词/现在分词）、**done**（过去分词）。中考重点是不定式作宾语/目的状语，以及哪些动词后接 to do、哪些接 doing。',
+    topics: [
+      {
+        id: 'infinitive',
+        name: '动词不定式 to do',
+        level: 'B1',
+        rule: '不定式可作宾语、宾语补足语、目的状语、定语。表示「目的」时最常考，常与 **in order to / so as to** 互换。',
+        form: 'v. + to do ｜ to do 表目的 ｜ 疑问词 + to do',
+        table: {
+          head: ['用法', '例句'],
+          rows: [
+            ['作宾语（后接 to do 的动词）', 'want / hope / decide / plan / agree / refuse / learn / promise / wish + to do'],
+            ['作宾语补足语', 'ask / tell / want / would like sb to do'],
+            ['表目的', 'I went to the shop to buy some milk.'],
+            ['疑问词 + to do', "I don't know what to do / how to get there."],
+            ['作定语', 'I have something to eat.'],
+            ['省略 to（使役/感官）', 'make / let / have sb do; see / hear / watch sb do'],
+          ],
+        },
+        examples: [
+          { en: 'I want **to buy** a new bike.', zh: '我想买一辆新自行车。' },
+          { en: 'He went to the library **to borrow** some books.', zh: '他去图书馆借书。（表目的）' },
+          { en: 'My mother asked me **to clean** my room.', zh: '妈妈让我打扫房间。' },
+        ],
+        traps: [
+          { t: 'to 后接动词 -ing', bad: 'I want to going home.', good: 'I want to go home.', why: '不定式 to 后必须接动词原形。' },
+          { t: '使役动词后多写 to', bad: 'He made me to laugh.', good: 'He made me laugh.', why: 'make / let / have 后接不带 to 的不定式。' },
+          { t: '不定式否定形式写错', bad: 'He told me to not be late.', good: 'He told me not to be late.', why: '不定式的否定形式是 not to do，not 放在 to 前面。' },
+        ],
+      },
+      {
+        id: 'gerund',
+        name: '动名词 doing',
+        level: 'B1',
+        rule: '动名词具有名词性质，可作主语、宾语。**介词后必须接 doing**；部分动词后只能接 doing，部分动词后接 to do 和 doing 意义不同。',
+        form: '介词 + doing ｜ v. + doing ｜ 只能接 doing 的动词需硬记',
+        table: {
+          head: ['类型', '动词 / 结构', '例句'],
+          rows: [
+            ['只接 doing', 'enjoy / finish / mind / practise / suggest / avoid / keep / give up', 'I enjoy reading.'],
+            ['只接 to do', 'want / hope / decide / plan / agree / refuse / learn', 'I decided to go.'],
+            ['两者意义不同', 'remember / forget / stop / try / go on', 'remember doing（记得做过）vs remember to do（记得去做）'],
+            ['介词后', 'be good at / be interested in / look forward to / thank you for', 'He is good at swimming.'],
+            ['作主语', 'doing 作主语谓语用单数', 'Reading is good for us.'],
+            ['固定搭配', "feel like doing / can't help doing / be busy doing", 'I feel like sleeping.'],
+          ],
+        },
+        examples: [
+          { en: 'I enjoy **listening** to music.', zh: '我喜欢听音乐。' },
+          { en: 'He is good at **playing** basketball.', zh: '他擅长打篮球。' },
+          { en: '**Reading** is good for our mind.', zh: '阅读对我们的心智有好处。' },
+        ],
+        traps: [
+          { t: 'enjoy 后接 to do', bad: 'I enjoy to read books.', good: 'I enjoy reading books.', why: 'enjoy 后只能接动名词 -ing。' },
+          { t: '介词后接动词原形', bad: 'He is interested in play football.', good: 'He is interested in playing football.', why: '介词 in 后要接动名词 -ing。' },
+          { t: 'remember doing 与 to do 混淆', bad: 'Remember locking the door when you leave.', good: 'Remember to lock the door when you leave.', why: 'remember to do 表示「记得去做（还没做）」；remember doing 表示「记得做过」。' },
+          { t: 'stop doing 与 stop to do 混淆', bad: 'He stopped to smoke and felt better.', good: 'He stopped smoking and felt better.', why: 'stop doing 表示「停止做某事」；stop to do 表示「停下来去做另一件事」。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 11. 句子种类与结构 ======================= */
+  {
+    id: 'syntax',
+    name: '句子种类与结构',
+    icon: '🏗',
+    hook: 'There be 句型、反意疑问句、感叹句，是单项选择与短文填空的稳定考点。',
+    desc: '这一族覆盖句子的「外形」：There be 句型的就近原则、反意疑问句的前肯后否、感叹句 What 与 How 的选择，以及祈使句的构成。',
+    topics: [
+      {
+        id: 'there-be',
+        name: 'There be 句型',
+        level: 'A1',
+        rule: 'There be 表示「某地有某物」。谓语动词与**紧邻的主语**保持一致（就近原则）。',
+        form: 'There is + 单数/不可数 ｜ There are + 复数 ｜ There is a + 单数 + and + 复数（看最近的主语）',
+        table: {
+          head: ['结构', '例句'],
+          rows: [
+            ['There is + 单数', 'There is a book on the desk.'],
+            ['There are + 复数', 'There are some books on the desk.'],
+            ['There is + 不可数', 'There is some water in the glass.'],
+            ['就近原则', 'There is a pen and two books on the desk.'],
+            ['就近原则', 'There are two books and a pen on the desk.'],
+            ['否定', "There isn't / aren't ..."],
+            ['疑问', 'Is / Are there ...?'],
+            ['过去时', 'There was / were ...'],
+          ],
+        },
+        examples: [
+          { en: '**There is** a pen and two books on the desk.', zh: '桌上有一支笔和两本书。' },
+          { en: '**There are** two books and a pen on the desk.', zh: '桌上有两本书和一支笔。' },
+          { en: '**Is there** any milk in the fridge?', zh: '冰箱里有牛奶吗？' },
+        ],
+        traps: [
+          { t: '忽略就近原则', bad: 'There are a pen and two books on the desk.', good: 'There is a pen and two books on the desk.', why: 'There be 的谓语与最近的名词一致：a pen 是单数，用 is。' },
+          { t: 'There be 与 have 混用', bad: 'There have many students in the classroom.', good: 'There are many students in the classroom.', why: 'There be 表示「存在」，不能与 have 连用。' },
+          { t: '不可数名词用 are', bad: 'There are some water in the bottle.', good: 'There is some water in the bottle.', why: 'water 是不可数名词，谓语用单数 is。' },
+        ],
+      },
+      {
+        id: 'tag-question',
+        name: '反意疑问句',
+        level: 'B1',
+        rule: '反意疑问句遵循「**前肯后否、前否后肯**」，附加部分的主语用代词，时态与前句一致。',
+        form: '陈述句（肯定）, + 助动词否定 + 代词？ ｜ 陈述句（否定）, + 助动词肯定 + 代词？',
+        table: {
+          head: ['前句', '附加部分', '例句'],
+          rows: [
+            ['肯定句', '否定', "He is a student, isn't he?"],
+            ['否定句', '肯定', "He isn't a student, is he?"],
+            ['含 never / hardly / few / little', '视为否定，用肯定', 'He never comes late, does he?'],
+            ["Let's ...", 'shall we', "Let's go, shall we?"],
+            ['祈使句', 'will you', 'Open the door, will you?'],
+            ['I am ...', "aren't I", "I am right, aren't I?"],
+            ['There be', '对应 be 动词', "There is a book, isn't there?"],
+          ],
+        },
+        examples: [
+          { en: "He likes music, **doesn't he**?", zh: '他喜欢音乐，不是吗？' },
+          { en: 'She never tells lies, **does she**?', zh: '她从不说谎，是吗？' },
+          { en: "Let's go swimming, **shall we**?", zh: '我们去游泳吧，好吗？' },
+        ],
+        traps: [
+          { t: '前否后仍用否定', bad: "He isn't a doctor, isn't he?", good: "He isn't a doctor, is he?", why: '前句否定时，附加部分要用肯定形式。' },
+          { t: 'never 句误判为肯定', bad: "He never comes late, doesn't he?", good: 'He never comes late, does he?', why: 'never / hardly / seldom / few / little 都含否定意义，附加部分用肯定。' },
+          { t: "Let's 后用 will you", bad: "Let's go, will you?", good: "Let's go, shall we?", why: "Let's 引导的祈使句用 shall we；普通祈使句才用 will you。" },
+        ],
+      },
+      {
+        id: 'exclamation',
+        name: '感叹句与祈使句',
+        level: 'B1',
+        rule: '感叹句用 **What** 修饰名词、**How** 修饰形容词或副词。祈使句以动词原形开头，否定用 **Don\'t + 动词原形**。',
+        form: 'What + a/an + adj. + 单数可数 + 主谓! ｜ What + adj. + 复数/不可数 + 主谓! ｜ How + adj./adv. + 主谓!',
+        table: {
+          head: ['结构', '例句'],
+          rows: [
+            ['What a/an + adj. + 单数', 'What a beautiful girl she is!'],
+            ['What + adj. + 复数', 'What beautiful flowers they are!'],
+            ['What + adj. + 不可数', 'What fine weather it is!'],
+            ['How + adj.', 'How beautiful the girl is!'],
+            ['How + adv.', 'How fast he runs!'],
+            ['How + adj. + a/an + 单数', 'How beautiful a girl she is!'],
+            ['祈使句肯定', 'Please open the door.'],
+            ['祈使句否定', "Don't be late."],
+          ],
+        },
+        examples: [
+          { en: '**What a** beautiful day it is!', zh: '多么美好的一天啊！' },
+          { en: '**How** beautiful the flowers are!', zh: '这些花多美啊！' },
+          { en: '**What** fine weather we have today!', zh: '今天天气真好！' },
+        ],
+        traps: [
+          { t: '不可数名词前用 What a', bad: 'What a fine weather it is!', good: 'What fine weather it is!', why: 'weather 是不可数名词，不能用 a/an 修饰。' },
+          { t: 'What 与 How 混用', bad: 'What beautiful the girl is!', good: 'How beautiful the girl is!', why: '中心词是形容词 beautiful 时用 How；中心词是名词时用 What。' },
+          { t: '祈使句否定用错形式', bad: 'Not be late again.', good: "Don't be late again.", why: "祈使句的否定形式是 Don't + 动词原形。" },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 12. 复合句 ======================= */
+  {
+    id: 'clause',
+    name: '复合句',
+    icon: '🔗',
+    hook: '宾语从句、状语从句、定语从句，占语法考点的分量最重，也是写作提分的关键。',
+    desc: '复合句由主句和一个或多个从句构成。中考三大重点：宾语从句的**陈述语序**与**时态呼应**、状语从句的连词选择（尤其「主将从现」）、定语从句的关系代词与关系副词。',
+    topics: [
+      {
+        id: 'object-clause',
+        name: '宾语从句',
+        level: 'B1',
+        rule: '宾语从句有三条铁律：**①用陈述语序 ②主句过去时则从句用相应过去时（客观真理除外）③连接词按句意选 that / if(whether) / 疑问词**。',
+        form: '主句 + that/if(whether)/疑问词 + 主语 + 谓语',
+        table: {
+          head: ['类型', '连接词', '例句'],
+          rows: [
+            ['陈述句', 'that（可省略）', 'He said (that) he was busy.'],
+            ['一般疑问句', 'if / whether', 'He asked if I was free.'],
+            ['特殊疑问句', '疑问词', 'He asked where I lived.'],
+            ['客观真理', '时态不变，用一般现在时', 'The teacher said the earth moves around the sun.'],
+            ['主句现在时', '从句时态按需要', 'He says he will come.'],
+          ],
+        },
+        examples: [
+          { en: 'He asked me **where I lived**.', zh: '他问我住在哪里。（陈述语序）' },
+          { en: 'I don\'t know **if he will come**.', zh: '我不知道他是否会来。' },
+          { en: 'The teacher told us **that the earth moves around the sun**.', zh: '老师告诉我们地球绕着太阳转。（客观真理用现在时）' },
+        ],
+        traps: [
+          { t: '从句用疑问语序', bad: 'He asked me where did I live.', good: 'He asked me where I lived.', why: '宾语从句必须用陈述语序：疑问词 + 主语 + 谓语。' },
+          { t: '主句过去时从句仍用现在时', bad: 'He said he is busy.', good: 'He said he was busy.', why: '主句是过去时，从句要用相应的过去时态（客观真理除外）。' },
+          { t: 'if 与 whether 混用', bad: "I don't know if or not he will come.", good: "I don't know whether or not he will come.", why: '与 or not 直接连用时只能用 whether。' },
+        ],
+      },
+      {
+        id: 'adverbial-clause',
+        name: '状语从句',
+        level: 'B1',
+        rule: '按意义分为时间、条件、原因、结果、目的、让步、比较七类。最常考的是**时间/条件状语从句的「主将从现」**，以及 although 与 but、because 与 so 不能连用。',
+        form: '连词 + 从句, 主句 ｜ 主句 + 连词 + 从句',
+        table: {
+          head: ['类型', '连词', '例句'],
+          rows: [
+            ['时间', 'when / while / before / after / until / as soon as / since', 'I will call you when I arrive.'],
+            ['条件', 'if / unless / as long as', 'If it rains, we will stay at home.'],
+            ['原因', 'because / since / as', 'He was late because he missed the bus.'],
+            ['结果', 'so ... that / such ... that', 'He was so tired that he fell asleep.'],
+            ['目的', 'so that / in order that', 'He got up early so that he could catch the bus.'],
+            ['让步', 'although / though / even if', 'Although it was raining, he went out.'],
+            ['比较', 'than / as ... as', 'He runs faster than I do.'],
+          ],
+        },
+        examples: [
+          { en: 'I will call you **as soon as I arrive**.', zh: '我一到就给你打电话。（主将从现）' },
+          { en: '**If** it **rains** tomorrow, we **will stay** at home.', zh: '如果明天下雨，我们就待在家里。' },
+          { en: '**Although** he is young, he **knows** a lot.', zh: '虽然他年纪小，但他懂很多。' },
+        ],
+        traps: [
+          { t: '时间/条件从句用将来时', bad: 'If it will rain, we will stay at home.', good: 'If it rains, we will stay at home.', why: 'if 引导条件状语从句时，主句用将来时，从句用一般现在时（主将从现）。' },
+          { t: 'although 与 but 连用', bad: 'Although he is young, but he knows a lot.', good: 'Although he is young, he knows a lot.', why: 'although 与 but 不能同时出现在一个句子里，二者选一。' },
+          { t: 'because 与 so 连用', bad: "Because he was ill, so he didn't come.", good: "Because he was ill, he didn't come.", why: 'because 与 so 不能连用，中文的「因为…所以…」在英语里只用一个连词。' },
+          { t: 'until 与 not...until 混淆', bad: "He will come back until 8 o'clock.", good: "He won't come back until 8 o'clock.", why: 'until 表示「直到…才」，主句要用否定形式 not...until。' },
+        ],
+      },
+      {
+        id: 'attributive-clause',
+        name: '定语从句',
+        level: 'B1+',
+        rule: '定语从句修饰前面的名词（先行词）。先行词指人用 **who / whom / whose**，指物用 **which / that**，关系副词 **where（地点）/ when（时间）/ why（原因）**。',
+        form: '先行词 + 关系代词/关系副词 + 从句',
+        table: {
+          head: ['先行词', '关系词', '例句'],
+          rows: [
+            ['人（主语）', 'who / that', 'The boy who is singing is my brother.'],
+            ['人（宾语）', 'whom / who / that（可省略）', 'The man (whom) I met is a doctor.'],
+            ['人的（所属）', 'whose', 'The girl whose bag is red is Lily.'],
+            ['物', 'which / that', 'The book which I bought is interesting.'],
+            ['地点', 'where', 'The school where I study is big.'],
+            ['时间', 'when', 'I still remember the day when we met.'],
+            ['原因', 'why', 'This is the reason why he was late.'],
+            ['只能用 that', '先行词被 all/every/only/最高级/序数词修饰', 'This is the best film that I have seen.'],
+          ],
+        },
+        examples: [
+          { en: 'The boy **who** is singing is my brother.', zh: '正在唱歌的男孩是我弟弟。' },
+          { en: 'The book **which** I bought yesterday is interesting.', zh: '我昨天买的那本书很有趣。' },
+          { en: 'This is the school **where** my mother works.', zh: '这就是我妈妈工作的学校。' },
+        ],
+        traps: [
+          { t: '指物用 who', bad: 'The book who I read is good.', good: 'The book which I read is good.', why: '先行词是物时用 which 或 that，不能用 who。' },
+          { t: '地点先行词误用 which 代替 where', bad: 'This is the house which I lived last year.', good: 'This is the house where I lived last year.', why: '先行词在从句中作地点状语时用 where；作宾语时才用 which。' },
+          { t: '从句中重复宾语', bad: 'The book which I bought it is good.', good: 'The book which I bought is good.', why: '关系代词已代替宾语，从句中不能再出现 it。' },
+          { t: '最高级修饰先行词用 which', bad: 'This is the best film which I have seen.', good: 'This is the best film that I have seen.', why: '先行词被最高级、序数词、all、only 等修饰时，只能用 that。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 13. 连词（短文填空盲填必考） ======================= */
+  {
+    id: 'conjunction',
+    name: '连词',
+    icon: '➕',
+    hook: '河北短文填空的「盲填」题必考连词：不给提示词，要自己填 and / but / because / although 这类连接词。',
+    desc: '连词分两类：**并列连词**（and / but / or / so）连接对等的词或句子；**从属连词**（because / although / if / when / while / until）引导从句。河北短文填空的盲填部分几乎年年考连词，判断依据是前后两句的逻辑关系——顺承、转折、因果、让步、条件。',
+    topics: [
+      {
+        id: 'conj-coordinating',
+        name: '并列连词（盲填高频）',
+        level: 'B1',
+        rule: '并列连词连接两个对等的成分。盲填时要判断前后是**顺承（and）**、**转折（but）**、**选择（or）**还是**因果（so）**。',
+        form: '顺承 and ｜ 转折 but / however ｜ 选择 or ｜ 因果 so / for',
+        table: {
+          head: ['连词', '逻辑关系', '例句'],
+          rows: [
+            ['and', '顺承、并列（又…又…）', 'He is tall and strong.'],
+            ['but', '转折（但是）', 'He is old but strong.'],
+            ['or', '选择（或者）；否则', 'Hurry up, or you will be late.'],
+            ['so', '因果（所以）', 'It was raining, so we stayed at home.'],
+            ['for', '因果（因为，书面）', 'He must be ill, for he looks pale.'],
+            ['both ... and', '两者都', 'Both Tom and Jim are here.'],
+            ['either ... or', '两者之一', 'Either you or he is right.'],
+            ['neither ... nor', '两者都不', 'Neither he nor I am free.'],
+            ['not only ... but also', '不仅…而且', 'He is not only clever but also hard-working.'],
+          ],
+        },
+        examples: [
+          { en: 'He is young, **but** he knows a lot.', zh: '他年纪小，但懂很多。（转折）' },
+          { en: 'Hurry up, **or** you will miss the bus.', zh: '快点，否则你会错过公交车。（选择/否则）' },
+          { en: 'It was raining, **so** we stayed at home.', zh: '下雨了，所以我们待在家里。（因果）' },
+        ],
+        traps: [
+          { t: '转折处填 and', bad: 'He is old and he is very strong.', good: 'He is old but he is very strong.', why: '前后语义相反（老 vs 强壮）要用转折连词 but。' },
+          { t: 'because 与 so 连用', bad: 'Because it was raining, so we stayed at home.', good: 'It was raining, so we stayed at home.', why: 'because 与 so 不能同时出现，英语里只用一个连词表达因果。' },
+          { t: 'although 与 but 连用', bad: 'Although he is young, but he knows a lot.', good: 'Although he is young, he knows a lot.', why: 'although 与 but 不能连用；中文的「虽然…但是…」在英语里只保留一个。' },
+          { t: 'or 与 and 混淆（否定句）', bad: 'I don\'t like tea and coffee.', good: 'I don\'t like tea or coffee.', why: '否定句中并列成分通常用 or 而不是 and。' },
+        ],
+      },
+      {
+        id: 'conj-subordinating',
+        name: '从属连词（盲填高频）',
+        level: 'B1',
+        rule: '从属连词引导从句，表达原因、让步、条件、时间、目的等关系。盲填时看主从句之间的逻辑：**原因 because**、**让步 although**、**条件 if/unless**、**时间 when/while/until**。',
+        form: '原因 because / since / as ｜ 让步 although / though ｜ 条件 if / unless ｜ 时间 when / while / until / as soon as',
+        table: {
+          head: ['连词', '关系', '例句'],
+          rows: [
+            ['because', '原因（直接原因）', 'He was late because he missed the bus.'],
+            ['since / as', '原因（已知原因）', 'Since you are here, let\'s start.'],
+            ['although / though', '让步（虽然）', 'Although it rained, we went out.'],
+            ['if', '条件（如果）', 'If it rains, we will stay at home.'],
+            ['unless', '条件（除非）', 'You will fail unless you work hard.'],
+            ['when', '时间（当…时，可接短暂动作）', 'When I got home, my mother was cooking.'],
+            ['while', '时间（在…期间，接持续动作）', 'While I was reading, he was watching TV.'],
+            ['until', '时间（直到）', 'Wait here until I come back.'],
+            ['as soon as', '时间（一…就…）', 'I will call you as soon as I arrive.'],
+            ['so that', '目的（为了）', 'He got up early so that he could catch the bus.'],
+          ],
+        },
+        examples: [
+          { en: 'He was late **because** he missed the bus.', zh: '他迟到了，因为他错过了公交车。' },
+          { en: '**Although** it was raining, he went out.', zh: '虽然在下雨，他还是出去了。' },
+          { en: 'You will fail **unless** you work hard.', zh: '除非你努力，否则你会失败。' },
+        ],
+        traps: [
+          { t: '让步处填 because', bad: 'Because he is poor, he is happy.', good: 'Although he is poor, he is happy.', why: '「虽然穷但快乐」是让步关系，用 although；because 表原因，逻辑不通。' },
+          { t: '条件处填 unless 但语义相反', bad: 'Unless you study hard, you will pass.', good: 'If you study hard, you will pass.', why: 'unless 表示「除非（否则不）」，此处应为肯定条件 if。' },
+          { t: 'while 接短暂动作', bad: 'While he knocked at the door, I was cooking.', good: 'When he knocked at the door, I was cooking.', why: 'knock 是短暂动作，用 when；while 只能接持续性动作。' },
+          { t: 'until 主句用肯定形式', bad: 'He will come back until 8 o\'clock.', good: 'He won\'t come back until 8 o\'clock.', why: '「直到…才」用 not...until，主句要否定。' },
+        ],
+      },
+    ],
+  },
+
+  /* ======================= 14. 情景交际（2025 新增题型） ======================= */
+  {
+    id: 'communication',
+    name: '情景交际',
+    icon: '💬',
+    hook: '2025 年起河北中考新增「情景交际（补全对话）」10 分，考查真实语境中的应答能力。',
+    desc: '情景交际不是语法题，而是「在什么场合说什么话」。河北中考以补全对话形式考查：给出一个生活场景的对话，要求选出或写出恰当的应答。核心是掌握问候、感谢、道歉、邀请、请求、建议、打电话、购物、问路等场景的固定表达。',
+    topics: [
+      {
+        id: 'comm-greeting',
+        name: '问候与介绍',
+        level: 'A1',
+        rule: '问候与介绍有固定套语。注意正式与非正式场合的区别，以及「初次见面」与「熟人见面」的应答差异。',
+        form: 'How do you do?（初次）｜ How are you?（熟人）｜ Nice to meet you.',
+        table: {
+          head: ['场景', '问句', '应答'],
+          rows: [
+            ['初次见面', 'How do you do?', 'How do you do?'],
+            ['熟人问候', 'How are you?', 'Fine, thank you. And you?'],
+            ['介绍自己', 'May I introduce myself?', "My name is ... / I'm ..."],
+            ['介绍他人', 'This is my friend, Tom.', 'Nice to meet you.'],
+            ['好久不见', 'Long time no see!', "Yes, it's been a long time."],
+            ['告别', 'Goodbye! / See you!', 'See you later! / Bye!'],
+            ['问候近况', 'How is everything going?', 'Everything is fine.'],
+          ],
+        },
+        examples: [
+          { en: '— How do you do? — **How do you do?**', zh: '——你好！——你好！（初次见面）' },
+          { en: '— Nice to meet you. — **Nice to meet you, too.**', zh: '——很高兴见到你。——我也很高兴见到你。' },
+          { en: '— How are you? — **Fine, thank you. And you?**', zh: '——你好吗？——很好，谢谢。你呢？' },
+        ],
+        traps: [
+          { t: '初次见面应答错误', bad: '— How do you do? — Fine, thank you.', good: '— How do you do? — How do you do?', why: 'How do you do? 是初次见面的问候，应答也用 How do you do?，不是问身体状况。' },
+          { t: 'Nice to meet you 应答用 Me too', bad: '— Nice to meet you. — Me too.', good: '— Nice to meet you. — Nice to meet you, too.', why: '固定应答是 Nice to meet you, too. / The pleasure is mine.' },
+        ],
+      },
+      {
+        id: 'comm-thanks-sorry',
+        name: '感谢、道歉与应答',
+        level: 'A1',
+        rule: '感谢与道歉都有固定应答。注意 **With pleasure**（乐意效劳，用于答应请求）与 **My pleasure**（不客气，用于回应感谢）的区别。',
+        form: "Thank you → You're welcome / Not at all / My pleasure ｜ Sorry → That's OK / Never mind",
+        table: {
+          head: ['场景', '表达', '应答'],
+          rows: [
+            ['感谢', 'Thank you very much.', "You're welcome. / Not at all. / My pleasure."],
+            ['感谢（较正式）', 'I really appreciate your help.', "It's my pleasure."],
+            ['道歉', "I'm sorry. / Sorry for being late.", "That's OK. / Never mind. / It doesn't matter."],
+            ['请求原谅', 'Please forgive me.', "Don't worry about it."],
+            ['答应请求', '— Could you help me? — With pleasure.', '（With pleasure = 乐意效劳）'],
+            ['回应感谢', '— Thanks a lot. — My pleasure.', '（My pleasure = 不客气）'],
+          ],
+        },
+        examples: [
+          { en: "— Thank you for your help. — **You're welcome.**", zh: '——谢谢你的帮助。——不客气。' },
+          { en: "— I'm sorry I'm late. — **Never mind.**", zh: '——对不起我迟到了。——没关系。' },
+          { en: '— Could you open the window? — **With pleasure.**', zh: '——你能开一下窗吗？——乐意效劳。' },
+        ],
+        traps: [
+          { t: 'With pleasure 与 My pleasure 混用', bad: '— Thank you. — With pleasure.', good: '— Thank you. — My pleasure.', why: 'With pleasure 用于**答应**别人的请求（乐意效劳）；My pleasure 用于**回应**感谢（不客气）。' },
+          { t: "道歉应答用 You're welcome", bad: "— Sorry. — You're welcome.", good: "— Sorry. — That's OK.", why: "You're welcome 只回应感谢；道歉的应答是 That's OK / Never mind / It doesn't matter。" },
+        ],
+      },
+      {
+        id: 'comm-invitation',
+        name: '邀请、请求与建议',
+        level: 'A2',
+        rule: '邀请与建议有丰富的固定句式。接受用 **Sure / I\'d love to / Good idea**，拒绝要先致谢再说明理由。',
+        form: "Would you like to...? ｜ How about doing...? ｜ Why not do...? ｜ You'd better do...",
+        table: {
+          head: ['功能', '常用句式', '应答'],
+          rows: [
+            ['邀请', 'Would you like to come to my party?', "Yes, I'd love to. / Sorry, I'm afraid I can't."],
+            ['邀请', 'What about going swimming?', 'Good idea! / Sounds great!'],
+            ['请求', 'Could you please help me?', "Sure. / Of course. / Sorry, I can't."],
+            ['建议', 'Why not go by bus?', "That's a good idea."],
+            ['建议', "You'd better see a doctor.", 'Thanks. I will.'],
+            ['征求意见', 'Shall we meet at six?', "OK, that's fine."],
+            ['拒绝（委婉）', "— Can you come? — I'd love to, but I'm busy.", ''],
+          ],
+        },
+        examples: [
+          { en: "— Would you like to go with us? — **Yes, I'd love to.**", zh: '——你想和我们一起去吗？——我很乐意。' },
+          { en: '— How about playing basketball? — **Good idea!**', zh: '——打篮球怎么样？——好主意！' },
+          { en: "— Why not ask the teacher? — **That's a good idea.**", zh: '——为什么不问问老师呢？——好主意。' },
+        ],
+        traps: [
+          { t: 'Would you like to 应答用 Yes, I would', bad: '— Would you like to come? — Yes, I would.', good: "— Would you like to come? — Yes, I'd love to.", why: "固定应答是 Yes, I'd love to.，不是 Yes, I would。" },
+          { t: 'How about 后接动词原形', bad: 'How about go swimming?', good: 'How about going swimming?', why: 'How about / What about 后接动名词 -ing。' },
+          { t: 'Why not 后接 to do', bad: 'Why not to go home?', good: 'Why not go home?', why: 'Why not 后接动词原形，表示建议。' },
+        ],
+      },
+      {
+        id: 'comm-phone',
+        name: '打电话与购物问路',
+        level: 'A2',
+        rule: '打电话有独特表达：**This is ... speaking**（我是…），**Who\'s that?**（你是谁？），不能说 I am ... / Are you ...? 购物与问路也有固定问答。',
+        form: "This is ... speaking. ｜ Who's that? ｜ Hold on, please. ｜ Can I help you?",
+        table: {
+          head: ['场景', '表达', '含义'],
+          rows: [
+            ['打电话-自报', 'This is Tom speaking.', '我是汤姆。'],
+            ['打电话-问对方', "Who's that? / Who's speaking?", '你是哪位？'],
+            ['打电话-稍等', 'Hold on, please. / Just a moment.', '请稍等。'],
+            ['打电话-转接', 'Can I speak to Tom?', '我能和汤姆通话吗？'],
+            ['购物-店员', 'Can I help you? / What can I do for you?', '您要买什么？'],
+            ['购物-顾客', "I'd like to buy ... / How much is it?", '我想买…／多少钱？'],
+            ['购物-试穿', 'Can I try it on?', '我可以试穿吗？'],
+            ['问路', 'Excuse me, how can I get to ...?', '请问怎么去…？'],
+            ['指路', 'Go along this street and turn left.', '沿这条街走，然后左转。'],
+            ['问路-距离', 'How far is it from here?', '离这里多远？'],
+          ],
+        },
+        examples: [
+          { en: '— Hello, **this is Tom speaking**. — Hi, Tom. This is Lily.', zh: '——你好，我是汤姆。——嗨，汤姆，我是莉莉。' },
+          { en: "— **Can I help you?** — Yes, I'd like a cup of coffee.", zh: '——您要点什么？——我要一杯咖啡。' },
+          { en: '— **Excuse me, how can I get to the museum?** — Go along this street.', zh: '——请问博物馆怎么走？——沿这条街走。' },
+        ],
+        traps: [
+          { t: '打电话自报用 I am', bad: '— Hello, I am Tom.', good: '— Hello, this is Tom speaking.', why: '打电话自报用 This is ... speaking，不用 I am ...。' },
+          { t: '打电话问对方用 Are you Tom?', bad: '— Are you Tom?', good: "— Who's that? / Is that Tom?", why: "电话中问对方是谁用 Who's that?，不用 Are you ...?。" },
+          { t: '购物应答用 Yes, you can', bad: '— Can I help you? — Yes, you can.', good: "— Can I help you? — Yes, please. I'd like ...", why: '店员的 Can I help you? 是服务用语，应答直接说需要什么。' },
+        ],
+      },
+    ],
+  },
+];
+
+export const GRAMMAR_STATS = (() => {
+  const sections = GRAMMAR.length;
+  const topics = GRAMMAR.reduce((s, g) => s + g.topics.length, 0);
+  const traps = GRAMMAR.reduce((s, g) => s + g.topics.reduce((s2, t) => s2 + t.traps.length, 0), 0);
+  const examples = GRAMMAR.reduce((s, g) => s + g.topics.reduce((s2, t) => s2 + t.examples.length, 0), 0);
+  return { sections, topics, traps, examples };
+})();
