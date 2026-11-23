@@ -294,18 +294,6 @@ ${rawScript}
    1. 首页（商业落地页 + 今日学习驾驶舱）
    ========================================================== */
 function buildHome() {
-  const topicCards = TOPIC_SORTED.slice(0, 6).map((t) => `<a class="card" href="topics/${t.id}.html">
-    <div class="card-ico">${t.icon}</div>
-    <h3>${esc(t.name)}</h3>
-    <div class="meta">${t.n} 个词条 · ${esc(t.official)}</div>
-  </a>`).join('');
-
-  const grammarCards = GRAMMAR.slice(0, 6).map((g) => `<a class="card" href="grammar/${g.id}.html">
-    <div class="card-ico purple">${g.icon}</div>
-    <h3>${esc(g.name)}</h3>
-    <div class="meta">${g.topics.length} 个必考语法点 · ${g.topics.reduce((s, t) => s + t.traps.length, 0)} 条易错避坑</div>
-  </a>`).join('');
-
   /* ---- 三层分区：把已覆盖的 90 分按「练法不同」切成三块，题量正好分完 405 题 ---- */
   const TIERS = [
     {
@@ -351,6 +339,34 @@ function buildHome() {
     </div>
   </div>`;
 
+  /* ---- 常见问题：并入「边界」节，默认折叠，不单独占一节 ---- */
+  const FAQ = [
+    {
+      q: '这套系统适合几年级？河北中考英语的卷面结构是怎样的？',
+      a: `适合初中 7–9 年级、准备参加河北省初中学业水平考试（中考）的学生。2025 年起河北中考英语全省统一命题，满分 <b>120 分</b>，结构为：听力理解 30 分、语言运用 25 分（完形填空 10 分 + 短文填空 15 分）、阅读理解 40 分、情景交际（补全对话）10 分、书面表达 15 分。相比改革前，取消了单项选择和连词成句，新增了<b>情景交际</b>，更强调真实语境中的语言运用。`,
+    },
+    {
+      q: '词表是怎么确定的？和学校教材对得上吗？',
+      a: `本站词表以《义务教育英语课程标准（2022 年版）》<b>三级词汇表</b>为基座（约 1600 词，对应初中 7–9 年级），并补充了初中必会的派生词、词形变化与英式/美式拼写别名。河北各地市教材版本不尽相同（人教版、冀教版均有使用），但中考词汇范围统一以课标为准，因此本站词表与任何版本教材都能对上。`,
+    },
+    {
+      q: '孩子平时作业多，每天需要花多长时间？',
+      a: '建议每天 15–20 分钟：10 分钟听音背 20 个单词（系统自动安排到期复习 + 新词），5–10 分钟刷 10 道语法或情景交际题。周末再花 10 分钟清一次错题本，两个月就能走完一轮完整体系。',
+    },
+    {
+      q: '手机、iPad 和电脑都能用吗？需要下载 App 吗？',
+      a: '全端自适应，手机、iPad 平板和电脑浏览器打开就能直接学，无需下载安装 App，也没有弹窗广告。所有词条均可点击朗读，离线也能使用。',
+    },
+    {
+      q: '孩子的背词进度和错题本会丢失吗？换设备怎么办？',
+      a: '学习记录实时保存在当前浏览器中，离线也能用。如果需要在电脑和 iPad 之间切换，或担心清缓存丢失，可以随时在「学习数据」页点击<b>一键导出学习档案</b>，在新设备上导入即可无缝恢复。',
+    },
+    {
+      q: '这个网站覆盖了中考英语的哪些部分？',
+      a: `覆盖卷面 <b>${TOTAL_SCORE} 分中的 ${COVERED_SCORE} 分</b>：<b>词汇</b>（${STATS.total} 课标词条）、<b>语法</b>（${GRAMMAR_STATS.topics} 考点 + ${Q_STATS.total} 道语法题，含盲填 ${Q_STATS.blind} 道）、<b>完形填空</b>（${PASSAGE_STATS.cloze} 篇 ${PASSAGE_STATS.clozeBlanks} 空）、<b>阅读理解</b>（${PASSAGE_STATS.reading} 篇 ${PASSAGE_STATS.readingQ} 题，A/B/C/D 四类）、<b>任务型阅读</b>（${PASSAGE_STATS.task} 篇 ${PASSAGE_STATS.taskQ} 题）、<b>情景交际</b>（${Q_STATS.dialogue} 题）、<b>书面表达</b>（${WRITING_STATS.total} 篇范文）。合计 <b>${TOTAL_Q} 道题</b>。<br><br>唯一未覆盖的是<b>听力理解 30 分</b>——它需要音频素材，本站不提供模拟音频，建议用真题听力配合练习。`,
+    },
+  ];
+
   const body = `
 <section class="hero">
   <div class="hero-split">
@@ -374,6 +390,7 @@ function buildHome() {
         <span><b>✓</b> 离线可用</span>
         <span><b>✓</b> 无广告</span>
         <span><b>✓</b> 每题带解析</span>
+        <span><b>✓</b> 统一英音</span>
       </div>
     </div>
 
@@ -427,27 +444,38 @@ function buildHome() {
   </div>
 </section>
 
-<section class="section reveal coverage-section">
+<section class="section reveal coverage-section" id="tiers">
   <div class="section-head">
     <div class="section-head-left">
-      <span class="kicker">卷面覆盖地图</span>
+      <span class="kicker">卷面覆盖 · 提分路径</span>
       <h2>河北卷 120 分，本站覆盖 ${COVERED_SCORE} 分</h2>
-      <span class="sub">每一块都标出练什么、练多少；未覆盖的部分会明确说明原因，不制造「全都包了」的错觉</span>
+      <span class="sub">这 ${COVERED_SCORE} 分不是均匀分布的：规则型靠练够、语篇型靠方法、输出型靠句型。混着刷，等于三块都用错方法</span>
     </div>
   </div>
-  <div class="coverage-list">
-    ${PAPER_COVERAGE.map((x) => `
-    <${x.covered ? `a href="${x.href}"` : 'div'} class="coverage-row ${x.covered ? 'on' : 'off'}">
-      <span class="cv-score">${x.score}</span>
-      <span class="cv-part">${esc(x.part)}</span>
-      <span class="cv-note">${esc(x.note)}</span>
-      <span class="cv-flag">${x.covered ? '✓ 已覆盖' : '建议配合真题'}</span>
-    </${x.covered ? 'a' : 'div'}>`).join('')}
-  </div>
-  <div class="coverage-total">
-    <span>本站覆盖 <b>${COVERED_SCORE}</b> / ${TOTAL_SCORE} 分</span>
-    <span class="cv-bar"><i style="width:${Math.round(COVERED_SCORE / TOTAL_SCORE * 100)}%"></i></span>
-    <span>${Math.round(COVERED_SCORE / TOTAL_SCORE * 100)}%</span>
+  <div class="coverage-split">
+    <div class="coverage-list">
+      ${PAPER_COVERAGE.map((x) => `
+      <${x.covered ? `a href="${x.href}"` : 'div'} class="coverage-row ${x.covered ? 'on' : 'off'}">
+        <span class="cv-score">${x.score}</span>
+        <span class="cv-part">${esc(x.part)}</span>
+        <span class="cv-note">${esc(x.note)}</span>
+        <span class="cv-flag">${x.covered ? '✓ 已覆盖' : '建议配合真题'}</span>
+      </${x.covered ? 'a' : 'div'}>`).join('')}
+      <div class="coverage-total">
+        <span>本站覆盖 <b>${COVERED_SCORE}</b> / ${TOTAL_SCORE} 分</span>
+        <span class="cv-bar"><i style="width:${Math.round(COVERED_SCORE / TOTAL_SCORE * 100)}%"></i></span>
+        <span>${Math.round(COVERED_SCORE / TOTAL_SCORE * 100)}%</span>
+      </div>
+    </div>
+    <div class="tier-stack">
+      ${TIERS.map((t) => `<div class="tier-mini ${t.cls}">
+        <div class="tier-mini-score">${t.score}<span>分</span></div>
+        <div class="tier-mini-name">${t.name}</div>
+        <div class="tier-mini-desc">${t.desc}</div>
+        <div class="tier-mini-goal">${t.goal} · ${t.count}</div>
+        <div class="tier-mini-desc" style="margin-top:2px">${t.note}</div>
+      </div>`).join('')}
+    </div>
   </div>
 </section>
 
@@ -497,24 +525,6 @@ function buildHome() {
       </div>
     </div>
   </div>
-</section>
-
-<section class="section reveal" id="tiers">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">提分路径</span>
-      <h2>这 90 分不是均匀分布的</h2>
-      <span class="sub">三块分值的练法完全不同：规则型靠练够，语篇型靠方法，输出型靠句型。混着刷，等于三块都用错方法</span>
-    </div>
-  </div>
-  <div class="tier-minis">${TIERS.map((t) => `<div class="tier-mini ${t.cls}">
-      <div class="tier-mini-score">${t.score}<span>分</span></div>
-      <div class="tier-mini-name">${t.name}</div>
-      <div class="tier-mini-desc">${t.desc}</div>
-      <div class="tier-mini-goal">${t.goal}</div>
-      <div class="tier-mini-count">${t.count}</div>
-      <div class="tier-mini-desc" style="margin-top:2px">${t.note}</div>
-    </div>`).join('')}</div>
 </section>
 
 <section class="section reveal" id="sample">
@@ -567,18 +577,20 @@ function buildHome() {
     </div>
   </div>
   <div class="grid c3">
-    <a class="card" href="words.html">
+    <div class="card card-stretch">
       <div class="card-ico">📚</div>
-      <h3>课标词表 · ${STATS.total} 条</h3>
+      <h3><a href="words.html">课标词表 · ${STATS.total} 条</a></h3>
       <p class="desc">以义务教育英语课程标准三级词汇为基座，补齐初中必会派生词，含音标、词性、中文释义与英音点击即读。</p>
       <div class="meta" style="margin-top:12px">核心高频 ${STATS.b1} · 中频主力 ${STATS.b2} · 拓展 ${STATS.b3}</div>
-    </a>
-    <a class="card" href="grammar.html">
+      <div class="card-sub"><a href="topics/index.html">按 ${TOPIC_SORTED.length} 个话题成组记词 →</a></div>
+    </div>
+    <div class="card card-stretch">
       <div class="card-ico purple">📐</div>
-      <h3>语法体系 · ${GRAMMAR_STATS.sections} 族 ${GRAMMAR_STATS.topics} 考点</h3>
+      <h3><a href="grammar.html">语法体系 · ${GRAMMAR_STATS.sections} 族 ${GRAMMAR_STATS.topics} 考点</a></h3>
       <p class="desc">从名词冠词、六大时态、被动语态、非谓语到三大从句、连词与情景交际，按中考考查密度排序，每个考点可一键跳转专项刷题。</p>
       <div class="meta" style="margin-top:12px">${GRAMMAR_STATS.traps} 条易错对比 · ${GRAMMAR_STATS.examples} 个精选例句</div>
-    </a>
+      <div class="card-sub"><a href="grammar.html">进入完整语法体系 →</a></div>
+    </div>
     <a class="card" href="review.html">
       <div class="card-ico ok">✍️</div>
       <h3>考点专项刷题 · ${Q_STATS.total} 题</h3>
@@ -598,30 +610,6 @@ function buildHome() {
       <div class="meta" style="margin-top:12px">${WRITING_STATS.highlights} 个高分句型 · 80–100 词三段式</div>
     </a>
   </div>
-</section>
-
-<section class="section reveal">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">高频场景词库</span>
-      <h2>按 ${TOPIC_SORTED.length} 个话题成组记词</h2>
-      <span class="sub">阅读和写作总是围绕同一主题出词，按话题记效率翻倍</span>
-    </div>
-    <a class="btn sm soft" href="topics/index.html">查看全部 ${TOPIC_SORTED.length} 个话题 →</a>
-  </div>
-  <div class="grid c3">${topicCards}</div>
-</section>
-
-<section class="section reveal">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">语法避坑图谱</span>
-      <h2>按 ${GRAMMAR_STATS.sections} 大语法族逐个击破</h2>
-      <span class="sub">短文填空与单项选择的丢分点，几乎都在这 ${GRAMMAR_STATS.topics} 个考点里</span>
-    </div>
-    <a class="btn sm soft" href="grammar.html">进入完整语法体系 →</a>
-  </div>
-  <div class="grid c3">${grammarCards}</div>
 </section>
 
 <section class="section reveal" id="start">
@@ -667,29 +655,6 @@ function buildHome() {
   </div>
 </section>
 
-<section class="section reveal" id="diff">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">与普通题库的区别</span>
-      <h2>同样是刷题，粒度不一样</h2>
-      <span class="sub">不拼题量，拼每道题之后你多知道了什么</span>
-    </div>
-  </div>
-  <div class="tbl-wrap">
-    <table class="gtable diff-table">
-      <thead><tr><th style="width:20%"></th><th style="width:34%">普通题库 / App</th><th style="width:46%">本站</th></tr></thead>
-      <tbody>
-        <tr><td class="diff-k">组织方式</td><td class="diff-old">按字母表或单元罗列单词</td><td class="diff-new"><b>按词频分档 + 按话题成组</b></td></tr>
-        <tr><td class="diff-k">解析粒度</td><td class="diff-old">只给正确答案</td><td class="diff-new"><b>原文圈画 + 为什么对 + 干扰项错在哪</b></td></tr>
-        <tr><td class="diff-k">阅读训练</td><td class="diff-old">四篇混着做，不分体裁</td><td class="diff-new"><b>A/B/C/D 分类，每类先教读法再练</b></td></tr>
-        <tr><td class="diff-k">错题本</td><td class="diff-old">收集起来，自己去翻</td><td class="diff-new"><b>按考点 / 阅读能力聚合，给下一步动作</b></td></tr>
-        <tr><td class="diff-k">内容口径</td><td class="diff-old">通用题库，不分省份</td><td class="diff-new"><b>对齐河北 2025 新卷面（含盲填、情景交际）</b></td></tr>
-        <tr><td class="diff-k">发音</td><td class="diff-old">浏览器合成，音色随设备变</td><td class="diff-new"><b>Edge TTS 统一女声，全站一致</b></td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
 <section class="section reveal" id="honest">
   <div class="section-head">
     <div class="section-head-left">
@@ -704,41 +669,16 @@ function buildHome() {
     <div><b>不做作文 AI 批改</b><span>AI 判作文一旦判错，信任就崩了。本站提供范文、亮点句与评分要点，走「对照自查」模式。</span></div>
     <div><b>不搬运真题原文</b><span>阅读与完形均为原创，只复刻河北卷的题型结构、题材分布与难度梯度，避免版权问题与网络版本的录入错误。</span></div>
   </div>
-</section>
 
-<section class="section reveal" id="faq">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">常见问题</span>
-      <h2>关于河北中考领航，你可能想了解</h2>
+  <details class="faq-group">
+    <summary>还有 ${FAQ.length} 个常见问题（年级、词表依据、每天用时、多端、备份）<span class="faq-more">展开 →</span></summary>
+    <div class="faq-list">
+      ${FAQ.map((f, i) => `<details class="faq-item"${i === 0 ? ' open' : ''}>
+        <summary>${f.q}</summary>
+        <p>${f.a}</p>
+      </details>`).join('')}
     </div>
-  </div>
-  <div class="faq-list">
-    <details class="faq-item" open>
-      <summary>这套系统适合几年级？河北中考英语的卷面结构是怎样的？</summary>
-      <p>适合初中 7–9 年级、准备参加河北省初中学业水平考试（中考）的学生。2025 年起河北中考英语全省统一命题，满分 <b>120 分</b>，结构为：听力理解 30 分、语言运用 25 分（完形填空 10 分 + 短文填空 15 分）、阅读理解 40 分、情景交际（补全对话）10 分、书面表达 15 分。相比改革前，取消了单项选择和连词成句，新增了<b>情景交际</b>，更强调真实语境中的语言运用。</p>
-    </details>
-    <details class="faq-item">
-      <summary>词表是怎么确定的？和学校教材对得上吗？</summary>
-      <p>本站词表以《义务教育英语课程标准（2022 年版）》<b>三级词汇表</b>为基座（约 1600 词，对应初中 7–9 年级），并补充了初中必会的派生词、词形变化与英式/美式拼写别名。河北各地市教材版本不尽相同（人教版、冀教版均有使用），但中考词汇范围统一以课标为准，因此本站词表与任何版本教材都能对上。</p>
-    </details>
-    <details class="faq-item">
-      <summary>孩子平时作业多，每天需要花多长时间？</summary>
-      <p>建议每天 15–20 分钟：10 分钟听音背 20 个单词（系统自动安排到期复习 + 新词），5–10 分钟刷 10 道语法或情景交际题。周末再花 10 分钟清一次错题本，两个月就能走完一轮完整体系。</p>
-    </details>
-    <details class="faq-item">
-      <summary>手机、iPad 和电脑都能用吗？需要下载 App 吗？</summary>
-      <p>全端自适应，手机、iPad 平板和电脑浏览器打开就能直接学，无需下载安装 App，也没有弹窗广告。所有词条均可点击朗读，离线也能使用。</p>
-    </details>
-    <details class="faq-item">
-      <summary>孩子的背词进度和错题本会丢失吗？换设备怎么办？</summary>
-      <p>学习记录实时保存在当前浏览器中，离线也能用。如果需要在电脑和 iPad 之间切换，或担心清缓存丢失，可以随时在「学习数据」页点击<b>一键导出学习档案</b>，在新设备上导入即可无缝恢复。</p>
-    </details>
-    <details class="faq-item">
-      <summary>这个网站覆盖了中考英语的哪些部分？</summary>
-      <p>覆盖卷面 <b>${TOTAL_SCORE} 分中的 ${COVERED_SCORE} 分</b>：<b>词汇</b>（${STATS.total} 课标词条）、<b>语法</b>（${GRAMMAR_STATS.topics} 考点 + ${Q_STATS.total} 道语法题，含盲填 ${Q_STATS.blind} 道）、<b>完形填空</b>（${PASSAGE_STATS.cloze} 篇 ${PASSAGE_STATS.clozeBlanks} 空）、<b>阅读理解</b>（${PASSAGE_STATS.reading} 篇 ${PASSAGE_STATS.readingQ} 题，A/B/C/D 四类）、<b>任务型阅读</b>（${PASSAGE_STATS.task} 篇 ${PASSAGE_STATS.taskQ} 题）、<b>情景交际</b>（${Q_STATS.dialogue} 题）、<b>书面表达</b>（${WRITING_STATS.total} 篇范文）。合计 <b>${TOTAL_Q} 道题</b>。<br><br>唯一未覆盖的是<b>听力理解 30 分</b>——它需要音频素材，本站不提供模拟音频，建议用真题听力配合练习。</p>
-    </details>
-  </div>
+  </details>
 </section>
 `;
 

@@ -1642,8 +1642,57 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
    首页卖点组件：分值分层 / 解析样本 / 三步上手 / 底部 CTA
    ========================================================== */
 
+/* 模块卡：整卡可点 + 卡内次级入口（避免 a 嵌 a） */
+.card-stretch { position: relative; transition: transform .2s var(--ease), box-shadow .2s, border-color .2s; }
+.card-stretch h3 a { color: inherit; text-decoration: none; }
+.card-stretch h3 a::after {
+  content: ""; position: absolute; inset: 0; border-radius: var(--r); z-index: 1;
+}
+.card-stretch:hover {
+  transform: translateY(-3px); box-shadow: var(--shadow-3);
+  border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+}
+.card-sub { position: relative; z-index: 2; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+.card-sub a { font-size: .8rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+.card-sub a:hover { text-decoration: underline; }
+
+/* FAQ 并入「边界」节的折叠组 */
+.faq-group {
+  margin-top: 16px; border: 1px solid var(--border); border-radius: var(--r);
+  background: var(--surface); overflow: hidden;
+}
+.faq-group > summary {
+  padding: 15px 20px; font-weight: 650; font-size: .9rem; cursor: pointer;
+  list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  color: var(--text-2);
+}
+.faq-group > summary::-webkit-details-marker { display: none; }
+.faq-group > summary:hover { color: var(--accent); }
+.faq-more { font-size: .8rem; font-weight: 700; color: var(--accent); flex: none; }
+.faq-group[open] > summary { border-bottom: 1px solid var(--border); }
+.faq-group[open] .faq-more { visibility: hidden; }
+.faq-group .faq-list { padding: 12px; gap: 8px; }
+
 /* 分值分层紧凑卡 */
 .tier-minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+/* 覆盖表 + 分层并排（首页合并节） */
+.coverage-split {
+  display: grid; grid-template-columns: 1.15fr .85fr; gap: 18px; align-items: start;
+}
+.tier-stack { display: grid; gap: 10px; }
+.tier-stack .tier-mini { padding: 15px 18px; }
+.tier-stack .tier-mini-score { font-size: 1.7rem; }
+.tier-stack .tier-mini-name { font-size: .92rem; margin-top: 2px; }
+.tier-stack .tier-mini-goal { margin-top: 4px; font-size: .78rem; }
+
+@media (max-width: 980px) {
+  .coverage-split { grid-template-columns: 1fr; gap: 14px; }
+  .tier-stack { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+  .tier-stack { grid-template-columns: 1fr; }
+}
 .tier-mini {
   padding: 20px 22px; border-radius: var(--r); background: var(--surface);
   border: 1px solid var(--border); display: flex; flex-direction: column; gap: 3px;
