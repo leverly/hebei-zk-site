@@ -48,17 +48,6 @@
   </div>
 </section>
 
-<section class="section" id="skillPanel" style="display:none">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">我的阅读能力</span>
-      <h2>六项能力正确率</h2>
-      <span class="sub">按你的作答记录实时统计，红色项就是下一步该专攻的方向</span>
-    </div>
-  </div>
-  <div id="skillBars"></div>
-</section>
-
 <section class="section">
   <div class="section-head">
     <div class="section-head-left">
@@ -157,29 +146,7 @@
   </div>
 </footer>
 <script src="assets/app.js?v=eae3b892"></script>
-<script>window.HBZK_DATA=window.HBZK_DATA||{};
-</script><script>
-const P = window.HBZK;
-function drawSkill() {
-  const panel = document.querySelector('#skillPanel');
-  const host = document.querySelector('#skillBars');
-  if (!panel || !host || !P.pSkillStats) return;
-  const sk = P.pSkillStats().sort((a, b) => a.rate - b.rate);
-  if (!sk.length) { panel.style.display = 'none'; return; }
-  panel.style.display = '';
-  host.innerHTML = '<div class="wordlist">' + sk.map(x => {
-    const pct = Math.round(x.rate * 100);
-    const cls = pct < 60 ? 'bar rose' : pct < 80 ? 'bar warn' : 'bar ok';
-    return '<div class="wrow" style="grid-template-columns:1.4fr 110px 1fr auto;cursor:default">' +
-      '<span class="w" style="cursor:default">' + P.esc(x.name) + '</span>' +
-      '<span class="pos">' + x.ok + ' / ' + x.n + ' 题</span>' +
-      '<span class="' + cls + '"><i style="width:' + pct + '%"></i></span>' +
-      '<span class="flag">' + pct + '%</span></div>';
-  }).join('') + '</div>';
-}
-drawSkill();
-document.addEventListener('hbzk:qlog', drawSkill);
-</script>
+
 
 </body>
 </html>
