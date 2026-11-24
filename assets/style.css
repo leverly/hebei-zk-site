@@ -1627,23 +1627,6 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
 .card-sub a { font-size: .8rem; font-weight: 700; color: var(--accent); text-decoration: none; }
 .card-sub a:hover { text-decoration: underline; }
 
-/* FAQ 并入「边界」节的折叠组 */
-.faq-group {
-  margin-top: 16px; border: 1px solid var(--border); border-radius: var(--r);
-  background: var(--surface); overflow: hidden;
-}
-.faq-group > summary {
-  padding: 15px 20px; font-weight: 650; font-size: .9rem; cursor: pointer;
-  list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  color: var(--text-2);
-}
-.faq-group > summary::-webkit-details-marker { display: none; }
-.faq-group > summary:hover { color: var(--accent); }
-.faq-more { font-size: .8rem; font-weight: 700; color: var(--accent); flex: none; }
-.faq-group[open] > summary { border-bottom: 1px solid var(--border); }
-.faq-group[open] .faq-more { visibility: hidden; }
-.faq-group .faq-list { padding: 12px; gap: 8px; }
-
 /* 分值分层紧凑卡 */
 .tier-minis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 
@@ -1732,9 +1715,9 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
   margin-bottom: 12px; display: block;
 }
 
-/* 底部 CTA */
+/* 底部 CTA（独立成节，节间距由 .section 统一给，这里不再叠加 margin） */
 .final-cta {
-  margin-top: 22px; padding: 24px 26px; border-radius: var(--r);
+  padding: 24px 26px; border-radius: var(--r);
   background: var(--accent-grad); color: #fff;
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
   box-shadow: var(--shadow-accent); flex-wrap: wrap;

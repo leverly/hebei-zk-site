@@ -556,6 +556,16 @@ function buildHome() {
   </div>
 </section>
 
+<section class="section reveal" id="start-cta">
+  <div class="final-cta">
+    <div>
+      <b>现在就开始，第一组题不用注册</b>
+      <span>记录只存你自己的浏览器，随时可导出备份</span>
+    </div>
+    <a class="btn primary lg" href="quiz.html">免费开始 →</a>
+  </div>
+</section>
+
 <section class="section reveal" id="honest">
   <div class="section-head">
     <div class="section-head-left">
@@ -570,23 +580,21 @@ function buildHome() {
     <div><b>不做作文 AI 批改</b><span>AI 判作文一旦判错，信任就崩。改为范文 + 评分要点对照自查。</span></div>
     <div><b>不搬运真题原文</b><span>阅读与完形均为原创，只复刻题型结构与难度梯度。</span></div>
   </div>
+</section>
 
-  <details class="faq-group" id="faq">
-    <summary>还有 ${FAQ.length} 个常见问题（年级、词表依据、每天用时、多端、备份）<span class="faq-more">展开 →</span></summary>
-    <div class="faq-list">
-      ${FAQ.map((f) => `<details class="faq-item">
-        <summary>${f.q}</summary>
-        <p>${f.a}</p>
-      </details>`).join('')}
+<section class="section reveal" id="faq">
+  <div class="section-head">
+    <div class="section-head-left">
+      <span class="kicker">常见问题</span>
+      <h2>${FAQ.length} 个问题</h2>
+      <span class="sub">点标题展开或收起</span>
     </div>
-  </details>
-
-  <div class="final-cta">
-    <div>
-      <b>现在就开始，第一组题不用注册</b>
-      <span>记录只存你自己的浏览器，随时可导出备份</span>
-    </div>
-    <a class="btn primary lg" href="quiz.html">免费开始 →</a>
+  </div>
+  <div class="faq-list">
+    ${FAQ.map((f, i) => `<details class="faq-item"${i === 0 ? ' open' : ''}>
+      <summary>${f.q}</summary>
+      <p>${f.a}</p>
+    </details>`).join('')}
   </div>
 </section>
 `;
