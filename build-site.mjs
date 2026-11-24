@@ -2691,9 +2691,9 @@ function buildStats() {
     </div>
   </div>
   <div class="kv">
-    <div class="k"><b id="rWords" style="color:var(--accent)">0</b><span id="rWordsSub">已学词数</span></div>
-    <div class="k"><b id="rQRate" style="color:var(--ok)">—</b><span id="rQSub">语法精练正确率</span></div>
-    <div class="k"><b id="rPassage" style="color:var(--accent-2)">—</b><span id="rPassageSub">篇章题正确率</span></div>
+    <div class="k"><b id="rWords" style="color:var(--accent)">0</b><span id="rWordsSub">已学词数</span><small id="rWordsNote">已牢固 —</small></div>
+    <div class="k"><b id="rQRate" style="color:var(--ok)">—</b><span id="rQSub">语法精练正确率</span><small id="rQNote">累计 — 题</small></div>
+    <div class="k"><b id="rPassage" style="color:var(--accent-2)">—</b><span id="rPassageSub">篇章题正确率</span><small id="rPassageNote">累计 — 题</small></div>
     <div class="k"><b id="rWrong" style="color:var(--rose)">0</b><span>错题待清理</span></div>
     <div class="k"><b id="rStreak" style="color:var(--gold)">0 天</b><span>当前连续打卡</span></div>
     <div class="k"><b id="rLevel">Lv.1</b><span id="rXp">中考萌新 · 0 XP</span></div>
@@ -2989,11 +2989,14 @@ function renderReport() {
   setText('#rStreak', P.streak() + ' 天');
   setText('#rWords', srs.total);
   setText('#rWordsSub', '已学词数');
+  setText('#rWordsNote', '已牢固 ' + srs.mature + ' 词');
   setText('#rQRate', qN ? Math.round(qOk / qN * 100) + '%' : '—');
   setText('#rQSub', qN ? '语法精练正确率' : '暂未开始语法练习');
+  setText('#rQNote', qN ? '累计 ' + qN + ' 题' : '');
   var pt = P.pTotal ? P.pTotal() : { n: 0, rate: 0 };
   setText('#rPassage', pt.n ? Math.round(pt.rate * 100) + '%' : '—');
   setText('#rPassageSub', '篇章题正确率');
+  setText('#rPassageNote', pt.n ? '累计 ' + pt.n + ' 题' : '');
   var wbN = P.wordBookCount(), qwN = P.wrongIds().length;
   setText('#rWrong', wbN + qwN);
 

@@ -674,6 +674,11 @@ table.gtable td:first-child { font-weight: 600; }
 }
 .kv .k b { display: block; font-family: var(--display); font-size: 1.65rem; font-weight: 750; line-height: 1.2; }
 .kv .k span { display: block; font-size: .8rem; color: var(--text-2); margin-top: 4px; }
+.kv .k small {
+  display: block; font-size: .74rem; color: var(--text-3); margin-top: 3px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.kv .k small:empty { display: none; }
 .kv .k .bar { margin-top: 10px; }
 .kv .k.k-wide b { font-size: 1.05rem; font-weight: 650; line-height: 1.4; word-break: break-word; }
 
