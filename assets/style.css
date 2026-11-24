@@ -1794,6 +1794,25 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
 .diag-sum b { color: var(--text); }
 .diag-sum.warn { border-left-color: var(--rose); background: var(--rose-soft); }
 
+/* 诊断明细超过 10 条时，其余项折叠到这里 */
+.diag-more { margin-top: 10px; }
+.diag-more > summary {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 11px 16px; cursor: pointer; list-style: none;
+  font-size: .85rem; font-weight: 700; color: var(--accent);
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--r-sm); transition: border-color .15s, background .15s;
+}
+.diag-more > summary::-webkit-details-marker { display: none; }
+.diag-more > summary:hover { border-color: var(--accent); background: var(--accent-soft); }
+.diag-more-caret {
+  width: 0; height: 0; flex: none;
+  border-left: 4.5px solid transparent; border-right: 4.5px solid transparent;
+  border-top: 5px solid currentColor; transition: transform .2s;
+}
+.diag-more[open] > summary { margin-bottom: 10px; }
+.diag-more[open] .diag-more-caret { transform: rotate(180deg); }
+
 @media (max-width: 900px) {
   .rx-grid { grid-template-columns: 1fr; }
   .diag-row { grid-template-columns: 1fr auto; row-gap: 6px; }

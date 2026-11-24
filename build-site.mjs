@@ -2691,7 +2691,7 @@ function buildStats() {
     </div>
   </div>
   <div class="kv">
-    <div class="k"><b id="rWords" style="color:var(--accent)">0</b><span id="rWordsSub">已学词数（牢固 0）</span></div>
+    <div class="k"><b id="rWords" style="color:var(--accent)">0</b><span id="rWordsSub">已学词数</span></div>
     <div class="k"><b id="rQRate" style="color:var(--ok)">—</b><span id="rQSub">语法精练正确率</span></div>
     <div class="k"><b id="rPassage" style="color:var(--accent-2)">—</b><span id="rPassageSub">篇章题正确率</span></div>
     <div class="k"><b id="rWrong" style="color:var(--rose)">0</b><span>错题待清理</span></div>
@@ -2799,6 +2799,23 @@ function diagRow(o) {
 function emptyBox(text, href, label) {
   return '<div class="empty"><b>' + P.esc(text) + '</b>' +
     (href ? '去<a href="' + href + '">' + P.esc(label) + '</a>，做错的题会自动归到这里' : '') + '</div>';
+}
+
+/* 诊断明细列表：超过 DIAG_LIMIT 条时，只显示前 10 条，其余折进「展开剩余 N 项」 */
+var DIAG_LIMIT = 10;
+
+function diagList(rows, rowFn) {
+  if (rows.length <= DIAG_LIMIT) {
+    return '<div class="diag-list">' + rows.map(rowFn).join('') + '</div>';
+  }
+  var head = rows.slice(0, DIAG_LIMIT).map(rowFn).join('');
+  var rest = rows.slice(DIAG_LIMIT).map(rowFn).join('');
+  var more = rows.length - DIAG_LIMIT;
+  return '<div class="diag-list">' + head + '</div>' +
+    '<details class="diag-more">' +
+      '<summary>展开剩余 ' + more + ' 项<span class="diag-more-caret" aria-hidden="true"></span></summary>' +
+      '<div class="diag-list">' + rest + '</div>' +
+    '</details>';
 }
 
 /* ---------- 语法考点 ---------- */
@@ -2971,12 +2988,12 @@ function renderReport() {
   setText('#rXp', lv.name + ' · ' + lv.xp + ' XP');
   setText('#rStreak', P.streak() + ' 天');
   setText('#rWords', srs.total);
-  setText('#rWordsSub', '已学词数（已牢固 ' + srs.mature + ' 词）');
+  setText('#rWordsSub', '已学词数');
   setText('#rQRate', qN ? Math.round(qOk / qN * 100) + '%' : '—');
-  setText('#rQSub', qN ? '语法精练正确率（累计 ' + qN + ' 题）' : '暂未开始语法练习');
+  setText('#rQSub', qN ? '语法精练正确率' : '暂未开始语法练习');
   var pt = P.pTotal ? P.pTotal() : { n: 0, rate: 0 };
   setText('#rPassage', pt.n ? Math.round(pt.rate * 100) + '%' : '—');
-  setText('#rPassageSub', pt.n ? '篇章题正确率（' + pt.n + ' 题）' : '篇章题正确率');
+  setText('#rPassageSub', '篇章题正确率');
   var wbN = P.wordBookCount(), qwN = P.wrongIds().length;
   setText('#rWrong', wbN + qwN);
 
@@ -3086,7 +3103,7 @@ function renderReport() {
   var gHost = document.querySelector('#gDiagList');
   if (gHost) {
     gHost.innerHTML = gRows.length
-      ? '<div class="diag-list">' + gRows.map(function (x) {
+      ? diagList(gRows, function (x) {
           return diagRow({
             name: x.name,
             sub: x.n ? ('已练 ' + x.n + ' 题') : '还没练过',
@@ -3095,7 +3112,7 @@ function renderReport() {
             sevCls: SEV_CLS[x.sev], sevLabel: SEV_LABEL[x.sev],
             href: 'review.html?topic=' + encodeURIComponent(x.id), act: '专攻 →'
           });
-        }).join('') + '</div>'
+        })
       : emptyBox('还没有语法练习记录', 'review.html', '练语法');
   }
 
@@ -3103,7 +3120,7 @@ function renderReport() {
   var rHost = document.querySelector('#rDiagList');
   if (rHost) {
     rHost.innerHTML = rRows.length
-      ? '<div class="diag-list">' + rRows.map(function (x) {
+      ? diagList(rRows, function (x) {
           return diagRow({
             name: x.name,
             sub: x.n ? ('已练 ' + x.n + ' 题') : '还没练过',
@@ -3112,7 +3129,7 @@ function renderReport() {
             sevCls: SEV_CLS[x.sev], sevLabel: SEV_LABEL[x.sev],
             href: 'wrong.html', act: '重做错题 →'
           });
-        }).join('') + '</div>'
+        })
       : emptyBox('还没有篇章练习记录', 'reading.html', '练阅读');
   }
 
@@ -3121,7 +3138,7 @@ function renderReport() {
   if (wHost) {
     var wt = wData.total;
     wHost.innerHTML = wData.rows.length
-      ? '<div class="diag-list">' + wData.rows.map(function (x) {
+      ? diagList(wData.rows, function (x) {
           var share = wt ? x.n / wt : 0;
           // 词汇线看「集中度」，但要同时看绝对词数：单个错词占比再高也谈不上集中。
           // 只用绝对阈值（≥5/≥3）会让总量少的用户全落成「零星」；只看占比又会把 1 个词说成「较集中」。
@@ -3138,7 +3155,7 @@ function renderReport() {
             href: wordGroupHref(x.id),
             act: '看词表 →'
           });
-        }).join('') + '</div>'
+        })
       : emptyBox('错词本是空的', 'quiz.html', '背单词');
   }
 
