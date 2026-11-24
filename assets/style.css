@@ -1802,6 +1802,15 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
 .sev-low { background: var(--ok-soft); color: var(--ok); }
 .sev-na { background: var(--bg-3); color: var(--text-3); }
 
+/* 每条数据线下方的「这组数字说明什么」 */
+.diag-sum {
+  margin: 12px 0 0; padding: 11px 15px; font-size: .87rem; line-height: 1.72;
+  color: var(--text-2); background: var(--surface-2);
+  border-left: 3px solid var(--border-2); border-radius: var(--r-sm);
+}
+.diag-sum b { color: var(--text); }
+.diag-sum.warn { border-left-color: var(--rose); background: var(--rose-soft); }
+
 @media (max-width: 900px) {
   .rx-grid { grid-template-columns: 1fr; }
   .diag-row { grid-template-columns: 1fr auto; row-gap: 6px; }
