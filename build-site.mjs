@@ -374,11 +374,7 @@ function buildHome() {
       <div class="hero-badge"><span class="dot-live"></span>河北中考英语 · 对齐 2025 年新卷面结构</div>
       <h1>单词都背了，<br><span class="accent-word">短文填空还是错</span></h1>
       <p class="lede">
- 问题通常不在词汇量，而在<b>「知道词、但不知道在这个句子里该用哪个形式」</b>。
- 河北卷短文填空 15 分里有 <b>盲填</b>——不给提示词，只考冠词、介词、连词；
- 阅读与完形共 50 分，考的是<b>在语篇里定位与推理</b>，也不是背单词能解决的。
- 本站按卷面结构拆成 <b>词汇 · 语法 · 完形 · 阅读 · 任务型 · 情景交际 · 写作</b> 七块，
- 每块都给方法、给解析、给弱项诊断——<b>覆盖 120 分里的 ${COVERED_SCORE} 分，缺口在哪也写清楚</b>。
+ 河北卷短文填空有 <b>盲填</b>——不给提示词，只考冠词、介词、连词；阅读与完形共 50 分，考的是<b>语篇里定位与推理</b>。这两块都不是背单词能解决的。
  </p>
       <div class="hero-cta">
         <a class="btn primary" href="quiz.html">免费开始 <span aria-hidden="true">→</span></a>
@@ -388,9 +384,7 @@ function buildHome() {
         <span><b>✓</b> 无需注册</span>
         <span><b>✓</b> 记录只存本地</span>
         <span><b>✓</b> 离线可用</span>
-        <span><b>✓</b> 无广告</span>
         <span><b>✓</b> 每题带解析</span>
-        <span><b>✓</b> 统一英音</span>
       </div>
     </div>
 
@@ -438,7 +432,7 @@ function buildHome() {
 
   <div class="stats reveal">
     <div class="stat"><b data-count="${STATS.total}">${STATS.total}</b><span>课标词条</span><small>全部附英音朗读</small></div>
-    <div class="stat"><b data-count="${GRAMMAR_STATS.topics}">${GRAMMAR_STATS.topics}</b><span>语法考点</span><small>${GRAMMAR_STATS.sections} 族 · 含连词与情景交际</small></div>
+    <div class="stat"><b data-count="${GRAMMAR_STATS.topics}">${GRAMMAR_STATS.topics}</b><span>语法考点</span><small>${GRAMMAR_STATS.sections} 族 · 含情景交际</small></div>
     <div class="stat"><b data-count="${TOTAL_Q}">${TOTAL_Q}</b><span>总题量</span><small>语法 · 完形 · 阅读 · 任务型</small></div>
     <div class="stat"><b data-count="${WRITING_STATS.total}">${WRITING_STATS.total}</b><span>写作范文</span><small>${WRITING_STATS.highlights} 个高分句型</small></div>
   </div>
@@ -447,9 +441,9 @@ function buildHome() {
 <section class="section reveal coverage-section" id="tiers">
   <div class="section-head">
     <div class="section-head-left">
-      <span class="kicker">卷面覆盖 · 提分路径</span>
+      <span class="kicker">卷面覆盖</span>
       <h2>河北卷 120 分，本站覆盖 ${COVERED_SCORE} 分</h2>
-      <span class="sub">这 ${COVERED_SCORE} 分不是均匀分布的：规则型靠练够、语篇型靠方法、输出型靠句型。混着刷，等于三块都用错方法</span>
+      <span class="sub">三块练法不同：规则型靠练够，语篇型靠方法，输出型靠句型。混着刷等于三块都用错方法</span>
     </div>
   </div>
   <div class="coverage-split">
@@ -473,56 +467,7 @@ function buildHome() {
         <div class="tier-mini-name">${t.name}</div>
         <div class="tier-mini-desc">${t.desc}</div>
         <div class="tier-mini-goal">${t.goal} · ${t.count}</div>
-        <div class="tier-mini-desc" style="margin-top:2px">${t.note}</div>
       </div>`).join('')}
-    </div>
-  </div>
-</section>
-
-<section class="section reveal" id="why">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">为什么背了单词还是丢分</span>
-      <h2>三个问题，对应三个机制</h2>
-      <span class="sub">这三个问题都不是「词背得不够」，而是练的粒度太粗——只记对错，不记为什么错</span>
-    </div>
-  </div>
-  <div class="sell-rows">
-    <div class="sell-row">
-      <div class="sell-pain">
-        <span class="sell-no">01</span>
-        <b>单词都认识，短文填空还是错</b>
-        <span class="sell-pain-sub">认识 ≠ 会用正确形式</span>
-      </div>
-      <div class="sell-fix">
-        <span class="sell-tag">盲填专项</span>
-        <p>河北卷短文填空 15 空里有 <b>盲填</b>——<b>不给提示词</b>，只考冠词、介词、连词。本站把这 ${Q_STATS.blind} 道盲填题单独标出，可一键专项练，答完看「为什么该填这个」。</p>
-        <a class="sell-link" href="review.html">练盲填专项 →</a>
-      </div>
-    </div>
-    <div class="sell-row">
-      <div class="sell-pain">
-        <span class="sell-no">02</span>
-        <b>阅读文章读得懂，题还是选错</b>
-        <span class="sell-pain-sub">读懂 ≠ 会定位、会推理</span>
-      </div>
-      <div class="sell-fix">
-        <span class="sell-tag">四类读法 + 三段解析</span>
-        <p>阅读按 <b>A 应用文 / B 记叙文 / C 说明文 / D 议论文</b> 分类，<b>每类先教读法</b>（怎么找、怎么推）。每题答完给三段解析：<b>原文圈画</b>（定位句放回上下文）+ <b>为什么对</b> + <b>干扰项错在哪</b>。</p>
-        <a class="sell-link" href="reading.html">看阅读怎么教 →</a>
-      </div>
-    </div>
-    <div class="sell-row">
-      <div class="sell-pain">
-        <span class="sell-no">03</span>
-        <b>错题攒了一堆，不知道补哪</b>
-        <span class="sell-pain-sub">「语法差」这种结论没法执行</span>
-      </div>
-      <div class="sell-fix">
-        <span class="sell-tag">弱项诊断</span>
-        <p>语法错题按 <b>${GRAMMAR_STATS.topics} 个考点</b>统计正确率，阅读错题按 <b>六项阅读能力</b>（细节定位/推理判断/主旨观点/上下文逻辑/固定搭配/语法词形）统计。弱项自动浮到最前，一键专攻。</p>
-        <a class="sell-link" href="wrong.html">看诊断长什么样 →</a>
-      </div>
     </div>
   </div>
 </section>
@@ -532,7 +477,7 @@ function buildHome() {
     <div class="section-head-left">
       <span class="kicker">解析样本 · 站内真实题目</span>
       <h2>答完之后，你多知道了什么</h2>
-      <span class="sub">普通题库只告诉你选 C；本站每题给三段：原文定位在哪、为什么这个对、另外三个错在哪。下面是站内真题，不是示意图</span>
+      <span class="sub">普通题库只告诉你选 C。本站每题给三段：原文定位、为什么对、另外三个错在哪</span>
     </div>
     <a class="btn sm soft" href="reading.html">进入阅读训练 →</a>
   </div>
@@ -541,7 +486,7 @@ function buildHome() {
       <span class="sample-tier send">盲填</span>
       <span class="sample-main">
         <b>${esc(BLIND_SAMPLE.stem)}</b>
-        <span class="sample-signal">不给提示词，只考冠词 / 介词 / 连词 —— 河北卷短文填空的固定考法</span>
+        <span class="sample-signal">不给提示词，只考冠词 / 介词 / 连词</span>
       </span>
       <span class="sample-meta">${BLIND_SAMPLE.options.length} 选 1 · 附解析</span>
       <span class="sample-go">→</span>
@@ -550,7 +495,7 @@ function buildHome() {
       <span class="sample-tier mid">推理</span>
       <span class="sample-main">
         <b>${esc(READ_SAMPLE.stem)}</b>
-        <span class="sample-signal">推理题：答案不在字面上，必须回到定位句再推一步</span>
+        <span class="sample-signal">答案不在字面上，要回到定位句再推一步</span>
       </span>
       <span class="sample-meta">原文定位 + 干扰项分析</span>
       <span class="sample-go">→</span>
@@ -559,7 +504,7 @@ function buildHome() {
       <span class="sample-tier dist">写作</span>
       <span class="sample-main">
         <b>${esc(WRITE_SAMPLE.genre)} · ${esc(WRITE_SAMPLE.title)}</b>
-        <span class="sample-signal">范文不整篇背：拆成思路、亮点句、评分要点，换题目还能用</span>
+        <span class="sample-signal">范文不整篇背，拆成思路、亮点句与评分要点</span>
       </span>
       <span class="sample-meta">${WRITE_SAMPLE.words} · ${WRITE_SAMPLE.highlights.length} 个亮点句</span>
       <span class="sample-go">→</span>
@@ -573,85 +518,41 @@ function buildHome() {
     <div class="section-head-left">
       <span class="kicker">五大学习模块</span>
       <h2>每个模块都对应卷面上具体的分</h2>
-      <span class="sub">点进去就知道练什么、练多少、对应哪一部分分值</span>
     </div>
   </div>
   <div class="grid c3">
     <div class="card card-stretch">
       <div class="card-ico">📚</div>
       <h3><a href="words.html">课标词表 · ${STATS.total} 条</a></h3>
-      <p class="desc">以义务教育英语课程标准三级词汇为基座，补齐初中必会派生词，含音标、词性、中文释义与英音点击即读。</p>
-      <div class="meta" style="margin-top:12px">核心高频 ${STATS.b1} · 中频主力 ${STATS.b2} · 拓展 ${STATS.b3}</div>
+      <p class="desc">课标三级词汇为基座，含音标、词性、释义，点击即读英音。</p>
+      <div class="meta" style="margin-top:12px">高频 ${STATS.b1} · 中频 ${STATS.b2} · 拓展 ${STATS.b3}</div>
       <div class="card-sub"><a href="topics/index.html">按 ${TOPIC_SORTED.length} 个话题成组记词 →</a></div>
     </div>
     <div class="card card-stretch">
       <div class="card-ico purple">📐</div>
       <h3><a href="grammar.html">语法体系 · ${GRAMMAR_STATS.sections} 族 ${GRAMMAR_STATS.topics} 考点</a></h3>
-      <p class="desc">从名词冠词、六大时态、被动语态、非谓语到三大从句、连词与情景交际，按中考考查密度排序，每个考点可一键跳转专项刷题。</p>
-      <div class="meta" style="margin-top:12px">${GRAMMAR_STATS.traps} 条易错对比 · ${GRAMMAR_STATS.examples} 个精选例句</div>
+      <p class="desc">按中考考查密度排序，每个考点可一键跳转专项刷题。</p>
+      <div class="meta" style="margin-top:12px">${GRAMMAR_STATS.traps} 条易错对比 · ${GRAMMAR_STATS.examples} 个例句</div>
       <div class="card-sub"><a href="grammar.html">进入完整语法体系 →</a></div>
     </div>
     <a class="card" href="review.html">
       <div class="card-ico ok">✍️</div>
       <h3>考点专项刷题 · ${Q_STATS.total} 题</h3>
-      <p class="desc">覆盖全部 ${GRAMMAR_STATS.topics} 个考点，自动统计各考点正确率，支持「专攻最弱考点」与「只练错题本」。</p>
+      <p class="desc">自动统计各考点正确率，可「专攻最弱考点」或「只练错题本」。</p>
       <div class="meta" style="margin-top:12px">单选 ${Q_STATS.choicePlain} · 短文填空 ${Q_STATS.fill} · 补全对话 ${Q_STATS.dialogue} · 盲填 ${Q_STATS.blind}</div>
     </a>
     <a class="card" href="reading.html">
       <div class="card-ico blue">📖</div>
       <h3>篇章阅读 · ${PASSAGE_STATS.totalQ} 题</h3>
-      <p class="desc">阅读理解按 A 应用文 / B 记叙文 / C 说明文 / D 议论文 分类，每类配独立的「读法」策略卡。整篇训练：先读原文再逐题作答，每题给原文定位 + 干扰项分析。</p>
-      <div class="meta" style="margin-top:12px">完形 ${PASSAGE_STATS.cloze} 篇 ${PASSAGE_STATS.clozeBlanks} 空 · 阅读 ${PASSAGE_STATS.reading} 篇 ${PASSAGE_STATS.readingQ} 题（四类各 ${PASSAGE_STATS.reading / 4} 篇）· 任务型 ${PASSAGE_STATS.task} 篇</div>
+      <p class="desc">A/B/C/D 四类各配读法策略卡，整篇训练，每题给原文定位与干扰项分析。</p>
+      <div class="meta" style="margin-top:12px">完形 ${PASSAGE_STATS.cloze} 篇 ${PASSAGE_STATS.clozeBlanks} 空 · 阅读 ${PASSAGE_STATS.reading} 篇 ${PASSAGE_STATS.readingQ} 题 · 任务型 ${PASSAGE_STATS.task} 篇</div>
     </a>
     <a class="card" href="writing.html">
       <div class="card-ico gold">📝</div>
       <h3>书面表达 · ${WRITING_STATS.total} 篇范文</h3>
-      <p class="desc">${WRITING_STATS.genres.join(' / ')}四种常考体裁，每篇拆解「题目要求 → 写作思路 → 高分范文 → 亮点句型 → 评分要点」，范文不整篇背，把句型吃透就能换题目用。</p>
+      <p class="desc">四种常考体裁，每篇拆解思路、亮点句与评分要点，换题目还能用。</p>
       <div class="meta" style="margin-top:12px">${WRITING_STATS.highlights} 个高分句型 · 80–100 词三段式</div>
     </a>
-  </div>
-</section>
-
-<section class="section reveal" id="start">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">三步上手</span>
-      <h2>10 分钟知道该补哪一块</h2>
-      <span class="sub">不用先看教程，做题的过程就在采集诊断数据</span>
-    </div>
-  </div>
-  <div class="step-minis">
-    <div class="step-mini">
-      <span class="step-mini-no">1</span>
-      <div>
-        <b>先做一组题</b>
-        <p>10 道语法题或一组盲填，不用注册。答完就有记录，系统开始统计你的正确率。</p>
-        <a class="sell-link" href="review.html">开始做题 →</a>
-      </div>
-    </div>
-    <div class="step-mini">
-      <span class="step-mini-no">2</span>
-      <div>
-        <b>看诊断说补什么</b>
-        <p>语法按 ${GRAMMAR_STATS.topics} 个考点、阅读按六项能力，分别告诉你哪项最弱、错在哪。</p>
-        <a class="sell-link" href="wrong.html">看诊断长什么样 →</a>
-      </div>
-    </div>
-    <div class="step-mini">
-      <span class="step-mini-no">3</span>
-      <div>
-        <b>进专项练</b>
-        <p>点「专攻最弱考点」直接出那个考点的题。练完回来看正确率有没有上去。</p>
-        <a class="sell-link" href="review.html">专攻最弱 →</a>
-      </div>
-    </div>
-  </div>
-  <div class="final-cta">
-    <div>
-      <b>现在就开始，第一组题不用注册</b>
-      <span>记录只存你自己的浏览器，随时可导出备份</span>
-    </div>
-    <a class="btn primary lg" href="quiz.html">免费开始 →</a>
   </div>
 </section>
 
@@ -660,25 +561,33 @@ function buildHome() {
     <div class="section-head-left">
       <span class="kicker">边界</span>
       <h2>本站不做什么</h2>
-      <span class="sub">把能做的说清，也把不做的说清——这比「全都能提分」更有用</span>
+      <span class="sub">把能做的和不能做的都说清，比「全都能提分」有用</span>
     </div>
   </div>
   <div class="honest-list">
-    <div><b>不覆盖听力 30 分</b><span>听力需要真实音频素材，本站不提供模拟听力。卷面覆盖 ${COVERED_SCORE}/${TOTAL_SCORE} 分，缺口就是这一块，建议配合真题听力练。</span></div>
-    <div><b>不夸大词表数量</b><span>词表严格按课标三级词汇（约 1600 词）+ 必会派生词，共 ${STATS.total} 条，不掺超纲词充数。真正决定分数的是「会用」而不是「认识」。</span></div>
-    <div><b>不做作文 AI 批改</b><span>AI 判作文一旦判错，信任就崩了。本站提供范文、亮点句与评分要点，走「对照自查」模式。</span></div>
-    <div><b>不搬运真题原文</b><span>阅读与完形均为原创，只复刻河北卷的题型结构、题材分布与难度梯度，避免版权问题与网络版本的录入错误。</span></div>
+    <div><b>不覆盖听力 30 分</b><span>听力需真实音频，本站不提供。缺口就是这 30 分，建议配合真题。</span></div>
+    <div><b>不夸大词表数量</b><span>严格按课标三级词汇，共 ${STATS.total} 条，不掺超纲词充数。</span></div>
+    <div><b>不做作文 AI 批改</b><span>AI 判作文一旦判错，信任就崩。改为范文 + 评分要点对照自查。</span></div>
+    <div><b>不搬运真题原文</b><span>阅读与完形均为原创，只复刻题型结构与难度梯度。</span></div>
   </div>
 
-  <details class="faq-group">
+  <details class="faq-group" id="faq">
     <summary>还有 ${FAQ.length} 个常见问题（年级、词表依据、每天用时、多端、备份）<span class="faq-more">展开 →</span></summary>
     <div class="faq-list">
-      ${FAQ.map((f, i) => `<details class="faq-item"${i === 0 ? ' open' : ''}>
+      ${FAQ.map((f) => `<details class="faq-item">
         <summary>${f.q}</summary>
         <p>${f.a}</p>
       </details>`).join('')}
     </div>
   </details>
+
+  <div class="final-cta">
+    <div>
+      <b>现在就开始，第一组题不用注册</b>
+      <span>记录只存你自己的浏览器，随时可导出备份</span>
+    </div>
+    <a class="btn primary lg" href="quiz.html">免费开始 →</a>
+  </div>
 </section>
 `;
 
