@@ -580,22 +580,6 @@ function buildHome() {
   </div>
 </section>
 
-<section class="section reveal" id="honest">
-  <div class="section-head">
-    <div class="section-head-left">
-      <span class="kicker">边界</span>
-      <h2>本站不做什么</h2>
-      <span class="sub">把能做的和不能做的都说清，比「全都能提分」有用</span>
-    </div>
-  </div>
-  <div class="honest-list">
-    <div><b>不覆盖听力 30 分</b><span>听力需真实音频，本站不提供。缺口就是这 30 分，建议配合真题。</span></div>
-    <div><b>不夸大词表数量</b><span>严格按课标三级词汇，共 ${STATS.total} 条，不掺超纲词充数。</span></div>
-    <div><b>不做作文 AI 批改</b><span>AI 判作文一旦判错，信任就崩。改为范文 + 评分要点对照自查。</span></div>
-    <div><b>不搬运真题原文</b><span>阅读与完形均为原创，只复刻题型结构与难度梯度。</span></div>
-  </div>
-</section>
-
 <section class="section reveal" id="faq">
   <div class="section-head">
     <div class="section-head-left">

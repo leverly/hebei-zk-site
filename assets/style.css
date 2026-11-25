@@ -1618,21 +1618,6 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
 .diff-table .diff-new { font-size: .85rem; }
 .diff-table .diff-new b { color: var(--accent); }
 
-/* 边界声明 */
-.honest-list { display: grid; gap: 10px; }
-.honest-list > div {
-  display: grid; grid-template-columns: 200px 1fr; gap: 18px;
-  align-items: start; padding: 14px 18px;
-  background: var(--surface-2); border-left: 3px solid var(--border-2);
-  border-radius: var(--r-sm);
-}
-.honest-list b { font-size: .9rem; color: var(--text); }
-.honest-list span { font-size: .85rem; color: var(--text-2); line-height: 1.75; }
-
-@media (max-width: 900px) {
-  .honest-list > div { grid-template-columns: 1fr; gap: 6px; }
-}
-
 /* ==========================================================
    首页卖点组件：分值分层 / 解析样本 / 三步上手 / 底部 CTA
    ========================================================== */
