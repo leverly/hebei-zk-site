@@ -1541,8 +1541,12 @@ function wordRow(it) {
     '</span>' +
     '<span class="pos">' + P.esc(m.posZh || '') + '</span>' +
     '<span class="zh">' + P.esc(m.zh || '（无释义）') + '</span>' +
-    '<span class="flag">错 ' + it.rec.wrong + ' 次 · ' + (it.rec.right || 0) + '/' + P.MASTER_STREAK + ' 连对</span>' +
-    dueTag(it) +
+    // 连对进度与到期日合并成一个单元格：.wb-row 是固定 5 列网格，
+    // 各占一格会把「已掌握」挤到第二行。
+    '<span class="wb-flags">' +
+      '<span class="flag">错 ' + it.rec.wrong + ' 次 · ' + (it.rec.right || 0) + '/' + P.MASTER_STREAK + ' 连对</span>' +
+      dueTag(it) +
+    '</span>' +
     '<span class="wb-actions"><button class="btn xs" data-master="' + P.esc(it.key) + '">✓ 已掌握</button></span>' +
   '</div>';
 }

@@ -815,6 +815,8 @@ table.gtable td:first-child { font-weight: 600; }
 
 /* ---------------- 错题本 ---------------- */
 .wb-row { grid-template-columns: minmax(150px, 1.25fr) minmax(72px, .55fr) 2fr auto auto; }
+/* 连对进度与到期日共占一格，避免多出的子元素把「已掌握」挤到第二行 */
+.wb-flags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
 .wb-actions { display: flex; gap: 6px; justify-content: flex-end; }
 .wb-gram {
   border: 1px solid var(--border); border-radius: var(--r);
