@@ -336,23 +336,6 @@ function buildHome() {
     .questions.find((q) => q.skill === 'inference');
   const WRITE_SAMPLE = WRITING[0];
 
-  const sampleCard = `<div class="sample-card">
-    <span class="sample-cap">阅读理解 · 推理判断 · 原文定位 + 为什么对 + 干扰项错在哪</span>
-    <div class="wb-gram">
-      <div class="qmeta">
-        <span class="qtype">阅读理解</span>
-        <span class="flag">推理判断</span>
-        <span class="flag" style="background:var(--bg-3);color:var(--text-2)">记叙文 · B 篇</span>
-      </div>
-      <div class="wb-stem">${esc(READ_SAMPLE.stem)}</div>
-      <div class="wb-opts">${READ_SAMPLE.options.map((o, k) => `<span class="wb-opt">${'ABCD'[k]}. ${esc(o)}</span>`).join('')}</div>
-      <div class="wb-ans"><b>正确答案：</b><span style="color:var(--ok);font-weight:700">${'ABCD'[READ_SAMPLE.answer]}</span></div>
-      <div class="wb-locate"><b>原文定位：</b><q>${esc(READ_SAMPLE.locate)}</q></div>
-      <div class="wb-why">${esc(READ_SAMPLE.why)}</div>
-      <div class="wb-trap"><b>干扰项分析：</b>${esc(READ_SAMPLE.trap)}</div>
-    </div>
-  </div>`;
-
   /* ---- 常见问题：并入「边界」节，默认折叠，不单独占一节 ---- */
   const FAQ = [
     {
@@ -524,7 +507,6 @@ function buildHome() {
       <span class="sample-go">→</span>
     </a>
   </div>
-  ${sampleCard}
 </section>
 
 <section class="section reveal">

@@ -1706,24 +1706,6 @@ a.coverage-row:hover { border-color: var(--accent); transform: translateX(3px); 
 .sample-meta { flex: none; font-size: .76rem; color: var(--text-3); white-space: nowrap; }
 .sample-go { flex: none; color: var(--accent); font-weight: 800; }
 
-/* 解析样本：单题完整解析卡（复用站内 wb-* 解析样式） */
-.sample-card {
-  margin-top: 14px; border: 1px solid var(--border); border-radius: var(--r);
-  background: var(--surface); padding: 20px 22px; box-shadow: var(--shadow-1);
-}
-/* 站内 wb-gram 是「错题本两列（题干 + 操作）」布局，首页样本没有操作列，须压成单列 */
-.sample-card .wb-gram {
-  border: 0; padding: 0; margin: 0; box-shadow: none;
-  display: block;
-}
-.sample-card .wb-stem { font-size: 1.02rem; margin-bottom: 4px; }
-.sample-card .wb-why { margin: 10px 0; }
-.sample-cap {
-  font-family: var(--mono); font-size: .72rem; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--text-3); font-weight: 600;
-  margin-bottom: 12px; display: block;
-}
-
 /* 底部 CTA（独立成节，节间距由 .section 统一给，这里不再叠加 margin） */
 .final-cta {
   padding: 24px 26px; border-radius: var(--r);
