@@ -135,6 +135,44 @@
     return '100+ 分';
   };
 
+  /* ---------------- 摸底诊断结果 ----------------
+     一次性小卷（词汇 + 语法 + 阅读）的答题结果，用来给「完全没有练习记录」
+     的学生一个起点：三条线的得分直接决定首页先推哪个模块。
+     与日常记录分开存，因为它代表「入学水平」，不该被之后的刷题稀释。 */
+  var PLACE_KEY = 'hbzk-placement-v1';
+  var placement = load(PLACE_KEY, null);
+
+  P.placement = function () { return placement; };
+  P.hasPlacement = function () { return !!(placement && placement.at); };
+  P.savePlacement = function (res) {
+    placement = Object.assign({ at: Date.now() }, res || {});
+    store(PLACE_KEY, placement);
+    document.dispatchEvent(new CustomEvent('hbzk:placement', { detail: placement }));
+    return placement;
+  };
+  P.clearPlacement = function () {
+    placement = null;
+    store(PLACE_KEY, null);
+    document.dispatchEvent(new CustomEvent('hbzk:placement', { detail: null }));
+  };
+  /* 三条线的强弱排序：返回按「越弱越靠前」排好的模块 id 列表。
+     没有摸底结果时返回 null，调用方回退到默认顺序（词→语法→错题）。 */
+  P.routeOrder = function () {
+    if (!placement || !placement.lines) return null;
+    var L = placement.lines;
+    var arr = [
+      { id: 'words', rate: L.words && L.words.rate !== null ? L.words.rate : 1, n: L.words ? L.words.n : 0 },
+      { id: 'grammar', rate: L.grammar && L.grammar.rate !== null ? L.grammar.rate : 1, n: L.grammar ? L.grammar.n : 0 },
+      { id: 'reading', rate: L.reading && L.reading.rate !== null ? L.reading.rate : 1, n: L.reading ? L.reading.n : 0 },
+    ];
+    // 没测到的线（n=0）排最后，避免「没测=最弱」的误判
+    arr.sort(function (a, b) {
+      if ((a.n === 0) !== (b.n === 0)) return a.n === 0 ? 1 : -1;
+      return a.rate - b.rate;
+    });
+    return arr.map(function (x) { return x.id; });
+  };
+
   /* ---------------- 已掌握进度 ---------------- */
   var KNOWN_KEY = 'hbzk-known-v1';
   var known = load(KNOWN_KEY, {}) || {};
@@ -266,7 +304,10 @@
   /* ---------------- 单词错题本 ---------------- */
   var WBOOK_KEY = 'hbzk-wordbook-v1';
   var wbook = load(WBOOK_KEY, {}) || {};
-  var MASTER_STREAK = 2;
+  /* 错题出本门槛：连续答对 3 次。英语错词需要多次复现才真记住，
+     只对 1–2 次就移出，等于「看一眼就过掉」。与 SRS 阶梯（1→3→7 天）
+     的前三次复现对齐。 */
+  var MASTER_STREAK = 3;
 
   P.wordBook = function () { return wbook; };
   P.wordBookList = function () {
@@ -376,13 +417,23 @@
   var Q_IVL = [0.5, 1, 3, 7, 21, 60];   // 天：连续答对的间隔阶梯
   P.qDue = function (id) { return qdue[id] || null; };
   P.qDueMap = function () { return qdue; };
+  var Q_MASTER_STREAK = 3;   // 错题连续答对 3 次才移出错题本（与错词门槛一致）
   P.qRecord = function (topic, ok, id) {
     var r = qlog.topicStats[topic] = qlog.topicStats[topic] || { n: 0, ok: 0 };
     r.n++;
     if (ok) r.ok++;
     if (id) {
-      if (ok) delete qlog.wrongIds[id];
-      else qlog.wrongIds[id] = { t: topic, at: Date.now() };
+      // 错题出本不看「答对一次」，而看「连续答对几次」：
+      // 只对一次就移出，学生下次遇到同题照样错，这正是错题本失效的主因。
+      var wr = qlog.wrongIds[id];
+      if (ok) {
+        if (wr) {
+          wr.right = (wr.right || 0) + 1;
+          if (wr.right >= Q_MASTER_STREAK) delete qlog.wrongIds[id];
+        }
+      } else {
+        qlog.wrongIds[id] = { t: topic, at: (wr && wr.at) || Date.now(), right: 0, times: ((wr && wr.times) || 0) + 1 };
+      }
       // 排期：答错立即回到第一级（半小时后即可再练）；答对逐级拉长间隔
       var d = qdue[id] || { due: 0, ivl: 0, reps: 0, lapses: 0 };
       if (ok) {
@@ -412,11 +463,60 @@
     return out;
   };
   P.wrongIds = function () { return Object.keys(qlog.wrongIds || {}); };
+  P.qMasterStreak = Q_MASTER_STREAK;
+  /* 某道错题当前「连对 / 目标」进度；用于错题本展示与移出提示 */
+  P.qWrongInfo = function (id) {
+    var wr = qlog.wrongIds[id];
+    if (!wr) return null;
+    return { right: wr.right || 0, need: Q_MASTER_STREAK, times: wr.times || 1, at: wr.at || 0 };
+  };
   P.qClearWrong = function (id) {
     if (id) delete qlog.wrongIds[id]; else qlog.wrongIds = {};
     store(QLOG_KEY, qlog);
   };
   P.qReset = function () { qlog = { topicStats: {}, wrongIds: {}, qdue: {}, skillStats: {} }; qdue = qlog.qdue; store(QLOG_KEY, qlog); };
+
+  /* ---------------- 统一的「下次复习」查询 ----------------
+     错词走 SRS（srs[k].due），错题走题目排期（qdue[id].due）。
+     错题本原来只看「加入时间」，于是排期算出来的日期根本没人用——
+     学生看到的顺序和系统算的顺序是两套。这里统一成一个入口，
+     让错题本能按「真正该复习的那天」排序与筛选。 */
+  P.nextDue = function (key, kind) {
+    var k = String(key).toLowerCase();
+    if (kind === 'word') {
+      var s = srs[k];
+      return s && s.due ? s.due : null;
+    }
+    var d = qdue[key];
+    return d && d.due ? d.due : null;
+  };
+  P.isDue = function (key, kind, now) {
+    var t = P.nextDue(key, kind);
+    return t === null ? true : t <= (now || Date.now());
+  };
+  /* 到期日的短标签：今天 / 明天 / N 天后 / 已过期 N 天 */
+  P.dueLabel = function (ts, now) {
+    if (!ts) return '';
+    var t0 = now || Date.now();
+    var d0 = new Date(t0); d0.setHours(0, 0, 0, 0);
+    var d1 = new Date(ts); d1.setHours(0, 0, 0, 0);
+    var diff = Math.round((d1 - d0) / DAY);
+    if (diff < 0) return '已过期 ' + (-diff) + ' 天';
+    if (diff === 0) return '今天该复习';
+    if (diff === 1) return '明天复习';
+    return diff + ' 天后';
+  };
+  /* 全站到期总数（错词 + 错题），首页与诊断页共用 */
+  P.dueTotals = function () {
+    var now = Date.now(), w = 0, q = 0;
+    Object.keys(wbook).forEach(function (k) {
+      if (P.isDue(k, 'word', now)) w++;
+    });
+    Object.keys(qlog.wrongIds || {}).forEach(function (id) {
+      if (P.isDue(id, 'q', now)) q++;
+    });
+    return { words: w, questions: q, total: w + q };
+  };
 
   /* ---------------- 篇章题：能力维度统计与错题收录 ----------------
      篇章题不按语法考点，而按「阅读能力」统计：detail 细节定位 / inference 推理判断 /
@@ -438,8 +538,15 @@
     r.n++;
     if (ok) r.ok++;
     if (id) {
-      if (ok) delete qlog.wrongIds[id];
-      else qlog.wrongIds[id] = { t: key, at: Date.now(), kind: 'passage' };
+      var wr = qlog.wrongIds[id];
+      if (ok) {
+        if (wr) {
+          wr.right = (wr.right || 0) + 1;
+          if (wr.right >= Q_MASTER_STREAK) delete qlog.wrongIds[id];
+        }
+      } else {
+        qlog.wrongIds[id] = { t: key, at: (wr && wr.at) || Date.now(), kind: 'passage', right: 0, times: ((wr && wr.times) || 0) + 1 };
+      }
     }
     store(QLOG_KEY, qlog);
     P.bumpDay('questions', 1);
@@ -494,7 +601,8 @@
       wbook: wbook,
       qlog: qlog,
       profile: profile,
-      plan: planDoneMap
+      plan: planDoneMap,
+      placement: placement
     };
     return JSON.stringify(data, null, 2);
   };
@@ -510,6 +618,7 @@
     if (d.qlog) { qlog = d.qlog; store(QLOG_KEY, qlog); }
     if (d.profile) { profile = Object.assign(profile, d.profile); store(PROFILE_KEY, profile); }
     if (d.plan) { planDoneMap = d.plan; store(PLAN_KEY, planDoneMap); }
+    if (d.placement !== undefined) { placement = d.placement; store(PLACE_KEY, placement); }
     P.toast('学习档案已恢复，正在刷新页面…');
     setTimeout(function () { location.reload(); }, 600);
   };
@@ -1134,14 +1243,17 @@
           (streak >= 3 ? ' 已连击 ' + streak + ' 题！' : '') +
           '</b><span class="auto-next-hint">即将进入下一题…</span></div>';
       } else {
-        // 答错：停住，让用户看完正确答案与解析
+        // 答错：停住，让用户看完正确答案、解析与干扰项分析
         fb.innerHTML = '<div class="feedback bad"><b>✕ 这题进了错题本，看看解析：</b>' +
-          ref + esc(q.why) + '</div>';
+          ref + esc(q.why) +
+          (q.trap ? '<div class="fb-trap"><b>为什么其他选项不对：</b>' + esc(q.trap) + '</div>' : '') +
+          '</div>';
         var nx = host.querySelector('#qnext');
         nx.disabled = false;
         nx.focus();
       }
-      if (P.qRecord) P.qRecord(q.topic, ok, q.id);
+      // 摸底卷只用来定方向，不计入练习记录，也不往错题本里塞题
+      if (!opts.placement && P.qRecord) P.qRecord(q.topic, ok, q.id);
       if (opts.onAnswer) opts.onAnswer(q, ok);
       if (ok) {
         clearTimeout(autoNextTimer);
@@ -1166,10 +1278,14 @@
         '<div style="font-family:var(--display);font-size:3.2rem;font-weight:800;color:var(--accent);margin:6px 0">' + rate + '<span style="font-size:1.3rem">%</span></div>' +
         '<div style="color:var(--text-2)">答对 <b>' + correct + ' / ' + total + '</b> 题 · 最高连击 <b>' + best + '</b> · 获得 <b>+' + (total * 8) + ' XP</b></div>' +
         '<div style="margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
-          '<button class="btn primary" id="qagain">再来一轮</button>' +
-          '<a class="btn soft" href="wrong.html">去清错题本</a>' +
+          (opts.placement
+            ? '<button class="btn primary" id="qnextpart">继续下一部分 →</button>'
+            : '<button class="btn primary" id="qagain">再来一轮</button>' +
+              '<a class="btn soft" href="wrong.html">去清错题本</a>') +
           (opts.reviewHref ? '<a class="btn ghost" href="' + opts.reviewHref + '">' + (opts.reviewLabel || '返回') + '</a>' : '') +
         '</div></div>';
+      var np = host.querySelector('#qnextpart');
+      if (np) np.addEventListener('click', function () { if (opts.onFinish) opts.onFinish(); });
       var b = host.querySelector('#qagain');
       if (b) b.addEventListener('click', function () {
         if (opts.onRestart) { opts.onRestart(); return; }
@@ -1178,7 +1294,9 @@
         host.querySelector('#qbody').innerHTML = '';
         draw();
       });
-      if (opts.onFinish) opts.onFinish({ correct: correct, total: total, rate: rate, best: best });
+      // 摸底模式下由「继续下一部分」按钮推进，不在这里自动跳，
+      // 否则学生会看不到自己的本部分成绩。
+      if (opts.onFinish && !opts.placement) opts.onFinish({ correct: correct, total: total, rate: rate, best: best });
     }
 
     draw();

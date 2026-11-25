@@ -7,3 +7,7 @@ reference/raw.txt
 # 构建与调试临时文件
 __pycache__/
 *.pyc
+
+# 工具链缓存（zcode 插件运行时生成，与站点内容无关）
+.v2c/
+.video_agent/

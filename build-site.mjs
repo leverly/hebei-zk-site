@@ -20,6 +20,7 @@ import { GRAMMAR, GRAMMAR_STATS } from './src/data-grammar.js';
 import { QUESTIONS } from './src/data-quiz.js';
 import { QUESTIONS_2 } from './src/data-quiz2.js';
 import { QUESTIONS_3 } from './src/data-quiz3.js';
+import { TRAPS } from './src/data-trap.js';
 import { CLOZE, READING, TASK_READING } from './src/data-passage.js';
 import { READING_EXTRA } from './src/data-reading-extra.js';
 import { WRITING, WRITING_STATS } from './src/data-writing.js';
@@ -33,6 +34,20 @@ const CSS_VER = assetHash('assets/style.css');
 const JS_VER = assetHash('assets/app.js');
 
 const ALL_Q = [...QUESTIONS, ...QUESTIONS_2, ...QUESTIONS_3];
+
+/* 把逐题手写的「干扰项分析」合并进题库。
+   trap 放在单独文件里维护，这里按题号挂回去；找不到 trap 的题保持原样，
+   由构建时的一致性检查报出来。 */
+ALL_Q.forEach((q) => {
+  if (TRAPS[q.id]) q.trap = TRAPS[q.id];
+});
+
+/* 一致性检查：有选项的题都该有 trap（填空题没有选项，不需要） */
+const Q_NEED_TRAP = ALL_Q.filter((q) => q.options && q.options.length);
+const Q_TRAP_MISS = Q_NEED_TRAP.filter((q) => !q.trap).map((q) => q.id);
+const Q_WITH_TRAP = Q_NEED_TRAP.filter((q) => q.trap).length;
+const Q_ID_SET = new Set(ALL_Q.map((q) => q.id));
+const Q_TRAP_ORPHAN = Object.keys(TRAPS).filter((id) => !Q_ID_SET.has(id));
 
 /* ---------------- 阅读分级：A 应用文 / B 记叙文 / C 说明文 / D 议论文 ---------------- */
 const LEVEL_OF_TYPE = { '应用文': 'A', '记叙文': 'B', '说明文': 'C', '议论文': 'D' };
@@ -199,6 +214,7 @@ const NAV = [
   { href: 'writing.html', label: '写作', key: 'writing' },
   { href: 'wrong.html', label: '错题本', key: 'wrong' },
   { href: 'stats.html', label: '学情诊断', key: 'stats' },
+  { href: 'diagnose.html', label: '摸底诊断', key: 'diagnose' },
   { href: 'content.html', label: '内容说明', key: 'content' },
 ];
 
@@ -248,6 +264,7 @@ const FOOTER = (base) => `<footer class="foot">
     </div>
     <div class="col">
       <h4>诊断与帮助</h4>
+      <a href="${base}diagnose.html">摸底诊断（先测再练）</a>
       <a href="${base}stats.html">学情诊断与档案</a>
       <a href="${base}content.html">内容与数据说明</a>
       <a href="${base}index.html#faq">常见问题</a>
@@ -410,23 +427,26 @@ function buildHome() {
           </div>
         </div>
       </div>
-      <div class="mission-list">
-        <a class="mission-item" href="quiz.html">
+      <div class="mission-list" id="missionList">
+        <a class="mission-item" href="quiz.html" data-mod="words">
           <span class="mi-ico blue">🎧</span>
-          <span class="mi-main"><b>第一步：听音闯关背单词</b><small id="ttWords">按遗忘曲线先过高频词，每词英音朗读</small></span>
+          <span class="mi-main"><b><span class="mi-step">第一步</span>：听音闯关背单词</b><small id="ttWords">按遗忘曲线先过高频词，每词英音朗读</small></span>
           <span class="mi-go">开始 →</span>
         </a>
-        <a class="mission-item" href="review.html">
+        <a class="mission-item" href="review.html" data-mod="grammar">
           <span class="mi-ico purple">⚡</span>
-          <span class="mi-main"><b>第二步：中考题型练语法</b><small id="ttGrammar">每天 10–20 题，专攻正确率低的薄弱考点</small></span>
+          <span class="mi-main"><b><span class="mi-step">第二步</span>：中考题型练语法</b><small id="ttGrammar">每天 10–20 题，专攻正确率低的薄弱考点</small></span>
           <span class="mi-go">去练 →</span>
         </a>
-        <a class="mission-item" href="wrong.html">
+        <a class="mission-item" href="wrong.html" data-mod="wrong">
           <span class="mi-ico rose">🎯</span>
-          <span class="mi-main"><b>第三步：清空今日错题本</b><small id="ttWrong">自动收纳错词错题，支持一键打印复习纸</small></span>
+          <span class="mi-main"><b><span class="mi-step">第三步</span>：清空今日错题本</b><small id="ttWrong">自动收纳错词错题，支持一键打印复习纸</small></span>
           <span class="mi-go">查看 →</span>
         </a>
       </div>
+      <a class="mission-diag" id="diagCta" href="diagnose.html">
+        <span>🧭 不知道从哪开始？先做一次 15 分钟摸底 →</span>
+      </a>
     </div>
   </div>
 
@@ -633,12 +653,98 @@ function refresh() {
   const due = P.srsStats().due;
   set('#ttWords', due ? '今天有 ' + due + ' 个词到期，先复习再学新词' : '按遗忘曲线先过高频词，每词英音朗读');
   const wn = P.wordBookCount() + P.wrongIds().length;
-  set('#ttWrong', wn ? '当前 ' + wn + ' 条错题待攻克，支持打印复习纸' : '太棒了，错题本目前干干净净');
+  const dueAll = P.dueTotals ? P.dueTotals() : null;
+  set('#ttWrong', wn
+    ? (dueAll && dueAll.total
+        ? '今天有 ' + dueAll.total + ' 条到期该复习（共 ' + wn + ' 条待攻克）'
+        : '共 ' + wn + ' 条待攻克，今天没有到期的')
+    : '太棒了，错题本目前干干净净');
+
+  applyRoute();
+}
+
+/* 按摸底结果重排首页三步：最弱的一条线排到「第一步」。
+   没做过摸底就保持默认顺序（词 → 语法 → 错题），并在下方露出摸底入口；
+   做过之后把这个入口收起来，避免反复打扰。 */
+const MOD_HREF = { words: 'quiz.html', grammar: 'review.html', reading: 'reading.html' };
+const MOD_LABEL = { words: '听音闯关背单词', grammar: '中考题型练语法', reading: '整篇理解学阅读' };
+const MOD_ICO = { words: '🎧', grammar: '⚡', reading: '📄' };
+
+function applyRoute() {
+  const list = document.querySelector('#missionList');
+  const cta = document.querySelector('#diagCta');
+  const order = P.routeOrder ? P.routeOrder() : null;
+  if (!list) return;
+
+  if (!order) {
+    // 没有摸底：恢复默认三步（词 → 语法 → 错题），露出摸底入口。
+    // 若之前插入过阅读项（例如清空了摸底记录），要一并移除并复位步号，
+    // 否则会留下没有步号的「第—步」和「第4步」这种错位。
+    const stray = list.querySelector('[data-mod="reading"]');
+    if (stray) stray.remove();
+    const defaults = ['words', 'grammar', 'wrong'];
+    defaults.forEach((id, i) => {
+      const el = list.querySelector('[data-mod="' + id + '"]');
+      if (!el) return;
+      list.appendChild(el);
+      el.classList.remove('mi-first');
+      const stepEl = el.querySelector('.mi-step');
+      if (stepEl) stepEl.textContent = ['第一步', '第二步', '第三步'][i];
+    });
+    if (cta) cta.style.display = '';
+    return;
+  }
+  if (cta) cta.style.display = 'none';
+
+  // 把「阅读」这条线也纳入任务列表：摸底测出来它最弱时，首页要能直接推它
+  const items = {
+    words: list.querySelector('[data-mod="words"]'),
+    grammar: list.querySelector('[data-mod="grammar"]'),
+    wrong: list.querySelector('[data-mod="wrong"]'),
+  };
+  let readingEl = list.querySelector('[data-mod="reading"]');
+  if (!readingEl) {
+    readingEl = document.createElement('a');
+    readingEl.className = 'mission-item';
+    readingEl.setAttribute('data-mod', 'reading');
+    readingEl.href = 'reading.html';
+    readingEl.innerHTML = '<span class="mi-ico rose">📄</span>' +
+      '<span class="mi-main"><b><span class="mi-step">—</span>：整篇理解学阅读</b>' +
+      '<small>完形与阅读的方法练习，靠方法不靠词量</small></span>' +
+      '<span class="mi-go">去练 →</span>';
+  }
+  // 必须在 if 外面赋值：applyRoute 会被事件反复调用，
+  // 只在创建时赋值会让第二次调用漏掉阅读项，顺序与步号就乱了。
+  items.reading = readingEl;
+
+  // 摸底排出的顺序只覆盖「词 / 语法 / 阅读」三条线，错题本永远垫底（它是清理项）
+  const seq = order.slice();
+  if (seq.indexOf('reading') < 0) seq.push('reading');
+  const finalOrder = seq.concat(['wrong']);
+
+  finalOrder.forEach((id, i) => {
+    const el = items[id];
+    if (!el) return;
+    list.appendChild(el);                       // appendChild 按调用顺序重排
+    const stepEl = el.querySelector('.mi-step');
+    if (stepEl) stepEl.textContent = '第' + (i + 1) + '步';
+  });
+
+  // 给最弱的一条线加一个「今天先做这个」的标记。
+  // 先清掉旧的：applyRoute 会重复调用，不清会让高亮越积越多。
+  finalOrder.forEach((id) => {
+    const el = items[id];
+    if (el) el.classList.remove('mi-first');
+  });
+  const first = items[finalOrder[0]];
+  if (first) first.classList.add('mi-first');
 }
 refresh();
 document.addEventListener('hbzk:daily', refresh);
 document.addEventListener('hbzk:srs', refresh);
 document.addEventListener('hbzk:profile', refresh);
+document.addEventListener('hbzk:placement', refresh);
+document.addEventListener('hbzk:qlog', applyRoute);
 `,
   }));
 }
@@ -1410,6 +1516,311 @@ document.querySelector('#resetBtn').addEventListener('click', () => {
 }
 
 /* ==========================================================
+   6.5 摸底诊断卷（冷启动入口）
+   ----------------------------------------------------------
+   为什么需要这一页：本站的诊断是按「你做过的题」算的，可新用户一道题都没做过，
+   诊断页只能显示「先做 10 道语法题」。对学习主动性不强的学生来说，
+   「先做什么」本身就是最难的一步——他会卡在入口。
+
+   这里给一个 15 分钟的小卷：词汇 / 语法 / 阅读三条线各抽几题，
+   答完直接告诉他「先补哪条线」，并把这个顺序写进首页的学习路线。
+   ========================================================== */
+function buildDiagnose() {
+  write('diagnose.html', page({
+    dataKeys: ['WORDS', 'QUESTIONS_ALL', 'GRAMMAR'],
+    dataExtra: { ALL_READING },
+    title: '摸底诊断 · 15 分钟找到该先补哪一块',
+    desc: '不知道从哪开始？做一份 15 分钟的小卷，按词汇、语法、阅读三条线测出强弱，直接给出该先补哪一块和今天的复习顺序。',
+    active: 'diagnose',
+    body: `
+<div class="page-head">
+  <div class="crumb"><a href="index.html">首页</a> / 摸底诊断</div>
+  <h1>先测一次，再决定练什么</h1>
+  <p class="lede">每个模块都薄弱的时候，最难的不是练，是<b>决定先练哪个</b>。这份小卷从词汇、语法、阅读三条线各抽几题，15 分钟内测完，直接告诉你该先补哪一块，并把顺序写进首页的学习路线。</p>
+</div>
+
+<section class="section" id="introSec">
+  <div class="card" style="padding:26px 28px">
+    <div class="diag-lines">
+      <div class="diag-line">
+        <span class="dl-ico blue">📖</span>
+        <div><b>词汇 · 8 题</b><small>看英文选中文，测词义掌握</small></div>
+      </div>
+      <div class="diag-line">
+        <span class="dl-ico purple">⚡</span>
+        <div><b>语法 · 7 题</b><small>跨语法族抽题，测考点短板</small></div>
+      </div>
+      <div class="diag-line">
+        <span class="dl-ico rose">📄</span>
+        <div><b>阅读 · 5 题</b><small>一篇短文，测定位与推理</small></div>
+      </div>
+    </div>
+    <div class="diag-actions">
+      <button class="btn primary" id="startBtn">开始摸底（约 15 分钟）</button>
+      <span class="diag-note" id="lastNote"></span>
+    </div>
+    <p class="diag-tip">测完不会留错题进错题本——这只是一次「体检」，目的是定方向。之后的练习才计入学习记录。</p>
+  </div>
+</section>
+
+<section class="section" id="quizSec" style="display:none">
+  <div class="section-head">
+    <div class="section-head-left">
+      <span class="kicker" id="qKicker">第 1 部分 · 词汇</span>
+      <h2 id="qTitle">—</h2>
+    </div>
+  </div>
+  <div id="quizHost"></div>
+</section>
+
+<section class="section" id="resultSec" style="display:none">
+  <div class="section-head">
+    <div class="section-head-left">
+      <span class="kicker">诊断结果</span>
+      <h2>三条线的强弱，和今天的顺序</h2>
+      <span class="sub">下面这个顺序会直接写进首页的学习路线</span>
+    </div>
+  </div>
+  <div id="resultHost"></div>
+</section>
+`,
+    script: `
+const { WORDS, QUESTIONS_ALL, GRAMMAR, ALL_READING } = window.HBZK_DATA;
+const P = window.HBZK;
+
+const N_WORD = 8, N_GRAM = 7, N_READ = 5;
+
+/* ---- 抽题 ---- */
+
+/* 词汇：跨频档均匀抽，避免全抽到高频简单词或全抽到低频难词。
+   频档字段是 tag（b1 高频 / b2 中频 / b3 低频）。 */
+function pickWords() {
+  const byBand = { b1: [], b2: [], b3: [] };
+  WORDS.forEach(w => {
+    const b = w.tag || 'b1';
+    if (byBand[b] && w.zh) byBand[b].push(w);
+  });
+  const picked = [];
+  const perBand = Math.ceil(N_WORD / 3);
+  ['b1', 'b2', 'b3'].forEach(b => {
+    picked.push(...P.shuffle(byBand[b].slice()).slice(0, perBand));
+  });
+  return P.shuffle(picked).slice(0, N_WORD);
+}
+
+/* 语法：按语法族轮转抽，保证覆盖面而不是集中在某一族 */
+function pickGrammar() {
+  const byTopic = new Map();
+  QUESTIONS_ALL.forEach(q => {
+    if (q.type === 'fill') return;          // 填空题不适合快速摸底
+    if (!byTopic.has(q.topic)) byTopic.set(q.topic, []);
+    byTopic.get(q.topic).push(q);
+  });
+  const topics = P.shuffle([...byTopic.keys()]);
+  const picked = [];
+  for (const t of topics) {
+    if (picked.length >= N_GRAM) break;
+    const pool = byTopic.get(t);
+    picked.push(P.shuffle(pool.slice())[0]);
+  }
+  return picked;
+}
+
+/* 阅读：抽一篇中等难度（B/C 级）的篇章，取前 5 题 */
+function pickReading() {
+  const pool = (ALL_READING || []).filter(r => r.questions && r.questions.length >= 4);
+  if (!pool.length) return null;
+  const mid = pool.filter(r => r.level === 'B1' || r.level === 'C');
+  const r = P.shuffle((mid.length ? mid : pool).slice())[0];
+  return r;
+}
+
+const words = pickWords();
+const grams = pickGrammar();
+const readPassage = pickReading();
+const readQs = readPassage ? readPassage.questions.slice(0, N_READ) : [];
+
+/* ---- 结果统计 ---- */
+const lines = {
+  words:   { n: 0, ok: 0, label: '词汇' },
+  grammar: { n: 0, ok: 0, label: '语法' },
+  reading: { n: 0, ok: 0, label: '阅读' },
+};
+function rate(L) { return L.n ? L.ok / L.n : null; }
+
+function showResult() {
+  document.querySelector('#quizSec').style.display = 'none';
+  const host = document.querySelector('#resultHost');
+  const res = {
+    lines: {
+      words:   { n: lines.words.n, ok: lines.words.ok, rate: rate(lines.words) },
+      grammar: { n: lines.grammar.n, ok: lines.grammar.ok, rate: rate(lines.grammar) },
+      reading: { n: lines.reading.n, ok: lines.reading.ok, rate: rate(lines.reading) },
+    },
+    at: Date.now(),
+  };
+  P.savePlacement(res);
+  const order = P.routeOrder();
+
+  const ROUTE_META = {
+    words:   { href: 'quiz.html', name: '背单词', ico: '🎧', cls: 'blue',   why: '词义认不出，后面的语法和阅读都会卡在「看不懂」这一层' },
+    grammar: { href: 'review.html', name: '练语法', ico: '⚡', cls: 'purple', why: '规则没吃透，短文填空和单选会持续丢分' },
+    reading: { href: 'reading.html', name: '学阅读', ico: '📄', cls: 'rose',   why: '读懂了但选错，是定位与推理的方法问题，不是词汇量问题' },
+  };
+
+  function bar(L, cls) {
+    const r = rate(L);
+    const pct = r === null ? 0 : Math.round(r * 100);
+    return '<div class="rx-bar-row">' +
+      '<span class="rx-bar-label">' + L.label + '</span>' +
+      '<span class="rx-bar"><i class="' + cls + '" style="width:' + pct + '%"></i></span>' +
+      '<span class="rx-bar-val">' + (r === null ? '未测' : pct + '%') + '</span>' +
+      '<span class="rx-bar-sub">' + L.ok + '/' + L.n + ' 题</span>' +
+    '</div>';
+  }
+
+  const cards = order.map((id, i) => {
+    const m = ROUTE_META[id];
+    const L = lines[id];
+    const r = rate(L);
+    return '<div class="rx-card' + (i === 0 ? ' rx-first' : '') + '">' +
+      '<span class="rx-tag ' + m.cls + '">' + (i === 0 ? '先练这个' : '第 ' + (i + 1) + ' 位') + '</span>' +
+      '<b class="rx-title">' + m.ico + ' ' + m.name + '</b>' +
+      '<p class="rx-desc">' + (r === null ? '这次没测到，按顺序排后。' : '正确率 <b>' + Math.round(r * 100) + '%</b>。') + m.why + '</p>' +
+      '<a class="btn sm ' + (i === 0 ? 'primary' : 'soft') + '" href="' + m.href + '">去练 →</a>' +
+    '</div>';
+  }).join('');
+
+  host.innerHTML =
+    '<div class="card" style="padding:26px 28px;margin-bottom:22px">' +
+      '<b style="display:block;margin-bottom:16px">三条线的正确率</b>' +
+      bar(lines.words, 'blue') + bar(lines.grammar, 'purple') + bar(lines.reading, 'rose') +
+      '<p class="diag-tip" style="margin-top:16px">正确率低的排在前面。这个顺序已经写进首页的「今日任务」，明天打开首页会按它排。</p>' +
+    '</div>' +
+    '<div class="rx-grid">' + cards + '</div>' +
+    '<div class="card" style="padding:22px 26px;margin-top:22px">' +
+      '<b style="display:block;margin-bottom:10px">接下来做什么</b>' +
+      '<p style="color:var(--text-2);line-height:1.75;margin:0">' +
+        '先按上面的顺序练一周，再回<a href="stats.html">学情诊断</a>看数据变化。' +
+        '如果一周后某条线还是最弱，说明那一块不是「练得少」而是「方法不对」，' +
+        '这时再去对应的专项页看方法，而不是继续加题量。' +
+      '</p>' +
+      '<div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">' +
+        '<a class="btn primary" href="' + ROUTE_META[order[0]].href + '">从「' + ROUTE_META[order[0]].name + '」开始 →</a>' +
+        '<button class="btn soft" id="retakeBtn">重新测一次</button>' +
+        '<a class="btn ghost" href="index.html">回首页</a>' +
+      '</div>' +
+    '</div>';
+
+  document.querySelector('#resultSec').style.display = '';
+  document.querySelector('#resultSec').scrollIntoView({ block: 'start', behavior: 'smooth' });
+  const rt = document.querySelector('#retakeBtn');
+  if (rt) rt.addEventListener('click', () => location.reload());
+}
+
+/* ---- 三段测验依次跑 ---- */
+function runWords() {
+  document.querySelector('#qKicker').textContent = '第 1 部分 / 3 · 词汇';
+  document.querySelector('#qTitle').textContent = '看英文，选出正确的中文释义';
+  document.querySelector('#quizSec').style.display = '';
+  document.querySelector('#quizSec').scrollIntoView({ block: 'start', behavior: 'smooth' });
+
+  // 词汇题在这里现造：P.quiz 只认 q.stem/options/answer 结构
+  const qs = words.map(w => {
+    const ds = P.pickDistractors(WORDS, w, 3);
+    const opts = [w].concat(ds);
+    P.shuffle(opts);
+    return {
+      id: 'pl-w-' + w.w,
+      stem: w.w,
+      _isWord: true,
+      _word: w,
+      options: opts.map(o => o.zh || ''),
+      answer: opts.indexOf(w),
+    };
+  });
+
+  P.quiz({
+    mount: '#quizHost',
+    questions: qs,
+    shuffle: false,
+    reviewHref: '',
+    placement: true,
+    onAnswer: (q, ok) => {
+      lines.words.n++;
+      if (ok) lines.words.ok++;
+    },
+    onFinish: () => runGrammar(),
+  });
+}
+
+function runGrammar() {
+  document.querySelector('#qKicker').textContent = '第 2 部分 / 3 · 语法';
+  document.querySelector('#qTitle').textContent = '跨语法族抽题，看哪个考点不稳';
+  document.querySelector('#quizHost').innerHTML = '';
+
+  P.quiz({
+    mount: '#quizHost',
+    questions: grams,
+    shuffle: true,
+    reviewHref: '',
+    placement: true,
+    onAnswer: (q, ok) => {
+      lines.grammar.n++;
+      if (ok) lines.grammar.ok++;
+    },
+    onFinish: () => runReading(),
+  });
+}
+
+function runReading() {
+  if (!readPassage) { showResult(); return; }
+  document.querySelector('#qKicker').textContent = '第 3 部分 / 3 · 阅读';
+  document.querySelector('#qTitle').textContent = readPassage.title + '（' + readPassage.type + '）';
+  document.querySelector('#quizHost').innerHTML = '';
+
+  const passageHtml = '<div class="card" style="padding:22px 26px;margin-bottom:20px">' +
+    '<div class="passage-body" style="font-family:var(--en);line-height:1.95;font-size:.95rem">' +
+      readPassage.passage.map(l => l ? P.esc(l) : '<br>').join('<br>') +
+    '</div></div>';
+  const host = document.querySelector('#quizHost');
+  host.innerHTML = passageHtml + '<div id="readQuizHost"></div>';
+
+  P.quiz({
+    mount: '#readQuizHost',
+    questions: readQs,
+    shuffle: false,
+    reviewHref: '',
+    placement: true,
+    onAnswer: (q, ok) => {
+      lines.reading.n++;
+      if (ok) lines.reading.ok++;
+    },
+    onFinish: () => showResult(),
+  });
+}
+
+document.querySelector('#startBtn').addEventListener('click', () => {
+  document.querySelector('#introSec').style.display = 'none';
+  runWords();
+});
+
+/* 已有摸底结果时，在入口页提示「上次测过」 */
+(function initNote() {
+  const el = document.querySelector('#lastNote');
+  if (!el) return;
+  const pl = P.placement && P.placement();
+  if (!pl || !pl.at) return;
+  const d = new Date(pl.at);
+  el.textContent = '上次摸底：' + d.getFullYear() + '-' +
+    String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0') +
+    '（重测会覆盖上次结果）';
+})();
+`,
+  }));
+}
+
+/* ==========================================================
    7. 智能错题本（支持发音 + 一键打印 A4 错题纸）
    ========================================================== */
 function buildWrongBook() {
@@ -1423,7 +1834,7 @@ function buildWrongBook() {
 <div class="page-head">
   <div class="crumb"><a href="index.html">首页</a> / 智能错题本</div>
   <h1>智能错题本</h1>
-  <p class="lede">做错的单词和语法题都会自动收录。单词需<b>连续答对 2 次</b>才移出，确保真记住；家长可随时点击「打印错题纸」，方便孩子睡前或考前纸质复盘。</p>
+  <p class="lede">错词和错题会自动收录，并按<b>遗忘曲线排期</b>：到期的排在最前，<b>连续答对 3 次</b>才移出——同一个词要在第 1、3、7 天各答对一次，才算真的记住。家长可随时点击「打印错题纸」，方便睡前或考前纸质复盘。</p>
 </div>
 
 <section class="section" style="margin-top:22px">
@@ -1434,6 +1845,7 @@ function buildWrongBook() {
   </div>
   <div class="toolbar" style="margin-top:16px">
     <input class="field" id="wq" type="search" placeholder="在错题本里搜索…" autocomplete="off">
+    <button class="chip" id="dueOnly" data-due="1">⏰ 只看到期的 <span id="nDue">0</span></button>
     <select class="field" id="psize" style="max-width:130px;padding:8px 10px;font-size:.84rem">
       <option value="10">每页 10 条</option>
       <option value="20">每页 20 条</option>
@@ -1487,7 +1899,7 @@ GRAMMAR.forEach(g => g.topics.forEach(t => TNAME.set(t.id, t.name)));
 const PSIZE_KEY = 'pet-wb-psize';
 let PAGE_SIZE = parseInt(localStorage.getItem(PSIZE_KEY) || '10', 10);
 if ([10, 20, 50].indexOf(PAGE_SIZE) < 0) PAGE_SIZE = 10;
-let tab = 'word', page = 0, query = '';
+let tab = 'word', page = 0, query = '', onlyDue = false;
 
 function wordItems() {
   return P.wordBookList().map(x => ({ kind: 'word', key: x.w, rec: x, meta: WBYW.get(x.w) || {} }));
@@ -1506,13 +1918,40 @@ function passageItems() {
     return { kind: 'passage', key: id, rec, p: PBYID.get(id) };
   }).filter(x => x.p);
 }
+/* 排序与筛选都按「真正该复习的那天」：
+   错词查 SRS 排期，错题查题目排期；已到期的排前面，再按到期日升序。
+   这样学生打开错题本看到的第一个就是「现在最该复习的」，而不是「最近错的」。 */
+function sortByDue(arr, kindOf) {
+  const now = Date.now();
+  return arr.map(it => {
+    const ts = P.nextDue(it.key, kindOf(it));
+    return Object.assign({}, it, { dueAt: ts, isDue: ts === null || ts <= now });
+  }).sort((a, b) => {
+    if (a.isDue !== b.isDue) return a.isDue ? -1 : 1;
+    return (a.dueAt || 0) - (b.dueAt || 0);
+  });
+}
 function currentItems() {
-  let arr = tab === 'word' ? wordItems() : tab === 'gram' ? gramItems() : passageItems();
+  let arr = tab === 'word' ? sortByDue(wordItems(), () => 'word')
+    : tab === 'gram' ? sortByDue(gramItems(), () => 'q')
+    : sortByDue(passageItems(), () => 'q');
+  if (onlyDue) arr = arr.filter(it => it.isDue);
   if (query) {
     const t = query.toLowerCase();
     arr = arr.filter(it => JSON.stringify(it).toLowerCase().includes(t));
   }
   return arr;
+}
+/* 下次复习日的小标签 */
+function dueTag(it) {
+  if (!it.dueAt) return '<span class="flag due-now">待首次复习</span>';
+  return '<span class="flag ' + (it.isDue ? 'due-now' : 'due-later') + '">' +
+    P.esc(P.dueLabel(it.dueAt)) + '</span>';
+}
+/* 连对进度：3 次连对才移出，界面上要说清还差几次 */
+function streakTag(right) {
+  const need = P.MASTER_STREAK;
+  return '<span class="flag">连对 ' + (right || 0) + '/' + need + '</span>';
 }
 
 function wordRow(it) {
@@ -1526,7 +1965,8 @@ function wordRow(it) {
     '</span>' +
     '<span class="pos">' + P.esc(m.posZh || '') + '</span>' +
     '<span class="zh">' + P.esc(m.zh || '（无释义）') + '</span>' +
-    '<span class="flag">错 ' + it.rec.wrong + ' 次 · 连对 ' + (it.rec.right || 0) + '/' + P.MASTER_STREAK + '</span>' +
+    '<span class="flag">错 ' + it.rec.wrong + ' 次 · ' + (it.rec.right || 0) + '/' + P.MASTER_STREAK + ' 连对</span>' +
+    dueTag(it) +
     '<span class="wb-actions"><button class="btn xs" data-master="' + P.esc(it.key) + '">✓ 已掌握</button></span>' +
   '</div>';
 }
@@ -1538,8 +1978,11 @@ function gramRow(it) {
     '<div class="qmeta"><span class="qtype">' + typeName + '</span>' +
       '<span class="flag">' + P.esc(it.topicName) + '</span>' +
       (q.level ? '<span class="lv ' + P.esc(q.level) + '">' + P.esc(q.level) + '</span>' : '') +
+      streakTag(it.rec.right) + dueTag(it) +
     '</div>' +
     '<div class="wb-stem">' + P.esc(q.stem) + '</div>' +
+    '<div class="wb-why">' + P.esc(q.why) + '</div>' +
+    (q.trap ? '<div class="wb-trap"><b>干扰项分析：</b>' + P.esc(q.trap) + '</div>' : '') +
     '<div class="wb-actions"><button class="btn xs" data-master="' + P.esc(it.key) + '">✓ 已掌握</button></div>' +
   '</div>';
 }
@@ -1556,6 +1999,7 @@ function passageRow(it) {
       '<span class="qtype">' + kindName + '</span>' +
       '<span class="flag">' + P.esc(skillName) + '</span>' +
       '<span class="flag" style="background:var(--bg-3);color:var(--text-2)">' + P.esc(p.title) + '</span>' +
+      streakTag(it.rec.right) + dueTag(it) +
     '</div>' +
     '<div class="wb-stem">' + P.esc(p.stem) + '</div>' +
     optHtml +
@@ -1578,6 +2022,17 @@ function draw() {
   document.querySelector('#nGram').textContent = gramItems().length;
   const nP = document.querySelector('#nPassage');
   if (nP) nP.textContent = passageItems().length;
+  /* 当前标签页里已到期的条数：学生只想知道「现在该清几条」 */
+  const nDueEl = document.querySelector('#nDue');
+  if (nDueEl) {
+    const now = Date.now();
+    const kindOf = tab === 'word' ? 'word' : 'q';
+    const src = tab === 'word' ? wordItems() : tab === 'gram' ? gramItems() : passageItems();
+    nDueEl.textContent = src.filter(it => {
+      const ts = P.nextDue(it.key, kindOf);
+      return ts === null || ts <= now;
+    }).length;
+  }
 
   const host = document.querySelector('#wbList');
   const empty = document.querySelector('#wbEmpty');
@@ -1638,6 +2093,14 @@ document.querySelectorAll('#tabs .chip').forEach(c => {
   });
 });
 document.querySelector('#wq').addEventListener('input', e => { query = e.target.value.trim(); page = 0; draw(); });
+const dueBtn = document.querySelector('#dueOnly');
+if (dueBtn) {
+  dueBtn.addEventListener('click', () => {
+    onlyDue = !onlyDue;
+    dueBtn.classList.toggle('on', onlyDue);
+    page = 0; draw();
+  });
+}
 const psizeSel = document.querySelector('#psize');
 if (psizeSel) {
   psizeSel.value = String(PAGE_SIZE);
@@ -1720,7 +2183,7 @@ function redoWords(slice) {
         if (ok) {
           // 与背单词页一致：答对后短暂确认，自动进入下一题
           fb.innerHTML = '<div class="feedback auto-next"><b>✓ 对了！' +
-            (mastered ? '已移出错题本' : '再对 ' + (P.MASTER_STREAK - (P.wordBook()[w.w.toLowerCase()] || {}).right) + ' 次即移出') +
+            (mastered ? '已移出错题本' : '再对 ' + Math.max(1, P.MASTER_STREAK - (P.wordBook()[w.w.toLowerCase()] || {}).right) + ' 次即移出') +
             '</b>' + P.esc(w.w) + ' · ' + P.esc(w.posZh || '') +
             '<span class="auto-next-hint">即将进入下一题…</span></div>';
           clearTimeout(autoNextTimer);
@@ -2941,7 +3404,7 @@ function renderRx(gRows, rRows, wData) {
       href: 'wrong.html', act: '重做这些错词 →'
     }));
   } else {
-    cards.push(card({ cls: 't-word', tag: '词汇', title: '错词本是空的', desc: '背单词时答错的词会自动进来，连续答对 2 次才移出。', idle: '暂无诊断', }));
+    cards.push(card({ cls: 't-word', tag: '词汇', title: '错词本是空的', desc: '背单词时答错的词会自动进来，连续答对 3 次才移出。', idle: '暂无诊断', }));
   }
 
   if (gTop) {
@@ -3086,17 +3549,16 @@ function renderReport() {
     sumLine('#rSum', '');
   }
 
-  /* 到期复习提醒 */
-  var dm = P.qDueMap ? P.qDueMap() : {};
-  var now = Date.now();
-  var dueQ = Object.keys(dm).filter(function (id) { var d = dm[id]; return d && (d.due || 0) <= now; }).length;
-  var dueW = srs.due || 0;
+  /* 到期复习提醒：按「错题本里实际到期的条数」算，而不是只数排期表——
+     学生关心的是「打开错题本有几条要清」，两者口径必须一致。 */
+  var dueAll = P.dueTotals ? P.dueTotals() : { words: 0, questions: 0, total: 0 };
   var dueNote = document.querySelector('#dxDueNote');
   if (dueNote) {
-    if (dueQ || dueW) {
+    if (dueAll.total) {
       dueNote.style.display = '';
-      dueNote.innerHTML = '⏰ 今天还有 <b>' + dueW + '</b> 个单词、<b>' + dueQ + '</b> 道题到了复习时间 —— 先清到期项，比重刷新题更划算：' +
-        '<a href="quiz.html">去背到期单词</a> · <a href="review.html">去复习到期题</a>';
+      dueNote.innerHTML = '⏰ 今天有 <b>' + dueAll.words + '</b> 个错词、<b>' + dueAll.questions + '</b> 道错题到期 —— ' +
+        '先清到期项，比重刷新题更划算：' +
+        '<a href="wrong.html">去清错题本</a>';
     } else {
       dueNote.style.display = 'none';
     }
@@ -3225,6 +3687,7 @@ function main() {
   buildReading();
   buildWriting();
   buildWrongBook();
+  buildDiagnose();
   buildStats();
   buildContent();
 
@@ -3239,11 +3702,20 @@ function main() {
     `  书面表达 ${WRITING_STATS.total} 篇`,
     `  发音 ${Object.keys(AUDIO).length} 条`,
     `  考点覆盖 ${GT_IDS.size - Q_TOPIC_MISS.length}/${GT_IDS.size}`,
+    `  干扰项分析 ${Q_WITH_TRAP}/${Q_NEED_TRAP.length}`,
     `  耗时 ${Date.now() - t0}ms`,
   ].join('\n');
   console.log(msg);
   if (Q_TOPIC_MISS.length) {
     console.warn('  ⚠ 以下考点还没有题目：', Q_TOPIC_MISS.join(', '));
+    process.exitCode = 1;
+  }
+  if (Q_TRAP_MISS.length) {
+    console.warn(`  ⚠ 以下 ${Q_TRAP_MISS.length} 道有选项的题缺 trap：`, Q_TRAP_MISS.join(', '));
+    process.exitCode = 1;
+  }
+  if (Q_TRAP_ORPHAN.length) {
+    console.warn('  ⚠ data-trap.js 里有题号在题库中不存在：', Q_TRAP_ORPHAN.join(', '));
     process.exitCode = 1;
   }
 }

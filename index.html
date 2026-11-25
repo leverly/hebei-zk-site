@@ -9,7 +9,7 @@
 <meta property="og:title" content="河北中考领航 · 中考英语全题型备考平台">
 <meta property="og:description" content="面向河北省初中生的中考英语备考站：1656 个课标词条、39 个语法考点、405 道题（语法 · 完形 · 阅读 · 任务型）与 8 篇写作范文，覆盖卷面 120 分中的 90 分。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%232563eb'/%3E%3Cstop offset='1' stop-color='%234f46e5'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='9' fill='url(%23g)'/%3E%3Ctext x='16' y='22' font-family='system-ui,sans-serif' font-size='16' font-weight='800' fill='%23fff' text-anchor='middle'%3E冀%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="assets/style.css?v=44c78a76">
+<link rel="stylesheet" href="assets/style.css?v=c15ff5df">
 <script>try{var m=JSON.parse(localStorage.getItem('pet-theme-manual')||'null');var h=new Date().getHours();var t=(m==='light'||m==='dark')?m:((h>=19||h<6)?'dark':'light');document.documentElement.setAttribute('data-theme',t);}catch(e){var h2=new Date().getHours();document.documentElement.setAttribute('data-theme',(h2>=19||h2<6)?'dark':'light');}</script>
 </head>
 <body data-base="">
@@ -22,7 +22,7 @@
   <span class="logo-badge">英语</span>
 </a>
     <nav class="hdr-nav">
-      <a href="index.html" class="on">首页</a><a href="quiz.html">背单词</a><a href="review.html">练语法</a><a href="reading.html">学阅读</a><a href="words.html">词库</a><a href="grammar.html">语法</a><a href="writing.html">写作</a><a href="wrong.html">错题本</a><a href="stats.html">学情诊断</a><a href="content.html">内容说明</a>
+      <a href="index.html" class="on">首页</a><a href="quiz.html">背单词</a><a href="review.html">练语法</a><a href="reading.html">学阅读</a><a href="words.html">词库</a><a href="grammar.html">语法</a><a href="writing.html">写作</a><a href="wrong.html">错题本</a><a href="stats.html">学情诊断</a><a href="diagnose.html">摸底诊断</a><a href="content.html">内容说明</a>
     </nav>
     <div class="hdr-tools">
       <button class="theme-btn" aria-label="切换主题">☾</button>
@@ -75,23 +75,26 @@
           </div>
         </div>
       </div>
-      <div class="mission-list">
-        <a class="mission-item" href="quiz.html">
+      <div class="mission-list" id="missionList">
+        <a class="mission-item" href="quiz.html" data-mod="words">
           <span class="mi-ico blue">🎧</span>
-          <span class="mi-main"><b>第一步：听音闯关背单词</b><small id="ttWords">按遗忘曲线先过高频词，每词英音朗读</small></span>
+          <span class="mi-main"><b><span class="mi-step">第一步</span>：听音闯关背单词</b><small id="ttWords">按遗忘曲线先过高频词，每词英音朗读</small></span>
           <span class="mi-go">开始 →</span>
         </a>
-        <a class="mission-item" href="review.html">
+        <a class="mission-item" href="review.html" data-mod="grammar">
           <span class="mi-ico purple">⚡</span>
-          <span class="mi-main"><b>第二步：中考题型练语法</b><small id="ttGrammar">每天 10–20 题，专攻正确率低的薄弱考点</small></span>
+          <span class="mi-main"><b><span class="mi-step">第二步</span>：中考题型练语法</b><small id="ttGrammar">每天 10–20 题，专攻正确率低的薄弱考点</small></span>
           <span class="mi-go">去练 →</span>
         </a>
-        <a class="mission-item" href="wrong.html">
+        <a class="mission-item" href="wrong.html" data-mod="wrong">
           <span class="mi-ico rose">🎯</span>
-          <span class="mi-main"><b>第三步：清空今日错题本</b><small id="ttWrong">自动收纳错词错题，支持一键打印复习纸</small></span>
+          <span class="mi-main"><b><span class="mi-step">第三步</span>：清空今日错题本</b><small id="ttWrong">自动收纳错词错题，支持一键打印复习纸</small></span>
           <span class="mi-go">查看 →</span>
         </a>
       </div>
+      <a class="mission-diag" id="diagCta" href="diagnose.html">
+        <span>🧭 不知道从哪开始？先做一次 15 分钟摸底 →</span>
+      </a>
     </div>
   </div>
 
@@ -365,6 +368,7 @@
     </div>
     <div class="col">
       <h4>诊断与帮助</h4>
+      <a href="diagnose.html">摸底诊断（先测再练）</a>
       <a href="stats.html">学情诊断与档案</a>
       <a href="content.html">内容与数据说明</a>
       <a href="index.html#faq">常见问题</a>
@@ -375,7 +379,7 @@
     <span>词表以课标三级词汇为基础 · 离线与在线均可顺畅使用</span>
   </div>
 </footer>
-<script src="assets/app.js?v=eae3b892"></script>
+<script src="assets/app.js?v=493acd98"></script>
 <script>window.HBZK_DATA=window.HBZK_DATA||{};
 window.HBZK_DATA.STATS={"words":1655,"phrases":1,"total":1656,"b1":932,"b2":511,"b3":213,"topics":17,"withExample":0};</script><script>
 const P = window.HBZK;
@@ -405,12 +409,98 @@ function refresh() {
   const due = P.srsStats().due;
   set('#ttWords', due ? '今天有 ' + due + ' 个词到期，先复习再学新词' : '按遗忘曲线先过高频词，每词英音朗读');
   const wn = P.wordBookCount() + P.wrongIds().length;
-  set('#ttWrong', wn ? '当前 ' + wn + ' 条错题待攻克，支持打印复习纸' : '太棒了，错题本目前干干净净');
+  const dueAll = P.dueTotals ? P.dueTotals() : null;
+  set('#ttWrong', wn
+    ? (dueAll && dueAll.total
+        ? '今天有 ' + dueAll.total + ' 条到期该复习（共 ' + wn + ' 条待攻克）'
+        : '共 ' + wn + ' 条待攻克，今天没有到期的')
+    : '太棒了，错题本目前干干净净');
+
+  applyRoute();
+}
+
+/* 按摸底结果重排首页三步：最弱的一条线排到「第一步」。
+   没做过摸底就保持默认顺序（词 → 语法 → 错题），并在下方露出摸底入口；
+   做过之后把这个入口收起来，避免反复打扰。 */
+const MOD_HREF = { words: 'quiz.html', grammar: 'review.html', reading: 'reading.html' };
+const MOD_LABEL = { words: '听音闯关背单词', grammar: '中考题型练语法', reading: '整篇理解学阅读' };
+const MOD_ICO = { words: '🎧', grammar: '⚡', reading: '📄' };
+
+function applyRoute() {
+  const list = document.querySelector('#missionList');
+  const cta = document.querySelector('#diagCta');
+  const order = P.routeOrder ? P.routeOrder() : null;
+  if (!list) return;
+
+  if (!order) {
+    // 没有摸底：恢复默认三步（词 → 语法 → 错题），露出摸底入口。
+    // 若之前插入过阅读项（例如清空了摸底记录），要一并移除并复位步号，
+    // 否则会留下没有步号的「第—步」和「第4步」这种错位。
+    const stray = list.querySelector('[data-mod="reading"]');
+    if (stray) stray.remove();
+    const defaults = ['words', 'grammar', 'wrong'];
+    defaults.forEach((id, i) => {
+      const el = list.querySelector('[data-mod="' + id + '"]');
+      if (!el) return;
+      list.appendChild(el);
+      el.classList.remove('mi-first');
+      const stepEl = el.querySelector('.mi-step');
+      if (stepEl) stepEl.textContent = ['第一步', '第二步', '第三步'][i];
+    });
+    if (cta) cta.style.display = '';
+    return;
+  }
+  if (cta) cta.style.display = 'none';
+
+  // 把「阅读」这条线也纳入任务列表：摸底测出来它最弱时，首页要能直接推它
+  const items = {
+    words: list.querySelector('[data-mod="words"]'),
+    grammar: list.querySelector('[data-mod="grammar"]'),
+    wrong: list.querySelector('[data-mod="wrong"]'),
+  };
+  let readingEl = list.querySelector('[data-mod="reading"]');
+  if (!readingEl) {
+    readingEl = document.createElement('a');
+    readingEl.className = 'mission-item';
+    readingEl.setAttribute('data-mod', 'reading');
+    readingEl.href = 'reading.html';
+    readingEl.innerHTML = '<span class="mi-ico rose">📄</span>' +
+      '<span class="mi-main"><b><span class="mi-step">—</span>：整篇理解学阅读</b>' +
+      '<small>完形与阅读的方法练习，靠方法不靠词量</small></span>' +
+      '<span class="mi-go">去练 →</span>';
+  }
+  // 必须在 if 外面赋值：applyRoute 会被事件反复调用，
+  // 只在创建时赋值会让第二次调用漏掉阅读项，顺序与步号就乱了。
+  items.reading = readingEl;
+
+  // 摸底排出的顺序只覆盖「词 / 语法 / 阅读」三条线，错题本永远垫底（它是清理项）
+  const seq = order.slice();
+  if (seq.indexOf('reading') < 0) seq.push('reading');
+  const finalOrder = seq.concat(['wrong']);
+
+  finalOrder.forEach((id, i) => {
+    const el = items[id];
+    if (!el) return;
+    list.appendChild(el);                       // appendChild 按调用顺序重排
+    const stepEl = el.querySelector('.mi-step');
+    if (stepEl) stepEl.textContent = '第' + (i + 1) + '步';
+  });
+
+  // 给最弱的一条线加一个「今天先做这个」的标记。
+  // 先清掉旧的：applyRoute 会重复调用，不清会让高亮越积越多。
+  finalOrder.forEach((id) => {
+    const el = items[id];
+    if (el) el.classList.remove('mi-first');
+  });
+  const first = items[finalOrder[0]];
+  if (first) first.classList.add('mi-first');
 }
 refresh();
 document.addEventListener('hbzk:daily', refresh);
 document.addEventListener('hbzk:srs', refresh);
 document.addEventListener('hbzk:profile', refresh);
+document.addEventListener('hbzk:placement', refresh);
+document.addEventListener('hbzk:qlog', applyRoute);
 </script>
 
 </body>
