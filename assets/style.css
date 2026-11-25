@@ -324,59 +324,6 @@ button { font: inherit; color: inherit; }
 .mi-main small { display: block; font-size: .77rem; color: var(--text-3); margin-top: 2px; }
 .mi-go { color: var(--text-3); font-weight: 600; flex: none; }
 
-/* 摸底后最弱的一条线：加左边框，让「今天先做这个」在视觉上成立 */
-.mission-item.mi-first {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent) inset;
-  background: var(--accent-soft);
-}
-.mission-item.mi-first .mi-go { color: var(--accent); }
-
-/* 摸底入口：默认顺序下才显示，做过摸底就收起 */
-.mission-diag {
-  display: block; margin-top: 10px; padding: 10px 14px;
-  border-radius: 10px; border: 1px dashed var(--border);
-  font-size: .82rem; color: var(--text-2); text-align: center;
-  transition: all .16s var(--ease);
-}
-.mission-diag:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-
-/* ---------------- 摸底诊断页 ---------------- */
-.diag-lines { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-@media (max-width: 720px) { .diag-lines { grid-template-columns: 1fr; } }
-.diag-line {
-  display: flex; align-items: center; gap: 12px;
-  padding: 14px 16px; border-radius: 12px;
-  border: 1px solid var(--border); background: var(--bg-2);
-}
-.diag-line b { display: block; font-size: .9rem; }
-.diag-line small { display: block; font-size: .76rem; color: var(--text-3); margin-top: 2px; }
-.dl-ico {
-  width: 36px; height: 36px; border-radius: 10px; flex: none;
-  display: grid; place-items: center; font-size: 1rem;
-}
-.dl-ico.blue { background: var(--accent-soft); color: var(--accent); }
-.dl-ico.purple { background: var(--accent-2-soft); color: var(--accent-2); }
-.dl-ico.rose { background: var(--rose-soft); color: var(--rose); }
-.diag-actions { display: flex; align-items: center; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
-.diag-note { font-size: .8rem; color: var(--text-3); }
-.diag-tip { font-size: .8rem; color: var(--text-3); line-height: 1.7; margin: 14px 0 0; }
-
-/* 三条线的正确率条 */
-.rx-bar-row {
-  display: grid; grid-template-columns: 56px 1fr 52px 62px;
-  align-items: center; gap: 12px; padding: 7px 0;
-}
-.rx-bar-label { font-size: .84rem; font-weight: 600; }
-.rx-bar { height: 9px; border-radius: 99px; background: var(--bg-3); overflow: hidden; }
-.rx-bar i { display: block; height: 100%; border-radius: 99px; transition: width .5s var(--ease); }
-.rx-bar i.blue { background: var(--accent); }
-.rx-bar i.purple { background: var(--accent-2); }
-.rx-bar i.rose { background: var(--rose); }
-.rx-bar-val { font-family: var(--mono); font-size: .84rem; font-weight: 700; text-align: right; }
-.rx-bar-sub { font-size: .74rem; color: var(--text-3); text-align: right; }
-
-.rx-card.rx-first { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 
 /* ---------------- 数据背书带 ---------------- */
 .stats {

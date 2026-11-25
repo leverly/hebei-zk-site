@@ -135,44 +135,6 @@
     return '100+ 分';
   };
 
-  /* ---------------- 摸底诊断结果 ----------------
-     一次性小卷（词汇 + 语法 + 阅读）的答题结果，用来给「完全没有练习记录」
-     的学生一个起点：三条线的得分直接决定首页先推哪个模块。
-     与日常记录分开存，因为它代表「入学水平」，不该被之后的刷题稀释。 */
-  var PLACE_KEY = 'hbzk-placement-v1';
-  var placement = load(PLACE_KEY, null);
-
-  P.placement = function () { return placement; };
-  P.hasPlacement = function () { return !!(placement && placement.at); };
-  P.savePlacement = function (res) {
-    placement = Object.assign({ at: Date.now() }, res || {});
-    store(PLACE_KEY, placement);
-    document.dispatchEvent(new CustomEvent('hbzk:placement', { detail: placement }));
-    return placement;
-  };
-  P.clearPlacement = function () {
-    placement = null;
-    store(PLACE_KEY, null);
-    document.dispatchEvent(new CustomEvent('hbzk:placement', { detail: null }));
-  };
-  /* 三条线的强弱排序：返回按「越弱越靠前」排好的模块 id 列表。
-     没有摸底结果时返回 null，调用方回退到默认顺序（词→语法→错题）。 */
-  P.routeOrder = function () {
-    if (!placement || !placement.lines) return null;
-    var L = placement.lines;
-    var arr = [
-      { id: 'words', rate: L.words && L.words.rate !== null ? L.words.rate : 1, n: L.words ? L.words.n : 0 },
-      { id: 'grammar', rate: L.grammar && L.grammar.rate !== null ? L.grammar.rate : 1, n: L.grammar ? L.grammar.n : 0 },
-      { id: 'reading', rate: L.reading && L.reading.rate !== null ? L.reading.rate : 1, n: L.reading ? L.reading.n : 0 },
-    ];
-    // 没测到的线（n=0）排最后，避免「没测=最弱」的误判
-    arr.sort(function (a, b) {
-      if ((a.n === 0) !== (b.n === 0)) return a.n === 0 ? 1 : -1;
-      return a.rate - b.rate;
-    });
-    return arr.map(function (x) { return x.id; });
-  };
-
   /* ---------------- 已掌握进度 ---------------- */
   var KNOWN_KEY = 'hbzk-known-v1';
   var known = load(KNOWN_KEY, {}) || {};
@@ -601,8 +563,7 @@
       wbook: wbook,
       qlog: qlog,
       profile: profile,
-      plan: planDoneMap,
-      placement: placement
+      plan: planDoneMap
     };
     return JSON.stringify(data, null, 2);
   };
@@ -618,7 +579,6 @@
     if (d.qlog) { qlog = d.qlog; store(QLOG_KEY, qlog); }
     if (d.profile) { profile = Object.assign(profile, d.profile); store(PROFILE_KEY, profile); }
     if (d.plan) { planDoneMap = d.plan; store(PLAN_KEY, planDoneMap); }
-    if (d.placement !== undefined) { placement = d.placement; store(PLACE_KEY, placement); }
     P.toast('学习档案已恢复，正在刷新页面…');
     setTimeout(function () { location.reload(); }, 600);
   };
@@ -1252,8 +1212,7 @@
         nx.disabled = false;
         nx.focus();
       }
-      // 摸底卷只用来定方向，不计入练习记录，也不往错题本里塞题
-      if (!opts.placement && P.qRecord) P.qRecord(q.topic, ok, q.id);
+      if (P.qRecord) P.qRecord(q.topic, ok, q.id);
       if (opts.onAnswer) opts.onAnswer(q, ok);
       if (ok) {
         clearTimeout(autoNextTimer);
@@ -1278,14 +1237,10 @@
         '<div style="font-family:var(--display);font-size:3.2rem;font-weight:800;color:var(--accent);margin:6px 0">' + rate + '<span style="font-size:1.3rem">%</span></div>' +
         '<div style="color:var(--text-2)">答对 <b>' + correct + ' / ' + total + '</b> 题 · 最高连击 <b>' + best + '</b> · 获得 <b>+' + (total * 8) + ' XP</b></div>' +
         '<div style="margin-top:26px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">' +
-          (opts.placement
-            ? '<button class="btn primary" id="qnextpart">继续下一部分 →</button>'
-            : '<button class="btn primary" id="qagain">再来一轮</button>' +
-              '<a class="btn soft" href="wrong.html">去清错题本</a>') +
+          '<button class="btn primary" id="qagain">再来一轮</button>' +
+          '<a class="btn soft" href="wrong.html">去清错题本</a>' +
           (opts.reviewHref ? '<a class="btn ghost" href="' + opts.reviewHref + '">' + (opts.reviewLabel || '返回') + '</a>' : '') +
         '</div></div>';
-      var np = host.querySelector('#qnextpart');
-      if (np) np.addEventListener('click', function () { if (opts.onFinish) opts.onFinish(); });
       var b = host.querySelector('#qagain');
       if (b) b.addEventListener('click', function () {
         if (opts.onRestart) { opts.onRestart(); return; }
@@ -1294,9 +1249,7 @@
         host.querySelector('#qbody').innerHTML = '';
         draw();
       });
-      // 摸底模式下由「继续下一部分」按钮推进，不在这里自动跳，
-      // 否则学生会看不到自己的本部分成绩。
-      if (opts.onFinish && !opts.placement) opts.onFinish({ correct: correct, total: total, rate: rate, best: best });
+      if (opts.onFinish) opts.onFinish({ correct: correct, total: total, rate: rate, best: best });
     }
 
     draw();
